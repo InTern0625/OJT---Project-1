@@ -1,0 +1,10 @@
+ALTER TABLE accounts
+  DROP COLUMN mode_of_premium_id,
+  DROP COLUMN due_date,
+  DROP COLUMN or_number,
+  DROP COLUMN or_date,
+  DROP COLUMN sa_number,
+  DROP COLUMN amount,
+  DROP COLUMN total_contract_value,
+  DROP COLUMN balance,
+  DROP COLUMN billing_period;
