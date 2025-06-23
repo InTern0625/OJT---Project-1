@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import EmployeesInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees-information'
+import EmployeesInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-information'
 import {
   Collapsible,
   CollapsibleContent,

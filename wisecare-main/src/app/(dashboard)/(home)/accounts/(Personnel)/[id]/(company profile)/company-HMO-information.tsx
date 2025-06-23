@@ -111,7 +111,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
           />
           <CompanyInformationItem
             label={'Total Utilization'}
-            value={account?.total_utilization?.toString()}
+            value={formatCurrency(account?.total_utilization)}
           />
           <CompanyInformationItem
             label={'Total Premium Paid'}

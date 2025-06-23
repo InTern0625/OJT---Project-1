@@ -62,7 +62,7 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
                 )}
               </div>
               <div className="text-xs font-medium text-[#64748b] uppercase">
-                Employees
+                Members
               </div>
             </div>
             <div className="flex flex-col">

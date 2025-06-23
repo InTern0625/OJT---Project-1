@@ -50,6 +50,8 @@ const NumberInput = ({
               onChange={(e) => handleInputChange(field, e)}
               disabled={isLoading}
               placeholder={placeholder}
+              min={0}
+              max={5}
             />
           </FormControl>
           <FormMessage />

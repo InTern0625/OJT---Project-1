@@ -1,4 +1,4 @@
-import CompanyHeader from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/company-header'
+import CompanyHeader from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/company-header'
 import getAccountById from '@/queries/get-account-by-id'
 import getEmployeeCount from '@/queries/get-employee-count'
 import getRole from '@/utils/get-role'

@@ -20,6 +20,19 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
     ),
   },
   {
+    accessorKey: 'billing_date',
+    header: ({ column }) => <TableHeader column={column} title="Billing Date" />,
+    cell: ({ row }) => {
+      const dueDate = row.original.due_date
+        ? normalizeToUTC(new Date(row.original.due_date))
+        : null
+      return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div> //placeholder
+    },
+    
+    accessorFn: (originalRow) =>
+      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
+  },
+  {
     accessorKey: 'due_date',
     header: ({ column }) => <TableHeader column={column} title="Due Date" />,
     cell: ({ row }) => {
@@ -29,7 +42,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
+    originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'or_number',

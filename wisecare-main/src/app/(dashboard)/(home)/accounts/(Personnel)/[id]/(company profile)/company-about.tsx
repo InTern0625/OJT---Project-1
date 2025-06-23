@@ -64,7 +64,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       total_utilization: account?.total_utilization
         ? (maskitoTransform(
             account.total_utilization.toString(),
-            numberOptions,
+            currencyOptions,
           ) as unknown as string)
         : undefined,
       total_premium_paid: account?.total_premium_paid

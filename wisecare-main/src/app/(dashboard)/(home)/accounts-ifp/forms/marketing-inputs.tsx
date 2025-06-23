@@ -1,9 +1,9 @@
-import ComboBox from '@/app/(dashboard)/(home)/accounts/forms/combo-box'
-import DateInput from '@/app/(dashboard)/(home)/accounts/forms/date-input'
-import InputWithMask from '@/app/(dashboard)/(home)/accounts/forms/input-with-mask'
-import NumberInput from '@/app/(dashboard)/(home)/accounts/forms/number-input'
-import SelectInput from '@/app/(dashboard)/(home)/accounts/forms/select-input'
-import TextInput from '@/app/(dashboard)/(home)/accounts/forms/text-input'
+import ComboBox from '@/app/(dashboard)/(home)/accounts-ifp/forms/combo-box'
+import DateInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/date-input'
+import InputWithMask from '@/app/(dashboard)/(home)/accounts-ifp/forms/input-with-mask'
+import NumberInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/number-input'
+import SelectInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/select-input'
+import TextInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/text-input'
 import getAgents from '@/queries/get-agents'
 import getTypes from '@/queries/get-types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
@@ -35,28 +35,21 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
 
   return (
     <div className="grid gap-4 py-4">
-      <h3 className="text-md font-semibold">Company Information</h3>
+      <h3 className="text-md font-semibold">Client Information</h3>
       <div className="grid gap-4 sm:grid-flow-col sm:grid-rows-5">
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Company Name"
+          label="Representative Name"
           name="company_name"
           placeholder="Enter company name"
         />
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Company Address"
-          name="company_address"
-          placeholder="Enter company address"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Nature of Business"
-          name="nature_of_business"
-          placeholder="Enter nature of business"
+          label="Contact Number"
+          name="contact_number"
+          placeholder="Enter contact number"
         />
         <TextInput
           form={form}
@@ -68,9 +61,23 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Signatory Designation"
-          name="signatory_designation"
-          placeholder="Enter signatory designation"
+          label="Contact Person"
+          name="contact_person"
+          placeholder="Enter contact person"
+        />
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Email Address of Contact Person"
+          name="email_address_of_contact_person"
+          placeholder="Enter email address of contact person"
+        />
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Permanent Address"
+          name="company_address"
+          placeholder="Enter company address"
         />
         <ComboBox
           form={form}
@@ -86,9 +93,9 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Contact Person"
-          name="contact_person"
-          placeholder="Enter contact person"
+          label="Signatory Designation"
+          name="signatory_designation"
+          placeholder="Enter signatory designation"
         />
         <TextInput
           form={form}
@@ -97,20 +104,8 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="designation_of_contact_person"
           placeholder="Enter designation of contact person"
         />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Email Address of Contact Person"
-          name="email_address_of_contact_person"
-          placeholder="Enter email address of contact person"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Contact Number"
-          name="contact_number"
-          placeholder="Enter contact number"
-        />
+        
+        
       </div>
 
       <h3 className="text-md mt-3 font-semibold">HMO Information</h3>
@@ -165,12 +160,12 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
             value: planType.id,
           }))}
         />
-        <NumberInput
+        <InputWithMask
           form={form}
           isLoading={isLoading}
           label="Total Utilization"
           name="total_utilization"
-          placeholder="Enter total utilization"
+          maskType="currency"
         />
         <InputWithMask
           form={form}
@@ -291,7 +286,11 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           isLoading={isLoading}
           label="Account Type"
           name="account_type_id"
-          options={accountTypes?.map((accountType) => ({
+          options={accountTypes
+          ?.filter((accountType) => 
+            accountType.name === 'Individual' || accountType.name === 'Family'
+          )
+          .map((accountType) => ({
             label: accountType.name,
             value: accountType.id,
           }))}

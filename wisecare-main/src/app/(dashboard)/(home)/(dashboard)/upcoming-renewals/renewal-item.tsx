@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge'
 import { Tables } from '@/types/database.types'
 import { cn } from '@/utils/tailwind'
-import { formatDate, isAfter } from 'date-fns'
+import { formatDate, isAfter, isBefore, addMonths } from 'date-fns'
 import { CalendarDays } from 'lucide-react'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -13,7 +13,12 @@ interface RenewalItemProps {
 const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
   const getStatusFromExpirationDate = () => {
     const today = new Date()
-    if (data.expiration_date && isAfter(data.expiration_date, today)) {
+    
+    if (
+      data.expiration_date &&
+      isAfter(data.expiration_date, today) &&
+      isBefore(data.expiration_date, addMonths(today, 3))
+    ) {
       return 'upcoming'
     }
     return 'overdue'

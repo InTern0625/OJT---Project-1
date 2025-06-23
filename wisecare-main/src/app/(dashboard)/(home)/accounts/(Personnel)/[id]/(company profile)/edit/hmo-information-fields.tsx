@@ -30,7 +30,7 @@ const HmoInformationFields = () => {
   const { data: planTypes } = useQuery(getTypes(supabase, 'plan_types'))
 
   const maskedTotalPremiumPaidRef = useMaskito({ options: currencyOptions })
-  const maskedTotalUtilizationRef = useMaskito({ options: numberOptions })
+  const maskedTotalUtilizationRef = useMaskito({ options: currencyOptions })
   const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
 
   return (
