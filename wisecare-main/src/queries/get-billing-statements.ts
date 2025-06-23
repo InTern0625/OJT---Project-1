@@ -6,6 +6,14 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
     .select(
       `
     id,
+    account_id,
+      accounts (
+        id,
+        company_name,
+        account_type:account_types (
+          name
+        )
+      ),
     due_date,
     or_number,
     or_date,
