@@ -13,7 +13,7 @@ import dynamic from 'next/dynamic'
 import { Suspense, useState } from 'react'
 
 const AddAccountForm = dynamic(
-  () => import('@/app/(dashboard)/(home)/accounts/add-account-form'),
+  () => import('@/app/(dashboard)/(home)/accounts-corporate-sme/add-account-form'),
   { ssr: false },
 )
 

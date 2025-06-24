@@ -63,6 +63,10 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
       email_address_of_contact_person: '',
       special_benefits: '',
       special_benefits_files: [],
+      contract_proposal: '',
+      contract_proposal_files: [],
+      additional_benefits_text: '',
+      additional_benefits_files: [],
     },
   })
 
@@ -108,12 +112,24 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
     },
   )
 
-  const { mutateAsync: upload } = useUpload(supabase.storage.from('accounts'), {
+  const { mutateAsync: uploadSpecialBenefits } = useUpload(supabase.storage.from('accounts'), {
     buildFileName: ({ fileName }) => {
       const randomId = Math.random().toString(36).substring(2, 15)
       return `benefits/${randomId}-${fileName}`
     },
   })
+  const { mutateAsync: uploadContractProposal } = useUpload(supabase.storage.from('accounts'), {
+      buildFileName: ({ fileName }) => {
+        const randomId = Math.random().toString(36).substring(2, 15)
+        return `contract_proposal/${randomId}-${fileName}`
+      },
+    })
+    const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
+      buildFileName: ({ fileName }) => {
+        const randomId = Math.random().toString(36).substring(2, 15)
+        return `additional_benefits/${randomId}-${fileName}`
+      },
+    })
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
@@ -152,12 +168,26 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
         }
 
         // upload special benefits
-        const filesToUpload = data.special_benefits_files || []
-        const uploadResult = await upload({
-          files: filesToUpload,
+        const specialBenefitFilesToUpload = data.special_benefits_files || []
+        const uploadSpecialBenefitResult = await uploadSpecialBenefits({
+          files: specialBenefitFilesToUpload,
+        })
+        const contractProposalFilesUpload = data.contract_proposal_files || []
+        const uploadContractProposalResult = await uploadContractProposal({
+          files: contractProposalFilesUpload,
+        })
+        const additionalBenefitFilesUpload = data.additional_benefits_files || []
+        const uploadAdditionalBenefitsResult = await uploadAdditionalBenefits({
+          files: additionalBenefitFilesUpload,
         })
 
-        const specialBenefitsLink = uploadResult
+        const specialBenefitsLink = uploadSpecialBenefitResult
+          .map((result) => result.data?.path)
+          .filter(Boolean)
+        const contractProposalLink = uploadContractProposalResult
+          .map((result) => result.data?.path)
+          .filter(Boolean)
+        const additionalBenefitsLink = uploadAdditionalBenefitsResult
           .map((result) => result.data?.path)
           .filter(Boolean)
 
@@ -217,10 +247,15 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
             commision_rate: data.commision_rate
               ? parseFloat(data.commision_rate.replace('%', ''))
               : null,
-            additional_benefits: data.additional_benefits,
             special_benefits: data.special_benefits,
             special_benefits_files:
               isSpecialBenefitsFilesEnabled && specialBenefitsLink,
+            contract_proposal: data.contract_proposal,
+            contract_proposal_files:
+              isSpecialBenefitsFilesEnabled && contractProposalLink,
+            additional_benefits_text: data.special_benefits,
+            additional_benefits_files:
+              isSpecialBenefitsFilesEnabled && additionalBenefitsLink,
             name_of_signatory: data.name_of_signatory,
             designation_of_contact_person: data.designation_of_contact_person,
             email_address_of_contact_person:
@@ -236,7 +271,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
         ])
       })(e)
     },
-    [form, isSpecialBenefitsFilesEnabled, mutateAsync, supabase, upload],
+    [form, isSpecialBenefitsFilesEnabled, mutateAsync, supabase, uploadSpecialBenefits, uploadContractProposal, uploadAdditionalBenefits],
   )
 
   return (
@@ -262,7 +297,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
             {isPending || isSuccess ? (
               <Loader2 className="animate-spin" />
             ) : (
-              'Create Account'
+              'Create Accounts'
             )}
           </Button>
         </DialogFooter>

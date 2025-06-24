@@ -1,9 +1,9 @@
-import ComboBox from '@/app/(dashboard)/(home)/accounts/forms/combo-box'
-import DateInput from '@/app/(dashboard)/(home)/accounts/forms/date-input'
-import InputWithMask from '@/app/(dashboard)/(home)/accounts/forms/input-with-mask'
-import NumberInput from '@/app/(dashboard)/(home)/accounts/forms/number-input'
-import SelectInput from '@/app/(dashboard)/(home)/accounts/forms/select-input'
-import TextInput from '@/app/(dashboard)/(home)/accounts/forms/text-input'
+import ComboBox from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/combo-box'
+import DateInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/date-input'
+import InputWithMask from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/input-with-mask'
+import NumberInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/number-input'
+import SelectInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/select-input'
+import TextInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/text-input'
 import getAgents from '@/queries/get-agents'
 import getTypes from '@/queries/get-types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
@@ -12,7 +12,7 @@ import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 import accountsSchema from '../accounts-schema'
 import { createBrowserClient } from '@/utils/supabase-client'
-import FileInput from '@/app/(dashboard)/(home)/accounts/forms/file-input'
+import FileInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/file-input'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 
 interface Props {
@@ -191,9 +191,30 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <FileInput
           form={form}
           isLoading={isLoading}
+          label="Contract and Proposal"
+          name="contract_proposal_files"
+          placeholder="Enter contract and proposal"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
+        />
+      ) : (
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Contract and Proposal"
+          name="contract_proposal"
+          placeholder="Enter contract and proposal"
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          isLoading={isLoading}
           label="Special Benefits"
           name="special_benefits_files"
           placeholder="Enter special benefits"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
         />
       ) : (
         <TextInput
@@ -202,6 +223,26 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Special Benefits"
           name="special_benefits"
           placeholder="Enter special benefits"
+          
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          isLoading={isLoading}
+          label="Additional Benefits"
+          name="additional_benefits_files"
+          placeholder="Enter additional benefits"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
+        />
+      ) : (
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Additional Benefits"
+          name="additional_benefits_text"
+          placeholder="Enter additional benefits"
         />
       )}
 
@@ -291,7 +332,11 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           isLoading={isLoading}
           label="Account Type"
           name="account_type_id"
-          options={accountTypes?.map((accountType) => ({
+          options={accountTypes
+          ?.filter((accountType) => 
+            accountType.name === 'Corporate' || accountType.name === 'SME'
+          )
+          .map((accountType) => ({
             label: accountType.name,
             value: accountType.id,
           }))}

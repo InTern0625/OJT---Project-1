@@ -12,7 +12,7 @@ import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 import accountsSchema from '../accounts-schema'
 import { createBrowserClient } from '@/utils/supabase-client'
-import FileInput from '@/app/(dashboard)/(home)/accounts/forms/file-input'
+import FileInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/file-input'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 
 interface Props {
@@ -32,7 +32,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const { data: modeOfPayments } = useQuery(
     getTypes(supabase, 'mode_of_payments'),
   )
-
   return (
     <div className="grid gap-4 py-4">
       <h3 className="text-md font-semibold">Client Information</h3>
@@ -186,9 +185,30 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <FileInput
           form={form}
           isLoading={isLoading}
+          label="Contract and Proposal"
+          name="contract_proposal_files"
+          placeholder="Enter contract and proposal"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
+        />
+      ) : (
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Contract and Proposal"
+          name="contract_proposal"
+          placeholder="Enter contract and proposal"
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          isLoading={isLoading}
           label="Special Benefits"
           name="special_benefits_files"
           placeholder="Enter special benefits"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
         />
       ) : (
         <TextInput
@@ -197,6 +217,26 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Special Benefits"
           name="special_benefits"
           placeholder="Enter special benefits"
+          
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          isLoading={isLoading}
+          label="Additional Benefits"
+          name="additional_benefits_files"
+          placeholder="Enter additional benefits"
+          maxFiles={5}
+          maxFileSize={25 * 1024 * 1024}
+        />
+      ) : (
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Additional Benefits"
+          name="additional_benefits_text"
+          placeholder="Enter additional benefits"
         />
       )}
 

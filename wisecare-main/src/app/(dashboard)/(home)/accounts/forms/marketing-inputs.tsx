@@ -35,7 +35,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
 
   return (
     <div className="grid gap-4 py-4">
-      <h3 className="text-md font-semibold">Company Information d2</h3>
+      <h3 className="text-md font-semibold">Company Information Original</h3>
       <div className="grid gap-4 sm:grid-flow-col sm:grid-rows-5">
         <TextInput
           form={form}

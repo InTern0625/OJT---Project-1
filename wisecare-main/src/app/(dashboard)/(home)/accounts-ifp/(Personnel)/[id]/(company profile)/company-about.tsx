@@ -1,12 +1,12 @@
 'use client'
 
-import CompanyAccountInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-account-information'
-import CompanyCancelButton from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-cancel-button'
-import CompanyContractInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-contract-information'
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-HMO-information'
-import CompanyInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-information'
-import accountsSchema from '@/app/(dashboard)/(home)/accounts/accounts-schema'
+import CompanyAccountInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-account-information'
+import CompanyCancelButton from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-cancel-button'
+import CompanyContractInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-contract-information'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
+import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-HMO-information'
+import CompanyInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-information'
+import accountsSchema from '@/app/(dashboard)/(home)/accounts-ifp/accounts-schema'
 import currencyOptions from '@/components/maskito/currency-options'
 import numberOptions from '@/components/maskito/number-options'
 import percentageOptions from '@/components/maskito/percentage-options'
@@ -174,10 +174,23 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
     },
   )
 
-  const { mutateAsync: upload } = useUpload(supabase.storage.from('accounts'), {
+  const { mutateAsync: uploadSpecialBenefits } = useUpload(supabase.storage.from('accounts'), {
     buildFileName: ({ fileName }) => {
       const randomId = Math.random().toString(36).substring(2, 15)
       return `benefits/${randomId}-${fileName}`
+    },
+  })
+  const { mutateAsync: uploadContractProposal } = useUpload(supabase.storage.from('accounts'), {
+    buildFileName: ({ fileName }) => {
+      const randomId = Math.random().toString(36).substring(2, 15)
+      return `contract_proposal/${randomId}-${fileName}`
+    },
+  })
+  const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
+    buildFileName: ({ fileName }) => {
+      const randomId = Math.random().toString(36).substring(2, 15)
+      console.log("uploaded3")
+      return `additional_benefits/${randomId}-${fileName}`
     },
   })
 
@@ -201,19 +214,57 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const specialBenefitsFiles = data.special_benefits_files
           ? Array.from(data.special_benefits_files)
           : []
-
+        const contractProposalFiles = data.contract_proposal_files
+          ? Array.from(data.contract_proposal_files)
+          : []
+        const additionalBenefitsFiles = data.additional_benefits_files
+          ? Array.from(data.additional_benefits_files)
+          : []
+          
         // Upload special benefits files only if the feature is enabled and there are files
         let specialBenefitsLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
           data.special_benefits_files.length > 0
         ) {
-          const uploadResult = await upload({
+          const uploadResult = await uploadSpecialBenefits({
             files: specialBenefitsFiles,
           })
 
           if (uploadResult.length > 0) {
             specialBenefitsLink = uploadResult
+              .map((result) => result.data?.path)
+              .filter((path): path is string => typeof path === 'string')
+          }
+        }
+
+        let contractProposalLink: string[] = []
+        if (
+          isSpecialBenefitsFilesEnabled &&
+          data.contract_proposal_files.length > 0
+        ) {
+          const uploadResult = await uploadContractProposal({
+            files: contractProposalFiles,
+          })
+
+          if (uploadResult.length > 0) {
+            contractProposalLink = uploadResult
+              .map((result) => result.data?.path)
+              .filter((path): path is string => typeof path === 'string')
+          }
+        }
+
+        let additionalBenefitsLink: string[] = []
+        if (
+          isSpecialBenefitsFilesEnabled &&
+          data.additional_benefits_files.length > 0
+        ) {
+          const uploadResult = await uploadAdditionalBenefits({
+            files: additionalBenefitsFiles,
+          })
+
+          if (uploadResult.length > 0) {
+            additionalBenefitsLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
           }
@@ -277,6 +328,12 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             special_benefits: data.special_benefits,
             special_benefits_files:
               isSpecialBenefitsFilesEnabled && specialBenefitsLink,
+            contract_proposal: data.contract_proposal,
+            contract_proposal_files:
+              isSpecialBenefitsFilesEnabled && contractProposalLink,
+            additional_benefits_text: data.special_benefits,
+            additional_benefits_files:
+              isSpecialBenefitsFilesEnabled && additionalBenefitsLink,
             annual_physical_examination_date:
               data.annual_physical_examination_date
                 ? normalizeToUTC(
@@ -304,7 +361,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       isSpecialBenefitsFilesEnabled,
       mutateAsync,
       supabase.auth,
-      upload,
+      uploadSpecialBenefits,
+      uploadContractProposal,
+      uploadAdditionalBenefits
     ],
   )
 

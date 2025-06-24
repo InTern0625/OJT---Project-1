@@ -1,4 +1,4 @@
-import accountsSchema from '@/app/(dashboard)/(home)/accounts/accounts-schema'
+import accountsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema'
 import { Button } from '@/components/ui/button'
 import {
   Command,
