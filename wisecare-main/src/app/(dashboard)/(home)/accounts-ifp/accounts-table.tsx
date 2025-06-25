@@ -9,14 +9,16 @@ import { createBrowserClient } from '@/utils/supabase-client'
 const AccountsTable = () => {
   const supabase = createBrowserClient()
   const { data } = useQuery(getAccounts(supabase))
-  const filteredData = (data || []).filter(
-  (item: any) =>
-    item.account_type?.name === 'Individual' ||
-    item.account_type?.name === 'Family'
-  ).map((item: any) => ({
-    ...item,
-    account_type_id: item.account_type?.id ?? null,
-  }))
+  const filteredData = (data || [])
+    .filter(
+      (item: any) =>
+        item.account_type?.name === 'Individual' ||
+        item.account_type?.name === 'Family',
+    )
+    .map((item: any) => ({
+      ...item,
+      account_type_id: item.account_type?.id ?? null,
+    }))
   return <DataTable columns={accountsColumns} data={filteredData || []} />
 }
 export default AccountsTable

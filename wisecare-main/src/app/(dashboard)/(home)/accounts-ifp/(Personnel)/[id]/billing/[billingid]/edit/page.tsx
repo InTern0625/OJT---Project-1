@@ -1,4 +1,4 @@
-import EditBillingForm from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form'
+import EditBillingForm from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft } from 'lucide-react'

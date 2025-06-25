@@ -267,7 +267,7 @@ const BillingStatementModal = <TData,>({
               />
               <FormField
                 control={form.control}
-                name="billing_date" 
+                name="billing_date"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
                     <FormLabel className="text-right">Billing Date</FormLabel>

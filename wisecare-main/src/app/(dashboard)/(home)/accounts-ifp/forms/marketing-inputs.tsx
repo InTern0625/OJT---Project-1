@@ -104,8 +104,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="designation_of_contact_person"
           placeholder="Enter designation of contact person"
         />
-        
-        
       </div>
 
       <h3 className="text-md mt-3 font-semibold">HMO Information</h3>
@@ -287,13 +285,15 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Account Type"
           name="account_type_id"
           options={accountTypes
-          ?.filter((accountType) => 
-            accountType.name === 'Individual' || accountType.name === 'Family'
-          )
-          .map((accountType) => ({
-            label: accountType.name,
-            value: accountType.id,
-          }))}
+            ?.filter(
+              (accountType) =>
+                accountType.name === 'Individual' ||
+                accountType.name === 'Family',
+            )
+            .map((accountType) => ({
+              label: accountType.name,
+              value: accountType.id,
+            }))}
         />
         <InputWithMask
           form={form}

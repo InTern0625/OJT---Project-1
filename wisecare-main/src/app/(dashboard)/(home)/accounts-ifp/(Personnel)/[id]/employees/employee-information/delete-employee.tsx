@@ -1,5 +1,5 @@
 'use client'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import useConfirmationStore from '@/components/confirmation-dialog/confirmationStore'
 import { useToast } from '@/components/ui/use-toast'
 import { useUpdateMutation } from '@supabase-cache-helpers/postgrest-react-query'
@@ -69,9 +69,9 @@ const DeleteEmployee: FC<DeleteEmployeeProps<any>> = ({
           openConfirmation({
             title: 'Are you sure?',
             description:
-              'This action CANNOT be undone. This will permanently delete the employee.',
+              'This action CANNOT be undone. This will permanently delete the member.',
             cancelLabel: 'Cancel',
-            actionLabel: 'I understand, delete this employee',
+            actionLabel: 'I understand, delete this member',
             confirmationButtonVariant: 'destructive',
             onAction: handleDelete,
             onCancel: () => {},

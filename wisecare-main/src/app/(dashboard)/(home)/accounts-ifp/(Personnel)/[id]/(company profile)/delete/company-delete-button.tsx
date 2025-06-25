@@ -1,6 +1,6 @@
 'use client'
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import { AlertDialog, AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
@@ -10,7 +10,7 @@ import { FC, Suspense, useState } from 'react'
 const CompanyDeleteForm = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/delete/company-delete-form'
+      '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/delete/company-delete-form'
     ),
   { ssr: false },
 )
@@ -18,7 +18,7 @@ const CompanyDeleteForm = dynamic(
 const EditPendingRequest = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/edit-pending-request'
+      '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit-pending-request'
     ),
   { ssr: false },
 )

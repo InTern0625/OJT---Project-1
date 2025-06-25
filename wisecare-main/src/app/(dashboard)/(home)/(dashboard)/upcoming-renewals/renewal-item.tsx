@@ -13,7 +13,7 @@ interface RenewalItemProps {
 const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
   const getStatusFromExpirationDate = () => {
     const today = new Date()
-    
+
     if (
       data.expiration_date &&
       isAfter(data.expiration_date, today) &&

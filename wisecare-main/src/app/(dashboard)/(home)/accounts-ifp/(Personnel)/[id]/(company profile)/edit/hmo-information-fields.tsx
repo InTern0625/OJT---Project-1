@@ -1,4 +1,4 @@
-import companyEditsSchema from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edits-schema'
+import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edits-schema'
 import currencyOptions from '@/components/maskito/currency-options'
 import numberOptions from '@/components/maskito/number-options'
 import {
@@ -200,28 +200,28 @@ const HmoInformationFields = () => {
         )}
       />
       <FormField
-  control={form.control}
-  name="total_utilization"
-  render={({ field }) => (
-    <FormItem>
-      <FormControl>
-        <div className="pt-4">
-          <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-            Total Utilization:
-            <Input
-              className="w-full"
-              {...field}
-              value={field.value ?? ''}
-              ref={maskedTotalUtilizationRef}
-              onInput={field.onChange}
-            />
-          </div>
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+        control={form.control}
+        name="total_utilization"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <div className="pt-4">
+                <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
+                  Total Utilization:
+                  <Input
+                    className="w-full"
+                    {...field}
+                    value={field.value ?? ''}
+                    ref={maskedTotalUtilizationRef}
+                    onInput={field.onChange}
+                  />
+                </div>
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
       <FormField
         control={form.control}
         name="total_premium_paid"

@@ -1,5 +1,5 @@
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-information-item'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
+import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-information-item'
 import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 import getAccountById from '@/queries/get-account-by-id'
@@ -12,7 +12,7 @@ import { FC, Suspense, useEffect, useState } from 'react'
 const HmoInformationFields = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
+      '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
     ),
   { ssr: false },
 )

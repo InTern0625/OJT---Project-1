@@ -1,6 +1,6 @@
 'use server'
 
-import BillingInformation from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/[billingid]/billing-information'
+import BillingInformation from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/billing-information'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft, Pencil } from 'lucide-react'

@@ -1,12 +1,9 @@
 'use client'
 
-import EmployeeActionsDropdown from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-actions-dropdown'
-import EmployeeMobileTable from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-mobile-table'
-import employeesColumns from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-columns'
-import EmployeesTableSearch from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-table-search'
-import EmployeeExportRequests from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-export-requests'
-import ImportEmployeesButton from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/import/import-employees-button'
-import MemberType from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/member-type'
+import EmployeeActionsDropdown from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-actions-dropdown'
+import EmployeeMobileTable from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-mobile-table'
+import employeesColumns from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-columns'
+import EmployeesTableSearch from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-table-search'
 import TablePagination from '@/components/table-pagination'
 import {
   Table,
@@ -110,15 +107,10 @@ const EmployeesDataTable = ({ companyId, role }: DataTableProps) => {
       <div className="flex flex-row items-center justify-between gap-2 py-4">
         <div className="flex w-full flex-col items-start lg:flex-row lg:items-center lg:gap-10">
           <EmployeesTableSearch table={table} />
-          <MemberType companyId={companyId} />
         </div>
         <div className="flex items-center space-x-1">
-          {isAfterSalesAndUnderWriting && <ImportEmployeesButton />}
           <EmployeeActionsDropdown companyId={companyId} />
         </div>
-      </div>
-      <div className="flex flex-row items-center justify-end">
-        <EmployeeExportRequests />
       </div>
 
       {/* Desktop Table */}

@@ -1,4 +1,4 @@
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import useConfirmationStore from '@/components/confirmation-dialog/confirmationStore'
 import { toast } from '@/components/ui/use-toast'
 import getEmployeeByCompanyId from '@/queries/get-employee-by-company-id'
@@ -71,10 +71,10 @@ const DeleteAllEmployees: FC<DeleteAllEmployeesProps> = ({ button }) => {
     <div
       onClick={() => {
         openConfirmation({
-          title: 'Delete All Employees?',
+          title: 'Delete All Members?',
           description:
-            'Are you sure you want to delete all employees? This action CANNOT be undone.',
-          actionLabel: 'I understand, delete all employees',
+            'Are you sure you want to delete all members? This action CANNOT be undone.',
+          actionLabel: 'I understand, delete all members',
           cancelLabel: 'Cancel',
           onAction: handleDelete,
           onCancel: () => {},
