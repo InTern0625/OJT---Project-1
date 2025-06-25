@@ -155,31 +155,26 @@ const FileInput = ({
     })
   }, [form, name, maxFiles])
 
-  const handleRemoveExisting = async (index: number, filePath: string) => {
-    try {
-      const { error: deleteError } = await supabase.storage
-        .from('accounts')
-        .remove([filePath]);
+  const handleRemoveExisting = useCallback(async (index: number, filePath: string) => {
+    const updatedFiles = [...localExistingFiles]
+    updatedFiles.splice(index, 1)
 
-      if (deleteError) throw deleteError;
+    form.setValue(name, updatedFiles)
+    setLocalExistingFiles(updatedFiles)
 
-      const { error: updateError } = await supabase
-        .from('accounts')
-        .update({ 
-          [name]: localExistingFiles.filter((_, i) => i !== index) 
-        })
-        .eq('id', accountId);
+    const { error } = await supabase.storage
+      .from('accounts')
+      .remove([filePath])
 
-      if (updateError) throw updateError;
-
-      setLocalExistingFiles(prev => prev.filter((_, i) => i !== index));
-      form.setValue(name, localExistingFiles.filter((_, i) => i !== index));
-      
-    } catch (error) {
-      console.error('Deletion failed:', error);
-      // Show error to user
+    if (error) {
+      console.error('Error deleting file:', error)
+      return
     }
-  };
+
+    const updatedUrls = [...existingFileUrls]
+    updatedUrls.splice(index, 1)
+    setExistingFileUrls(updatedUrls)
+  }, [form, name, localExistingFiles, existingFileUrls, supabase])
 
 
   return (
