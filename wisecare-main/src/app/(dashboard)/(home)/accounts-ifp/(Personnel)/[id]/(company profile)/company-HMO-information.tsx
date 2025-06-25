@@ -1,6 +1,6 @@
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-information-item'
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
+import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-information-item'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 import getAccountById from '@/queries/get-account-by-id'
 import { createBrowserClient } from '@/utils/supabase-client'
@@ -12,7 +12,7 @@ import { FC, Suspense, useEffect, useState } from 'react'
 const HmoInformationFields = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
+      '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
     ),
   { ssr: false },
 )
@@ -67,7 +67,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
     <>
       {editMode ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <HmoInformationFields />
+          <HmoInformationFields id={id}/>
         </Suspense>
       ) : (
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2">
@@ -123,7 +123,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
           />
           {isSpecialBenefitsFilesEnabled && (
             <CompanyInformationItem
-              label={'Special Benefits'}
+              label={'Special Benefitsss'}
               value={
                 signedUrls.length > 0
                   ? signedUrls.map((url, index) => (

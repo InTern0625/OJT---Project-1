@@ -1,5 +1,5 @@
 'use client'
-import { DeleteCompanySchema } from '@/app/(dashboard)/(home)/accounts/(Personnel)/delete-company-schema'
+import { DeleteCompanySchema } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/delete-company-schema'
 import {
   AlertDialogCancel,
   AlertDialogContent,

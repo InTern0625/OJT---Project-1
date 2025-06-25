@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { Button } from '@/components/ui/button'
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
 
 const CompanyCancelButton = () => {
   const { setEditMode } = useCompanyEditContext()

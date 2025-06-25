@@ -43,7 +43,9 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       email_address_of_contact_person, 
       created_at, 
       updated_at,
-      special_benefits_files
+      special_benefits_files,
+      contract_proposal_files,
+      additional_benefits_files
       `,
     )
     .eq('id', id)

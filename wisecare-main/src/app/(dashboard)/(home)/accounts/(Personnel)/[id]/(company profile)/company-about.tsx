@@ -320,7 +320,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               <CompanyContractInformation id={companyId} />
             </div>
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
-              <span className="text-xl font-semibold">Account Information</span>
+              <span className="text-xl font-semibold">Account Information Original</span>
               <CompanyAccountInformation id={companyId} />
             </div>
           </div>

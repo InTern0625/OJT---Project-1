@@ -69,7 +69,7 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
             value={account?.email_address_of_contact_person?.toString()}
           />
           <CompanyInformationItem
-            label="Contact Number"
+            label="Contact Numbersss"
             value={account?.contact_number?.toString()}
           />
           {/* end of group 3 */}

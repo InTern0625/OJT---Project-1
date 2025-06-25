@@ -189,7 +189,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
     buildFileName: ({ fileName }) => {
       const randomId = Math.random().toString(36).substring(2, 15)
-      console.log("uploaded3")
       return `additional_benefits/${randomId}-${fileName}`
     },
   })
@@ -200,7 +199,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const {
           data: { user },
         } = await supabase.auth.getUser()
-
         if (!user) {
           toast({
             title: 'Something went wrong',
@@ -225,7 +223,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let specialBenefitsLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
-          data.special_benefits_files.length > 0
+          (data.special_benefits_files ?? []).length > 0
         ) {
           const uploadResult = await uploadSpecialBenefits({
             files: specialBenefitsFiles,
@@ -241,7 +239,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let contractProposalLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
-          data.contract_proposal_files.length > 0
+          (data.contract_proposal_files ?? []).length > 0
         ) {
           const uploadResult = await uploadContractProposal({
             files: contractProposalFiles,
@@ -257,7 +255,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let additionalBenefitsLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
-          data.additional_benefits_files.length > 0
+          (data.additional_benefits_files ?? []).length > 0
         ) {
           const uploadResult = await uploadAdditionalBenefits({
             files: additionalBenefitsFiles,

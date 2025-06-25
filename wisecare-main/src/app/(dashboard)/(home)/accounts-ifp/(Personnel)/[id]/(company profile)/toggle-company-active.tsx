@@ -1,5 +1,5 @@
 'use client'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import { Switch } from '@/components/ui/switch'
 import {
   Tooltip,

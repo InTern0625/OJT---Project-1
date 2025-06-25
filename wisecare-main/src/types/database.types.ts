@@ -120,6 +120,8 @@ export type Database = {
           signatory_designation: string | null
           special_benefits: string | null
           special_benefits_files: string[] | null
+          contract_proposal_files: string[] | null
+          additional_benefits_files: string[] | null
           summary_of_benefits: string | null
           total_premium_paid: number | null
           total_utilization: number | null
@@ -161,6 +163,8 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal_files?: string[] | null
+          additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
           total_utilization?: number | null
@@ -202,6 +206,8 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal_files?: string[] | null
+          additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
           total_utilization?: number | null
@@ -645,6 +651,8 @@ export type Database = {
           signatory_designation: string | null
           special_benefits: string | null
           special_benefits_files: string[] | null
+          contract_proposal_files: string[] | null
+          additional_benefits_files: string[] | null
           summary_of_benefits: string | null
           total_premium_paid: number | null
           total_utilization: number | null
@@ -690,6 +698,8 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal_files?: string[] | null
+          additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
           total_utilization?: number | null
@@ -735,6 +745,8 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal_files?: string[] | null
+          additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
           total_utilization?: number | null

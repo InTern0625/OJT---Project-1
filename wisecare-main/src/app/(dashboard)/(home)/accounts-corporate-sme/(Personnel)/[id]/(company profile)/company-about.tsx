@@ -189,7 +189,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
     buildFileName: ({ fileName }) => {
       const randomId = Math.random().toString(36).substring(2, 15)
-      console.log("uploaded3")
       return `additional_benefits/${randomId}-${fileName}`
     },
   })
