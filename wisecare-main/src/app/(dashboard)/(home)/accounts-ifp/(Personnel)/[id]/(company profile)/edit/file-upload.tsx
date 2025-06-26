@@ -22,7 +22,8 @@ interface FileInputProps {
   maxFiles?: number
   maxFileSize?: number
   accept?: string
-  existingFiles?: string[] // Array of file paths from the database
+  existingFiles?: string[]
+  id?: string
 }
 
 const FileInput = ({
@@ -31,32 +32,34 @@ const FileInput = ({
   label,
   placeholder = 'Click to upload or drag and drop',
   maxFiles,
-  maxFileSize = 5 * 1024 * 1024, // Default 5MB
+  maxFileSize = 25 * 1024 * 1024,
   accept,
   existingFiles = [],
+  id
 }: FileInputProps) => {
   const [files, setFiles] = useState<File[]>([])
   const [dragActive, setDragActive] = useState(false)
   const [existingFileUrls, setExistingFileUrls] = useState<string[]>([])
   const [errorOccurred, setErrorOccurred] = useState(false)
+  const [hasMounted, setHasMounted] = useState(false)
   const supabase = createBrowserClient()
-  const [localExistingFiles, setLocalExistingFiles] = useState(existingFiles)
+
   useEffect(() => {
-    setLocalExistingFiles(existingFiles)
-  }, [existingFiles])
-  // Fetch URLs for existing files
+    setHasMounted(true)
+  }, [])
+
   useEffect(() => {
-  if (errorOccurred || localExistingFiles.length === 0) return
+    if (!hasMounted || errorOccurred || existingFiles.length === 0) return
 
     const getSignedUrls = async () => {
       const signedUrls = await Promise.all(
-        localExistingFiles.map(async (filePath) => {
+        existingFiles.map(async (filePath) => {
           const { data, error } = await supabase.storage
             .from('accounts')
             .createSignedUrl(filePath.trim(), 3600)
           if (error) {
             console.error('Error creating signed URL:', error)
-            setErrorOccurred(true)
+            setTimeout(() => setErrorOccurred(true), 0)
             return null
           }
           return data?.signedUrl
@@ -66,8 +69,7 @@ const FileInput = ({
     }
 
     getSignedUrls()
-  }, [localExistingFiles, supabase, errorOccurred])
-
+  }, [hasMounted, existingFiles, supabase, errorOccurred])
 
   const validateFiles = useCallback((newFiles: File[]) => {
     if (maxFileSize) {
@@ -84,10 +86,38 @@ const FileInput = ({
   }, [form, name, maxFileSize])
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = Array.from(e.target.files || [])
-    
+
+    const selectedFiles = Array.from(e.target.files || []);
+    if (!validateFiles(selectedFiles)) return;
+
+    setFiles(prev => {
+      // Combine previous files with new files
+      const updated = [...prev, ...selectedFiles];
+      
+      if (maxFiles && updated.length > maxFiles) {
+        form.setError(name, {
+          type: 'max',
+          message: `Maximum ${maxFiles} files allowed`,
+        });
+        return prev.slice(0, maxFiles); // Keep only up to maxFiles
+      }
+      
+      form.clearErrors(name);
+      form.setValue(name, updated);
+      return updated;
+    });
+
+    // Reset the input value to allow selecting the same files again
+    e.target.value = '';
+  }, [form, name, maxFiles, validateFiles]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setDragActive(false)
+    const selectedFiles = Array.from(e.dataTransfer.files || [])
     if (!validateFiles(selectedFiles)) return
-    
+
     setFiles(prev => {
       const updated = [...prev, ...selectedFiles]
       if (maxFiles && updated.length > maxFiles) {
@@ -101,31 +131,6 @@ const FileInput = ({
       form.setValue(name, updated)
       return updated
     })
-  }, [form, name, maxFiles, validateFiles])
-
-  const handleDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      const selectedFiles = Array.from(e.dataTransfer.files)
-      
-      if (!validateFiles(selectedFiles)) return
-      
-      setFiles(prev => {
-        const updated = [...prev, ...selectedFiles]
-        if (maxFiles && updated.length > maxFiles) {
-          form.setError(name, {
-            type: 'max',
-            message: `Maximum ${maxFiles} files allowed`,
-          })
-          return prev
-        }
-        form.clearErrors(name)
-        form.setValue(name, updated)
-        return updated
-      })
-    }
   }, [form, name, maxFiles, validateFiles])
 
   const formatFileSize = (bytes: number) => {
@@ -156,16 +161,11 @@ const FileInput = ({
   }, [form, name, maxFiles])
 
   const handleRemoveExisting = useCallback(async (index: number, filePath: string) => {
-    const updatedFiles = [...localExistingFiles]
+    const updatedFiles = [...existingFiles]
     updatedFiles.splice(index, 1)
-
     form.setValue(name, updatedFiles)
-    setLocalExistingFiles(updatedFiles)
 
-    const { error } = await supabase.storage
-      .from('accounts')
-      .remove([filePath])
-
+    const { error } = await supabase.storage.from('accounts').remove([filePath])
     if (error) {
       console.error('Error deleting file:', error)
       return
@@ -174,8 +174,12 @@ const FileInput = ({
     const updatedUrls = [...existingFileUrls]
     updatedUrls.splice(index, 1)
     setExistingFileUrls(updatedUrls)
-  }, [form, name, localExistingFiles, existingFileUrls, supabase])
+  }, [form, name, existingFiles, existingFileUrls, supabase])
 
+  const extractFileName = (url: string) => {
+    const match = url.match(/-([^-\/?]+)(\?.*)?$/)
+    return match ? match[1] : 'Unknown'
+  }
 
   return (
     <FormField
@@ -234,7 +238,6 @@ const FileInput = ({
                 <div className="space-y-2">
                   <h4 className="text-sm font-medium">Selected Files</h4>
                   <div className="space-y-2">
-                    {/* Existing files from account */}
                     {existingFileUrls.map((url, index) => (
                       <div
                         key={`existing-${index}`}
@@ -248,7 +251,7 @@ const FileInput = ({
                             rel="noopener noreferrer"
                             className="truncate font-medium hover:underline"
                           >
-                            Document {index + 1}
+                            {extractFileName(url)}
                           </a>
                         </div>
                         <Button
@@ -256,14 +259,12 @@ const FileInput = ({
                           variant="ghost"
                           size="sm"
                           className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                          onClick={() => handleRemoveExisting(index, localExistingFiles[index])}
+                          onClick={() => handleRemoveExisting(index, existingFiles[index])}
                         >
                           <X size={16} />
                         </Button>
                       </div>
                     ))}
-
-                    {/* Newly uploaded files */}
                     {files.map((file, index) => (
                       <div
                         key={`new-${file.name}-${index}`}

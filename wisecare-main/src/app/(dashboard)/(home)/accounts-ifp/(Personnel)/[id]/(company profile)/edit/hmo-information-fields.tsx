@@ -250,23 +250,6 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="additional_benefits"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Additional Benefits:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
       {isAccountBenefitUploadEnabled ? (
         <FileInput
           form={form}
@@ -275,6 +258,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           maxFiles={5}
           maxFileSize={25 * 1024 * 1024} 
           existingFiles={account?.contract_proposal_files || []}
+          id={id}
         />
       ) : (
         <FormField
@@ -303,6 +287,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           maxFiles={5}
           maxFileSize={25 * 1024 * 1024} 
           existingFiles={account?.special_benefits_files || []}
+          id={id}
         />
       ) : (
         <FormField
@@ -331,6 +316,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           maxFiles={5}
           maxFileSize={25 * 1024 * 1024} 
           existingFiles={account?.additional_benefits_files || []}
+          id={id}
         />
       ) : (
         <FormField

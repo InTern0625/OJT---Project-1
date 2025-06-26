@@ -207,64 +207,65 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
           return
         }
+        // Get existing files
+        const existingSpecialBenefits = account?.special_benefits_files || [];
+        const existingContractProposals = account?.contract_proposal_files || [];
+        const existingAdditionalBenefits = account?.additional_benefits_files || [];
 
-        // Handle file input
+        // Handle file inputs
         const specialBenefitsFiles = data.special_benefits_files
           ? Array.from(data.special_benefits_files)
-          : []
+          : [];
         const contractProposalFiles = data.contract_proposal_files
           ? Array.from(data.contract_proposal_files)
-          : []
+          : [];
         const additionalBenefitsFiles = data.additional_benefits_files
           ? Array.from(data.additional_benefits_files)
-          : []
-          
-        // Upload special benefits files only if the feature is enabled and there are files
-        let specialBenefitsLink: string[] = []
-        if (
-          isSpecialBenefitsFilesEnabled &&
-          (data.special_benefits_files ?? []).length > 0
-        ) {
+          : [];
+
+        // Upload new files and combine with existing
+        let specialBenefitsLink: string[] = [...existingSpecialBenefits];
+        if (isSpecialBenefitsFilesEnabled && specialBenefitsFiles.length > 0) {
           const uploadResult = await uploadSpecialBenefits({
             files: specialBenefitsFiles,
-          })
-
+          });
           if (uploadResult.length > 0) {
-            specialBenefitsLink = uploadResult
-              .map((result) => result.data?.path)
-              .filter((path): path is string => typeof path === 'string')
+            specialBenefitsLink = [
+              ...specialBenefitsLink,
+              ...uploadResult
+                .map((result) => result.data?.path)
+                .filter((path): path is string => typeof path === 'string')
+            ];
           }
         }
 
-        let contractProposalLink: string[] = []
-        if (
-          isSpecialBenefitsFilesEnabled &&
-          (data.contract_proposal_files ?? []).length > 0
-        ) {
+        let contractProposalLink: string[] = [...existingContractProposals];
+        if (isSpecialBenefitsFilesEnabled && contractProposalFiles.length > 0) {
           const uploadResult = await uploadContractProposal({
             files: contractProposalFiles,
-          })
-
+          });
           if (uploadResult.length > 0) {
-            contractProposalLink = uploadResult
-              .map((result) => result.data?.path)
-              .filter((path): path is string => typeof path === 'string')
+            contractProposalLink = [
+              ...contractProposalLink,
+              ...uploadResult
+                .map((result) => result.data?.path)
+                .filter((path): path is string => typeof path === 'string')
+            ];
           }
         }
 
-        let additionalBenefitsLink: string[] = []
-        if (
-          isSpecialBenefitsFilesEnabled &&
-          (data.additional_benefits_files ?? []).length > 0
-        ) {
+        let additionalBenefitsLink: string[] = [...existingAdditionalBenefits];
+        if (isSpecialBenefitsFilesEnabled && additionalBenefitsFiles.length > 0) {
           const uploadResult = await uploadAdditionalBenefits({
             files: additionalBenefitsFiles,
-          })
-
+          });
           if (uploadResult.length > 0) {
-            additionalBenefitsLink = uploadResult
-              .map((result) => result.data?.path)
-              .filter((path): path is string => typeof path === 'string')
+            additionalBenefitsLink = [
+              ...additionalBenefitsLink,
+              ...uploadResult
+                .map((result) => result.data?.path)
+                .filter((path): path is string => typeof path === 'string')
+            ];
           }
         }
 
@@ -361,7 +362,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       supabase.auth,
       uploadSpecialBenefits,
       uploadContractProposal,
-      uploadAdditionalBenefits
+      uploadAdditionalBenefits,
+      account?.special_benefits_files,
+      account?.additional_benefits_files,
+      account?.contract_proposal_files
     ],
   )
 
