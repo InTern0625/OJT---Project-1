@@ -10,14 +10,16 @@ const PendingTable = () => {
   const supabase = createBrowserClient()
 
   const { data } = useQuery(getBillingStatements(supabase))
-  const filteredData = (data || []).filter(
-  (item: any) =>
-    item.accounts.account_type?.name === 'SME' ||
-    item.accounts.account_type?.name === 'Corporate'
-  ).map((item: any) => ({
-    ...item,
-    account_type_id: item.account_type?.id ?? null,
-  }))
-  return <DataTable columns={pendingColumns} data={(filteredData) || []} />
+  const filteredData = (data || [])
+    .filter(
+      (item: any) =>
+        item.accounts.account_type?.name === 'SME' ||
+        item.accounts.account_type?.name === 'Corporate',
+    )
+    .map((item: any) => ({
+      ...item,
+      account_type_id: item.account_type?.id ?? null,
+    }))
+  return <DataTable columns={pendingColumns} data={filteredData || []} />
 }
 export default PendingTable

@@ -1,8 +1,8 @@
 'use client'
 
-import BillingMobileTable from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/billing-mobile-table'
-import BillingStatementsColumns from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/billing-statements-columns'
-import TotalSelected from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/total-selected'
+import BillingMobileTable from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-mobile-table'
+import BillingStatementsColumns from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-statements-columns'
+import TotalSelected from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/total-selected'
 import TablePagination from '@/components/table-pagination'
 import {
   Table,

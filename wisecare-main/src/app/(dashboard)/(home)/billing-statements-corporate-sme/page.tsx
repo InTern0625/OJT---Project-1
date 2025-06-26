@@ -26,7 +26,7 @@ const BillingStatementsPage = async () => {
   await prefetchQuery(queryClient, getBillingStatements(supabase))
 
   await pageProtect(['finance', 'admin'])
-  
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <BillingProvider>

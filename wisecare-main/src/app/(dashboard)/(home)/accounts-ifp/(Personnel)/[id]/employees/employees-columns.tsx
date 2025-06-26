@@ -1,6 +1,6 @@
-import DeleteEmployee from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-information/delete-employee'
-import EmployeeDetails from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-information/employee-details'
-import EmployeeFormModal from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-information/employee-form-modal'
+import DeleteEmployee from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/delete-employee'
+import EmployeeDetails from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/employee-details'
+import EmployeeFormModal from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/employee-form-modal'
 import TableHeader from '@/components/table-header'
 import { Button } from '@/components/ui/button'
 import {

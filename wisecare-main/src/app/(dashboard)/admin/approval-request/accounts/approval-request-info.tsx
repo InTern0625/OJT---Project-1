@@ -399,7 +399,9 @@ const ApprovalRequestInfo = () => {
                 <ApprovalInformationItem
                   label={'Special Benefits'}
                   value={selectedData?.special_benefits_files?.map(
-                    (benefit) => <span key={benefit}>{benefit}</span>,
+                    (benefit) => (
+                      <span key={benefit}>{benefit}</span>
+                    ),
                   )}
                   oldValue={(oldData as any)?.special_benefits_files}
                 />

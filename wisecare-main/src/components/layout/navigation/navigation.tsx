@@ -14,7 +14,17 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { BookType, FileText, ListTodo, Minus, Plus, Users, User, Home, Building2 } from 'lucide-react'
+import {
+  BookType,
+  FileText,
+  ListTodo,
+  Minus,
+  Plus,
+  Users,
+  User,
+  Home,
+  Building2,
+} from 'lucide-react'
 import getRole from '@/utils/get-role'
 import { Book, BookCopy, Gauge, LucideDownload } from 'lucide-react'
 import NavigationItem from './navigation-item'
@@ -40,7 +50,7 @@ const Navigation = async () => {
         <SidebarGroupLabel>Corporate and SME Accounts</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-          <NavigationItem
+            <NavigationItem
               title="Accounts"
               href="/accounts-corporate-sme"
               icon={<BookCopy className="h-6 w-6" />}
@@ -62,7 +72,7 @@ const Navigation = async () => {
         <SidebarGroupLabel>IFP Accounts</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-          <NavigationItem
+            <NavigationItem
               title="Accounts"
               href="/accounts-ifp"
               icon={<BookCopy className="h-6 w-6" />}

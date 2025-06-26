@@ -91,9 +91,9 @@ const DeleteDuplicateEmployees = ({ companyId }: { companyId: string }) => {
       className="focus:bg-accent focus:text-accent-foreground relative flex cursor-pointer items-center gap-1.5 rounded-sm px-2 py-1.5 text-sm outline-hidden transition-colors select-none data-disabled:pointer-events-none data-disabled:opacity-50"
       onClick={() => {
         openConfirmation({
-          title: 'Delete Duplicate Employees',
+          title: 'Delete Duplicate Members',
           description:
-            'Are you sure you want to remove duplicate employees? The most recently added employee will be kept.',
+            'Are you sure you want to remove duplicate members? The most recently added member will be kept.',
           actionLabel: 'Delete',
           cancelLabel: 'Cancel',
           onAction: deleteDuplicates,
@@ -102,7 +102,7 @@ const DeleteDuplicateEmployees = ({ companyId }: { companyId: string }) => {
       }}
     >
       <CopySlash className="h-4 w-4" />
-      <span>Delete Duplicate Employees</span>
+      <span>Delete Duplicate Members</span>
     </DropdownMenuItem>
   )
 }

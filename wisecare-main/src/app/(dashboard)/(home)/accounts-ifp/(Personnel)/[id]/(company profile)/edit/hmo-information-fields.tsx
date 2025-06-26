@@ -205,28 +205,28 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
         )}
       />
       <FormField
-  control={form.control}
-  name="total_utilization"
-  render={({ field }) => (
-    <FormItem>
-      <FormControl>
-        <div className="pt-4">
-          <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-            Total Utilization:
-            <Input
-              className="w-full"
-              {...field}
-              value={field.value ?? ''}
-              ref={maskedTotalUtilizationRef}
-              onInput={field.onChange}
-            />
-          </div>
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+        control={form.control}
+        name="total_utilization"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <div className="pt-4">
+                <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
+                  Total Utilization:
+                  <Input
+                    className="w-full"
+                    {...field}
+                    value={field.value ?? ''}
+                    ref={maskedTotalUtilizationRef}
+                    onInput={field.onChange}
+                  />
+                </div>
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
       <FormField
         control={form.control}
         name="total_premium_paid"

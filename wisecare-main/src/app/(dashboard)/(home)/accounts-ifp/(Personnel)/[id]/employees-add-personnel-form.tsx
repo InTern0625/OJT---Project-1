@@ -1,6 +1,6 @@
 'use client'
-import EmployeesAddPersonnelButton from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees-add-personnel-button'
-import employeesSchema from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees-add-personnel-schema'
+import EmployeesAddPersonnelButton from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-add-personnel-button'
+import employeesSchema from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-add-personnel-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
