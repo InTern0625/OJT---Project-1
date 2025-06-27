@@ -1,6 +1,6 @@
 'use client'
 
-import DeleteBillingStatement from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/[billingid]/edit/delete-billing-statement'
+import DeleteBillingStatement from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/delete-billing-statement'
 import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements/billing-statement-schema'
 import formatOriginalData from '@/components/billing-statement/formatOriginalData'
 import currencyOptions from '@/components/maskito/currency-options'

@@ -1,5 +1,5 @@
 'use client'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
 import useConfirmationStore from '@/components/confirmation-dialog/confirmationStore'
 import { useToast } from '@/components/ui/use-toast'
 import { useUpdateMutation } from '@supabase-cache-helpers/postgrest-react-query'

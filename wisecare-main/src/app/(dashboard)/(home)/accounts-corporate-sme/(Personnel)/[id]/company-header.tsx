@@ -82,21 +82,21 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
         </div>
         <div className="text-muted-foreground inline-flex h-10 items-center justify-center rounded-md px-1 pt-2 pb-1">
           <Link
-            href={`/accounts/${id}`}
+            href={`/accounts-corporate-sme/${id}`}
             className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
           >
             About
           </Link>
           {canSeeBillingStatements && (
             <Link
-              href={`/accounts/${id}/billing`}
+              href={`/accounts-corporate-sme/${id}/billing`}
               className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
             >
               Billing Statements
             </Link>
           )}
           <Link
-            href={`/accounts/${id}/employees`}
+            href={`/accounts-corporate-sme/${id}/employees`}
             className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
           >
             Employees

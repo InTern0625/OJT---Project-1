@@ -1,4 +1,4 @@
-import EditBillingForm from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form'
+import EditBillingForm from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowLeft } from 'lucide-react'
@@ -14,7 +14,7 @@ const BillingStatementEditPage = async (props: {
     <>
       <div className="mb-6 flex flex-row items-center justify-between">
         <Button variant="outline">
-          <Link href={`/accounts/${id}/billing`}>
+          <Link href={`/accounts-corporate-sme/${id}/billing`}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>

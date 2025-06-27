@@ -1,6 +1,7 @@
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-information-item'
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-provider'
+import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information-item'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
+import FileInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-file-information'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 import getAccountById from '@/queries/get-account-by-id'
 import { createBrowserClient } from '@/utils/supabase-client'
@@ -12,7 +13,7 @@ import { FC, Suspense, useEffect, useState } from 'react'
 const HmoInformationFields = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/hmo-information-fields'
     ),
   { ssr: false },
 )
@@ -26,7 +27,9 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, id))
 
-  const [signedUrls, setSignedUrls] = useState<string[]>([])
+  const [signedContractProposalUrls, setSignedContractProposalUrls] = useState<string[]>([])
+  const [signedSpecialBenefitsUrls, setSignedSpecialBenefitsUrls] = useState<string[]>([])
+  const [signedAdditionalBenefitsUrls, setSignedAdditionalBenefitsUrls] = useState<string[]>([])
   const [errorOccurred, setErrorOccurred] = useState(false)
 
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
@@ -50,14 +53,23 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
       )
       return signedUrls.filter((url) => url !== null) as string[]
     }
-
+    const contractProposalFiles = account?.contract_proposal_files || []
     const specialBenefitsFiles = account?.special_benefits_files || []
-
-    if (specialBenefitsFiles.length > 0) {
-      getSignedUrls(specialBenefitsFiles).then(setSignedUrls)
+    const additionalBenefitsFiles = account?.additional_benefits_files || []
+    if (contractProposalFiles.length > 0) {
+      getSignedUrls(contractProposalFiles).then(setSignedContractProposalUrls)
     }
+    if (specialBenefitsFiles.length > 0) {
+      getSignedUrls(specialBenefitsFiles).then(setSignedSpecialBenefitsUrls)
+    }
+    if (additionalBenefitsFiles.length > 0) {
+      getSignedUrls(additionalBenefitsFiles).then(setSignedAdditionalBenefitsUrls)
+    }
+    
   }, [
+    account?.contract_proposal_files,
     account?.special_benefits_files,
+    account?.additional_benefits_files,
     supabase.storage,
     errorOccurred,
     isSpecialBenefitsFilesEnabled,
@@ -122,20 +134,9 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
             value={account?.additional_benefits?.toString()}
           />
           {isSpecialBenefitsFilesEnabled && (
-            <CompanyInformationItem
+            <FileInformation
               label={'Special Benefits'}
-              value={
-                signedUrls.length > 0
-                  ? signedUrls.map((url, index) => (
-                      <div key={url}>
-                        <a href={url} target="_blank" rel="noopener noreferrer">
-                          Document {index + 1}
-                        </a>
-                        <br />
-                      </div>
-                    ))
-                  : 'No special benefits documents available'
-              }
+              urls={signedSpecialBenefitsUrls}
             />
           )}
           {!isSpecialBenefitsFilesEnabled && (
@@ -145,6 +146,38 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
                 account?.special_benefits
                   ? account.special_benefits.toString()
                   : 'Special benefits feature is not enabled.'
+              }
+            />
+          )}
+          {isSpecialBenefitsFilesEnabled && (
+            <FileInformation
+              label={'Additional Benefits'}
+              urls={signedAdditionalBenefitsUrls}
+            />
+          )}
+          {!isSpecialBenefitsFilesEnabled && (
+            <CompanyInformationItem
+              label={'Additional Benefits'}
+              value={
+                account?.special_benefits
+                  ? account.special_benefits.toString()
+                  : 'Additional benefits feature is not enabled.'
+              }
+            />
+          )}
+          {isSpecialBenefitsFilesEnabled && (
+            <FileInformation
+              label={'Contract and Proposal'}
+              urls={signedContractProposalUrls}
+            />
+          )}
+          {!isSpecialBenefitsFilesEnabled && (
+            <CompanyInformationItem
+              label={'Special Benefits'}
+              value={
+                account?.special_benefits
+                  ? account.special_benefits.toString()
+                  : 'Contract and Proposal feature is not enabled.'
               }
             />
           )}

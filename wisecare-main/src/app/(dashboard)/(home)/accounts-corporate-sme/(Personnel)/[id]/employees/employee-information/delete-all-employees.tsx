@@ -1,4 +1,4 @@
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
 import useConfirmationStore from '@/components/confirmation-dialog/confirmationStore'
 import { toast } from '@/components/ui/use-toast'
 import getEmployeeByCompanyId from '@/queries/get-employee-by-company-id'

@@ -1,6 +1,6 @@
 'use client'
 
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import getBillingStatementByCompanyId from '@/queries/get-billing-statement-by-company-id'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'

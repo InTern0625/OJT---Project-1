@@ -1,4 +1,4 @@
-import DeleteDuplicateEmployees from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/delete-duplicate-employees'
+import DeleteDuplicateEmployees from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/delete-duplicate-employees'
 import EllipsisVertical from '@/assets/icons/ellipsis-vertical'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,21 +16,21 @@ import dynamic from 'next/dynamic'
 const EmployeeFormModal = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-information/employee-form-modal'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/employee-form-modal'
     ),
   { ssr: false },
 )
 const EmployeeExportModal = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-export-modal'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-modal'
     ),
   { ssr: false },
 )
 const DeleteAllEmployees = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-information/delete-all-employees'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/delete-all-employees'
     ),
   { ssr: false },
 )

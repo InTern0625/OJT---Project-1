@@ -1,5 +1,5 @@
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
-import EmployeeDeleteRequests from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-delete-requests'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
+import EmployeeDeleteRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-delete-requests'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

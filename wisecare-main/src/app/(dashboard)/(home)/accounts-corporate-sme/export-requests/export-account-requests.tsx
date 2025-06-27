@@ -1,4 +1,4 @@
-import ExportAccountRequestList from '@/app/(dashboard)/(home)/accounts/export-requests/export-account-request-list'
+import ExportAccountRequestList from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-request-list'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,

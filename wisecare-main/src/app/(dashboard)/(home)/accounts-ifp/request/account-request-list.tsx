@@ -1,4 +1,4 @@
-import AccountRequestListItem from '@/app/(dashboard)/(home)/accounts/request/account-request-list-item'
+import AccountRequestListItem from '@/app/(dashboard)/(home)/accounts-ifp/request/account-request-list-item'
 import getPendingAccounts from '@/queries/get-pending-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { createBrowserClient } from '@/utils/supabase-client'

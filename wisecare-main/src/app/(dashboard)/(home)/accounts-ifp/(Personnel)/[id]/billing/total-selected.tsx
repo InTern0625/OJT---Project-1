@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import { Card, CardContent } from '@/components/ui/card'
 import { Table } from '@tanstack/react-table'
 

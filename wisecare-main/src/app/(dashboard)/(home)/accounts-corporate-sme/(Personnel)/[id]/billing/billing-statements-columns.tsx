@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import TableHeader from '@/components/table-header'
 import { Button } from '@/components/ui/button'
 import {
@@ -91,7 +91,7 @@ const BillingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link
-              href={`/accounts/${billingStatement.account_id}/billing/${billingStatement.id}`}
+              href={`/accounts-corporate-sme/${billingStatement.account_id}/billing/${billingStatement.id}`}
               className="cursor-pointer"
             >
               <DropdownMenuItem>
@@ -99,7 +99,7 @@ const BillingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
               </DropdownMenuItem>
             </Link>
             <Link
-              href={`/accounts/${billingStatement.account_id}/billing/${billingStatement.id}/edit`}
+              href={`/accounts-corporate-sme/${billingStatement.account_id}/billing/${billingStatement.id}/edit`}
               className="cursor-pointer"
             >
               <DropdownMenuItem>

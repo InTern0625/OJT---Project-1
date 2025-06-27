@@ -16,13 +16,13 @@ const BillingStatementEditPage = async (props: {
     <>
       <div className="mb-6 flex flex-row items-center justify-between">
         <Button variant="outline">
-          <Link href={`/accounts/${id}/billing`}>
+          <Link href={`/accounts-ifp/${id}/billing`}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
         <Button variant={'default'}>
           <Link
-            href={`/accounts/${id}/billing/${billingid}/edit`}
+            href={`/accounts-ifp/${id}/billing/${billingid}/edit`}
             className="flex flex-row items-center"
           >
             <Pencil className="mr-2 h-4 w-4" /> Edit

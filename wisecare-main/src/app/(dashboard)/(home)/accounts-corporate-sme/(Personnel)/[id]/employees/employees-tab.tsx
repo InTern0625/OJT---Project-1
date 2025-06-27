@@ -1,6 +1,6 @@
 'use client'
-import employeesColumns from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-columns'
-import EmployeesDataTable from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-data-table'
+import employeesColumns from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-columns'
+import EmployeesDataTable from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-data-table'
 import getEmployeeByCompanyId from '@/queries/get-employee-by-company-id'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { FC } from 'react'
