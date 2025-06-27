@@ -15,6 +15,8 @@ const getBillingStatementById = (supabase: TypedSupabaseClient, id: string) =>
       total_contract_value,
       balance,
       billing_period,
+      billing_start,
+      billing_end,
       is_active,
       amount_billed,
       amount_paid,
