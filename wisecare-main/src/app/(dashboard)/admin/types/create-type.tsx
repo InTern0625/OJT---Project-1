@@ -6,11 +6,24 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  useInsertMutation,
+  useQuery,
+  useUpsertMutation,
+} from '@supabase-cache-helpers/postgrest-react-query'
+import getTypes from '@/queries/get-types'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query'
 import { Loader2, Plus } from 'lucide-react'
 import { FC, FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
@@ -40,17 +53,22 @@ const CreateType: FC<Props> = ({ page }) => {
   const form = useForm<z.infer<typeof typeSchema>>({
     resolver: zodResolver(typeSchema),
     defaultValues: {
-      name: '',
+      name: undefined,
     },
-  })
+  }) 
 
   const supabase = createBrowserClient()
+
+  const { data: accType } = useQuery(
+    getTypes(supabase, page),
+  )
+
   const { toast } = useToast()
 
   const { mutateAsync, isPending } = useInsertMutation(
     // @ts-ignore
     supabase.from(page),
-    ['id'],
+    ['name'],
     'name, id, created_at',
     {
       onSuccess: () => {
@@ -69,6 +87,7 @@ const CreateType: FC<Props> = ({ page }) => {
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
+        console.log(data);
         await mutateAsync([
           {
             name: data.name,
@@ -86,36 +105,52 @@ const CreateType: FC<Props> = ({ page }) => {
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>
+            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+              <FormLabel className="text-right">
                 Add <span className="lowercase">{renderTitle()}</span>
               </FormLabel>
-              <FormControl>
-                <div className="relative">
-                  <Input {...field} disabled={isPending} />
-                  <Button
-                    className="absolute top-1 right-1"
-                    size={'icon'}
-                    variant={'ghost'}
-                    type="submit"
-                    disabled={isPending}
-                  >
-                    <div className="rounded-full bg-[#97a2b1] p-1">
-                      {isPending ? (
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                      ) : (
-                        <Plus className="h-4 w-4" />
-                      )}
-                    </div>
-                  </Button>
-                </div>
+              <FormControl className="col-span-4">
+                <Select
+                  {...field}
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  disabled={isPending}
+                >
+                  <SelectTrigger className="col-span-2">
+                    <SelectValue placeholder="Select Type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {accType &&
+                      accType?.map((item) => (
+                        <SelectItem key={item.id} value={item.name}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                  </SelectContent>
+                </Select>
+                </FormControl>
+                <FormControl className="col-span-1">
+                <Button
+                  size={'icon'}
+                  variant={'ghost'}
+                  type="submit"
+                  disabled={isPending}
+                >
+                  <div className="rounded-full bg-[#97a2b1] p-1">
+                    {isPending ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Plus className="h-4 w-4" />
+                    )}
+                  </div>
+                </Button>
               </FormControl>
+              <FormMessage className="col-span-3 col-start-2" />
             </FormItem>
           )}
-        />
+        /> 
       </form>
     </Form>
   )
 }
-
 export default CreateType

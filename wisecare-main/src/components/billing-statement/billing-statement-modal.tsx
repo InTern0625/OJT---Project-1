@@ -44,7 +44,7 @@ import getTypes from '@/queries/get-types'
 import { Tables } from '@/types/database.types'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { cn } from '@/utils/tailwind'
-import { parseDate,calcWeeks } from '@/utils/get-weeks'
+import { calcWeeks } from '@/utils/get-weeks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMaskito } from '@maskito/react'
 import {
