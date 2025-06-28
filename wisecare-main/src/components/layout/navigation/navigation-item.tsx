@@ -29,6 +29,7 @@ const NavigationItem = ({
           className="flex h-11! flex-row items-center gap-4 px-4 py-2.5"
           href={href}
           onClick={() => setOpenMobile(false)}
+          prefetch={false}
         >
           {Icon && Icon}
           <span className="text-[13px] font-medium">{title}</span>

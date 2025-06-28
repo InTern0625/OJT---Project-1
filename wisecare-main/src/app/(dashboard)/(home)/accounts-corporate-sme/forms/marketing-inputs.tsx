@@ -194,7 +194,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Contract and Proposal"
           name="contract_proposal_files"
           placeholder="Enter contract and proposal"
-          maxFiles={5}
           maxFileSize={25 * 1024 * 1024}
         />
       ) : (
@@ -213,7 +212,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Special Benefits"
           name="special_benefits_files"
           placeholder="Enter special benefits"
-          maxFiles={5}
           maxFileSize={25 * 1024 * 1024}
         />
       ) : (
@@ -233,7 +231,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Additional Benefits"
           name="additional_benefits_files"
           placeholder="Enter additional benefits"
-          maxFiles={5}
           maxFileSize={25 * 1024 * 1024}
         />
       ) : (

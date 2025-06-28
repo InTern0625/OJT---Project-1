@@ -79,7 +79,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
     <>
       {editMode ? (
         <Suspense fallback={<div>Loading...</div>}>
-          <HmoInformationFields />
+          <HmoInformationFields id={id}/>
         </Suspense>
       ) : (
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2">
@@ -129,10 +129,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
             label={'Total Premium Paid'}
             value={formatCurrency(account?.total_premium_paid)}
           />
-          <CompanyInformationItem
-            label={'Additional Benefits'}
-            value={account?.additional_benefits?.toString()}
-          />
+          <span></span>
           {isSpecialBenefitsFilesEnabled && (
             <FileInformation
               label={'Special Benefits'}

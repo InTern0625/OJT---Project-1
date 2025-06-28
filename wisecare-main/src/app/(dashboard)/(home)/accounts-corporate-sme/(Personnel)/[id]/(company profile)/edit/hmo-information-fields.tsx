@@ -1,4 +1,5 @@
 import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema'
+import FileInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/file-upload'
 import currencyOptions from '@/components/maskito/currency-options'
 import numberOptions from '@/components/maskito/number-options'
 import {
@@ -22,15 +23,20 @@ import { useMaskito } from '@maskito/react'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
+import getAccountById from '@/queries/get-account-by-id'
+import { FC, Suspense, useEffect, useState } from 'react'
 
-const HmoInformationFields = () => {
+interface HmoInformationProps {
+  id: string
+}
+const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
   const supabase = createBrowserClient()
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: planTypes } = useQuery(getTypes(supabase, 'plan_types'))
-
+  const { data: account } = useQuery(getAccountById(supabase, id))
   const maskedTotalPremiumPaidRef = useMaskito({ options: currencyOptions })
-  const maskedTotalUtilizationRef = useMaskito({ options: numberOptions })
+  const maskedTotalUtilizationRef = useMaskito({ options: currencyOptions })
   const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
 
   return (
@@ -245,50 +251,42 @@ const HmoInformationFields = () => {
           </FormItem>
         )}
       />
-      <FormField
-        control={form.control}
-        name="additional_benefits"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Additional Benefits:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
       {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          name="contract_proposal_files"
+          label="Contract and Proposal"
+          maxFileSize={25 * 1024 * 1024} 
+          existingFiles={account?.contract_proposal_files || []}
+          id={id}
+        />
+      ) : (
         <FormField
           control={form.control}
-          name="special_benefits_files"
+          name="contract_proposal"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <div className="pt-4">
                   <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                    Special Benefits:
-                    <Input
-                      type="file"
-                      className="w-full"
-                      multiple
-                      onChange={(e) =>
-                        form.setValue(
-                          'special_benefits_files',
-                          e.target.files ? Array.from(e.target.files) : [],
-                        )
-                      }
-                    />
+                    Contract and Proposal:
+                    <Input className="w-full" {...field} />
                   </div>
                 </div>
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          name="special_benefits_files"
+          label="Special Benefits"
+          maxFileSize={25 * 1024 * 1024} 
+          existingFiles={account?.special_benefits_files || []}
+          id={id}
         />
       ) : (
         <FormField
@@ -300,6 +298,34 @@ const HmoInformationFields = () => {
                 <div className="pt-4">
                   <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
                     Special Benefits:
+                    <Input className="w-full" {...field} />
+                  </div>
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      )}
+      {isAccountBenefitUploadEnabled ? (
+        <FileInput
+          form={form}
+          name="additional_benefits_files"
+          label="Additional Benefits"
+          maxFileSize={25 * 1024 * 1024} 
+          existingFiles={account?.additional_benefits_files || []}
+          id={id}
+        />
+      ) : (
+        <FormField
+          control={form.control}
+          name="additional_benefits_text"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <div className="pt-4">
+                  <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
+                    Additional Benefits:
                     <Input className="w-full" {...field} />
                   </div>
                 </div>

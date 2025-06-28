@@ -5,7 +5,7 @@ import { Tables } from '@/types/database.types'
 import {
   formatCurrency,
   formatPercentage,
-} from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
+} from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 
 const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [

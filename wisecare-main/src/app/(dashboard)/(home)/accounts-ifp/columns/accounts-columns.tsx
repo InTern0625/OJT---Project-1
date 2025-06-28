@@ -76,18 +76,21 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     accessorKey: 'hmo_provider.name',
+    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="HMO Provider" />
     ),
   },
   {
     accessorKey: 'previous_hmo_provider.name',
+    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Previous HMO Provider" />
     ),
   },
   {
     accessorKey: 'old_hmo_provider.name',
+    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Old HMO Provider" />
     ),
@@ -126,12 +129,14 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     accessorKey: 'principal_plan_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Principal Plan Type" />
     ),
   },
   {
     accessorKey: 'dependent_plan_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Dependent Plan Type" />
     ),
