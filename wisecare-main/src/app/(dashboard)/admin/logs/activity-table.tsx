@@ -11,9 +11,11 @@ import {
 import getActivityLog from '@/queries/get-activity-log'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
+import { getName } from '@/utils/get-name-by-uid'
 import { createBrowserClient } from '@/utils/supabase-client'
 
 const ActivityTable = () => {
+
   const supabase = createBrowserClient()
   const { data, isPending } = useQuery(getActivityLog(supabase))
 
@@ -44,7 +46,7 @@ const ActivityTable = () => {
         {data &&
           data.map((log) => (
             <TableRow key={log.id}>
-              <TableCell>{log.user_id}</TableCell>
+              <TableCell>{getName(log.user_id)}</TableCell>
               <TableCell>{log.description}</TableCell>
               <TableCell>{format(new Date(log.created_at), 'PPpp')}</TableCell>
             </TableRow>
