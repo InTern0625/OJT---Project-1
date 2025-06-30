@@ -15,13 +15,13 @@ const CompanyInformationFields = () => {
     <>
       <FormField
         control={form.control}
-        name="company_name"
+        name="company_name" // ✅ Correct
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Company Name:
+                  Complete Name:
                   <Input className="w-full" {...field} />
                 </div>
               </div>
@@ -30,15 +30,17 @@ const CompanyInformationFields = () => {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
-        name="company_address"
+        name="birthdate" // 🟢 updated from company_address
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Company Address: <Input className="w-full" {...field} />
+                  Birthdate:
+                  <Input className="w-full" type="date" {...field} />
                 </div>
               </div>
             </FormControl>
@@ -46,15 +48,18 @@ const CompanyInformationFields = () => {
           </FormItem>
         )}
       />
+
+      {/* No input for Age since it's computed */}
+
       <FormField
         control={form.control}
-        name="nature_of_business"
+        name="gender" // 🟢 updated from name_of_signatory
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Nature of Business:
+                  Gender:
                   <Input className="w-full" {...field} />
                 </div>
               </div>
@@ -63,15 +68,16 @@ const CompanyInformationFields = () => {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
-        name="name_of_signatory"
+        name="civil_status" // 🟢 updated from signatory_designation
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Name of Signatory:
+                  Civil Status:
                   <Input className="w-full" {...field} />
                 </div>
               </div>
@@ -80,15 +86,16 @@ const CompanyInformationFields = () => {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
-        name="signatory_designation"
+        name="company_address" // 🟢 updated from contact_person
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Signatory Designation:
+                  Address:
                   <Input className="w-full" {...field} />
                 </div>
               </div>
@@ -97,66 +104,34 @@ const CompanyInformationFields = () => {
           </FormItem>
         )}
       />
+
       <FormField
         control={form.control}
-        name="contact_person"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Contact Person:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="designation_of_contact_person"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Designation of Contact Person:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="email_address_of_contact_person"
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Email Address of Contact Person:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-      <FormField
-        control={form.control}
-        name="contact_number"
+        name="contact_number" // 🟢 updated from designation_of_contact_person
         render={({ field }) => (
           <FormItem>
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
                   Contact Number:
+                  <Input className="w-full" {...field} />
+                </div>
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        control={form.control}
+        name="email_address_of_contact_person" // ✅ already correct
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <div className="pt-4">
+                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
+                  Email Address:
                   <Input className="w-full" {...field} />
                 </div>
               </div>

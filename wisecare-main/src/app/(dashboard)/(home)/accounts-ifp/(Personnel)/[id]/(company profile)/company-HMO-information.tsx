@@ -84,13 +84,13 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
         
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2">
           <CompanyInformationItem
-            label={'HMO Provider'}
+            label={'Card Number'}
             value={
               account?.hmo_provider ? (account.hmo_provider as any).name : ''
             }
           />
           <CompanyInformationItem
-            label={'Previous HMO Provider'}
+            label={'Effectivity'}
             value={
               account?.previous_hmo_provider
                 ? (account.previous_hmo_provider as any).name
@@ -98,7 +98,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
             }
           />
           <CompanyInformationItem
-            label={'Old HMO Provider'}
+            label={'Expiration'}
             value={
               account?.old_hmo_provider
                 ? (account.old_hmo_provider as any).name
@@ -106,7 +106,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
             }
           />
           <CompanyInformationItem
-            label={'Principal Plan Type'}
+            label={'Mode of Payment'}
             value={
               account?.principal_plan_type
                 ? (account.principal_plan_type as any).name
@@ -114,20 +114,18 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
             }
           />
           <CompanyInformationItem
-            label={'Dependent Plan Type'}
+            label={'HMO Provider'}
             value={
-              account?.dependent_plan_type
-                ? (account.dependent_plan_type as any).name
-                : ''
+              account?.hmo_provider ? (account.hmo_provider as any).name : ''
             }
           />
           <CompanyInformationItem
-            label={'Total Utilization'}
-            value={account?.total_utilization?.toString()}
+            label={'MBL'}
+            value={account?.total_utilization?.toString()} //MBL
           />
           <CompanyInformationItem
-            label={'Total Premium Paid'}
-            value={formatCurrency(account?.total_premium_paid)}
+            label={'Premium'}
+            value={formatCurrency(account?.total_premium_paid)} //premium
           />
           {isSpecialBenefitsFilesEnabled && (
             <FileInformation

@@ -375,19 +375,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         <div className="mx-auto flex w-full flex-col items-center justify-between gap-6 lg:flex-row lg:items-start">
           <div className="flex w-full flex-col gap-6 lg:max-w-xs">
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
-              <span className="text-xl font-semibold">
-                Contract Information
-              </span>
-              <CompanyContractInformation id={companyId} />
-            </div>
-            <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
               <span className="text-xl font-semibold">Account Information</span>
               <CompanyAccountInformation id={companyId} />
             </div>
           </div>
           <div className="flex w-full flex-col gap-6">
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
-              <span className="text-xl font-semibold">Company Information</span>
+              <span className="text-xl font-semibold">Personal Information</span>
               <CompanyInformation id={companyId} />
             </div>
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">

@@ -18,6 +18,7 @@ interface CompanyHeaderProps {
 const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, id))
+  console.log('Account data:', account)
   const { count: employeeCount, isPending } = useQuery(
     getEmployeeCount(supabase, id),
   )

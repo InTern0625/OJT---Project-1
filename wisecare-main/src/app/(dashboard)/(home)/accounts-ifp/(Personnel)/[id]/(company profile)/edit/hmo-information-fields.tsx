@@ -48,7 +48,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           <FormItem>
             <div className="pt-4">
               <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                HMO Provider:
+                Card Number:
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -80,7 +80,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Previous HMO Provider:
+                  Effectivity:
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -113,7 +113,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Old HMO Provider:
+                  Expiration:
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -146,7 +146,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Principal Plan Type:
+                  Mode of Payment:
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -172,34 +172,33 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
         )}
       />
       <FormField
+        key={'monds'}
         control={form.control}
-        name="dependent_plan_type_id"
+        name="hmo_provider_id"
         render={({ field }) => (
           <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Dependent Plan Type:
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {planTypes?.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
+            <div className="pt-4">
+              <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
+                HMO Provider:
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {hmoProviders?.map((provider) => (
+                      <SelectItem key={provider.id} value={provider.id}>
+                        {provider.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
-            </FormControl>
+            </div>
             <FormMessage />
           </FormItem>
         )}
@@ -212,7 +211,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-                  Total Utilization:
+                  MBL:
                   <Input
                     className="w-full"
                     {...field}
@@ -235,7 +234,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-                  Total Premium Paid:
+                  Premium:
                   <Input
                     className="w-full"
                     {...field}
