@@ -56,23 +56,22 @@ const DataTable = <TData extends IData, TValue>({
   const { toast } = useToast()
   const { user } = useUserServer()
   const supabase = createBrowserClient()
-  const { upsertColumnVisibility, upsertColumnSorting } = useColumnStates()
+  const { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting } = useColumnStates()
 
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
-    getAccountsColumnVisibilityByUserId(supabase),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase),
+    getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
   )
-
   const [sorting, setSorting] = useState<SortingState>(
-    (columnSortingData?.columns as unknown as SortingState) ?? [],
+    (columnSortingData?.columns_ifp_accounts as unknown as SortingState) ?? [],
   )
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    (columnVisibilityData?.columns as VisibilityState) ?? {},
+    (columnVisibilityData?.columns_ifp_accounts as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [isAccountLoading, setIsAccountLoading] = useState(false)
@@ -97,24 +96,24 @@ const DataTable = <TData extends IData, TValue>({
   useEffect(() => {
     if (!user?.id) return
 
-    upsertColumnVisibility([
+    upsertAccIFPColumnVisibility([
       {
         user_id: user.id,
-        columns: columnVisibility,
+        columns_ifp_accounts: columnVisibility,
       },
     ])
-  }, [columnVisibility, supabase, toast, upsertColumnVisibility, user?.id])
+  }, [columnVisibility, supabase, toast, upsertAccIFPColumnVisibility, user?.id])
 
   useEffect(() => {
     if (!user?.id) return
 
-    upsertColumnSorting([
+    upsertAccIFPColumnSorting([
       {
         user_id: user.id,
-        columns: sorting,
+        columns_ifp_accounts: sorting,
       },
     ])
-  }, [sorting, supabase, toast, upsertColumnSorting, user?.id])
+  }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
   
   return (
     <AccountsProvider>

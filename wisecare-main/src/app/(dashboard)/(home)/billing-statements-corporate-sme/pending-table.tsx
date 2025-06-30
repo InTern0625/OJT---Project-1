@@ -10,7 +10,7 @@ const PendingTable = () => {
   const supabase = createBrowserClient()
 
   const { data, isLoading } = useQuery(getBillingStatements(supabase))
-
+  if (isLoading) return null
   const filteredData = (data || [])
     .filter(
       (item: any) =>
