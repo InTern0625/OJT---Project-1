@@ -7,6 +7,8 @@ import {
   UserCircle,
   Users,
   X,
+  Hospital,
+  BookCopy,
 } from 'lucide-react'
 import { ComponentType, FC } from 'react'
 import { TypeTabs, useTypesContext } from './type-card'
@@ -47,13 +49,13 @@ const navigationLinks: NavigationLink[] = [
     name: 'Room Plan',
     description: 'Manage room plan types',
     tab: 'room_plans',
-    icon: Users,
+    icon: Hospital,
   },
   {
     name: 'Program Types',
     description: 'Manage program types',
     tab: 'program_types',
-    icon: Users,
+    icon: BookCopy,
   },
 ]
 
