@@ -1,5 +1,5 @@
 import React from 'react'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
 import { TabsTrigger } from '@/components/ui/tabs'
 
 const BillingStatementTab = () => {

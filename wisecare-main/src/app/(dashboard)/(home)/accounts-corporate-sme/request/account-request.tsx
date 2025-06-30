@@ -16,7 +16,7 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 const AccountRequestList = dynamic(
   () =>
-    import('@/app/(dashboard)/(home)/accounts/request/account-request-list'),
+    import('@/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request-list'),
   { ssr: false },
 )
 

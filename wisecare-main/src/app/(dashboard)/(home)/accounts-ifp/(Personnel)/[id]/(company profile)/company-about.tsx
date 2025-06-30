@@ -211,6 +211,15 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const existingSpecialBenefits = account?.special_benefits_files || [];
         const existingContractProposals = account?.contract_proposal_files || [];
         const existingAdditionalBenefits = account?.additional_benefits_files || [];
+        
+        await supabase
+        .from('accounts')
+        .update({
+          is_editing: false, 
+          editing_user: null,
+          editing_timestampz: null
+        })
+        .eq('id', companyId)
 
         // Handle file inputs
         const specialBenefitsFiles = data.special_benefits_files
@@ -359,7 +368,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       form,
       isSpecialBenefitsFilesEnabled,
       mutateAsync,
-      supabase.auth,
+      supabase,
       uploadSpecialBenefits,
       uploadContractProposal,
       uploadAdditionalBenefits,
@@ -399,7 +408,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         <div className="mt-4 flex flex-row items-center justify-between gap-2 lg:ml-auto lg:justify-end">
           {editMode && (
             <>
-              <CompanyCancelButton />
+              <CompanyCancelButton companyID={companyId}/>
               <Button
                 type="submit"
                 variant="default"

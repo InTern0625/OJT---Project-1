@@ -1,5 +1,5 @@
-import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edit-provider'
-import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-information-item'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-provider'
+import CompanyInformationItem from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information-item'
 import getAccountById from '@/queries/get-account-by-id'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import dynamic from 'next/dynamic'
@@ -9,7 +9,7 @@ import { createBrowserClient } from '@/utils/supabase-client'
 const CompanyInformationFields = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/edit/company-information-fields'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/company-information-fields'
     ),
   { ssr: false },
 )

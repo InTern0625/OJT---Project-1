@@ -47,6 +47,21 @@ const accountsSchema = z.object({
   contract_proposal_files: z.array(z.instanceof(File)).optional(),
   additional_benefits_text: z.string().max(1000).optional(),
   additional_benefits_files: z.array(z.instanceof(File)).optional(),
+  gender: z.string().optional(),
+  civil_status: z.string().optional(),
+  card_number: z.string().max(500).optional(),
+  room_plan_id: z.string().uuid().optional(),
+  mbl: z.preprocess((val) => {
+    if (val === null || val === '' || val === undefined) return null
+    const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
+    return isNaN(parsedVal) ? null : parsedVal
+  }, z.number().nullable()),
+  program_types_id: z.string().uuid().optional(),
+  premium: z.preprocess((val) => {
+    if (val === null || val === '' || val === undefined) return null
+    const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
+    return isNaN(parsedVal) ? null : parsedVal
+  }, z.number().nullable()),
 })
 
 export default accountsSchema

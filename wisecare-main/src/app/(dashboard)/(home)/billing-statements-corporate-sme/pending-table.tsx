@@ -9,12 +9,15 @@ import { createBrowserClient } from '@/utils/supabase-client'
 const PendingTable = () => {
   const supabase = createBrowserClient()
 
-  const { data } = useQuery(getBillingStatements(supabase))
+  const { data, isLoading } = useQuery(getBillingStatements(supabase))
+
   const filteredData = (data || [])
     .filter(
       (item: any) =>
         item.accounts.account_type?.name === 'SME' ||
-        item.accounts.account_type?.name === 'Corporate',
+        item.accounts.account_type?.name === 'CORPORATE' ||
+        item.accounts.account_type?.name === 'Corporate' ||
+        item.accounts.account_type?.name === null
     )
     .map((item: any) => ({
       ...item,

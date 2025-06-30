@@ -1,4 +1,4 @@
-import { formatCurrency } from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import { formatCurrency } from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox'
@@ -51,14 +51,14 @@ const BillingItem = ({
         <div className="flex justify-end space-x-2">
           <Button variant="outline" size="sm">
             <Link
-              href={`/accounts/${commission.account_id}/billing/${commission.id}`}
+              href={`/accounts-corporate-sme/${commission.account_id}/billing/${commission.id}`}
             >
               <Eye className="h-4 w-4" />
             </Link>
           </Button>
           <Button variant="outline" size="sm">
             <Link
-              href={`/accounts/${commission.account_id}/billing/${commission.id}/edit`}
+              href={`/accounts-corporate-sme/${commission.account_id}/billing/${commission.id}/edit`}
             >
               <Edit className="h-4 w-4" />
             </Link>

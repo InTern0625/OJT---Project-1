@@ -10,6 +10,8 @@ export type TypeTabs =
   | 'hmo_providers'
   | 'mode_of_payments'
   | 'plan_types'
+  | 'program_types'
+  | 'room_plans'
 
 const useTypesContext = () => {
   const context = useContext(TypesContext)

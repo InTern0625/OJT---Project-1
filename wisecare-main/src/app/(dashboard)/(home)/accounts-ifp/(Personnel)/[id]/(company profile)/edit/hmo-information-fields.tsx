@@ -255,7 +255,6 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           form={form}
           name="contract_proposal_files"
           label="Contract and Proposal"
-          maxFiles={5}
           maxFileSize={25 * 1024 * 1024} 
           existingFiles={account?.contract_proposal_files || []}
           id={id}
@@ -269,65 +268,7 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
               <FormControl>
                 <div className="pt-4">
                   <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                    Special Benefits:
-                    <Input className="w-full" {...field} />
-                  </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
-      {isAccountBenefitUploadEnabled ? (
-        <FileInput
-          form={form}
-          name="special_benefits_files"
-          label="Special Benefits"
-          maxFiles={5}
-          maxFileSize={25 * 1024 * 1024} 
-          existingFiles={account?.special_benefits_files || []}
-          id={id}
-        />
-      ) : (
-        <FormField
-          control={form.control}
-          name="special_benefits"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="pt-4">
-                  <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                    Special Benefits:
-                    <Input className="w-full" {...field} />
-                  </div>
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
-      {isAccountBenefitUploadEnabled ? (
-        <FileInput
-          form={form}
-          name="additional_benefits_files"
-          label="Additional Benefits"
-          maxFiles={5}
-          maxFileSize={25 * 1024 * 1024} 
-          existingFiles={account?.additional_benefits_files || []}
-          id={id}
-        />
-      ) : (
-        <FormField
-          control={form.control}
-          name="additional_benefits_text"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <div className="pt-4">
-                  <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                    Special Benefits:
+                    Contract and Proposal:
                     <Input className="w-full" {...field} />
                   </div>
                 </div>

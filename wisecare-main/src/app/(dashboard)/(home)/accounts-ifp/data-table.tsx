@@ -1,10 +1,10 @@
 'use client'
 
-import AccountsCount from '@/app/(dashboard)/(home)/accounts/accounts-count'
-import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts/export-requests/export-account-requests'
-import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts/export-requests/export-accounts-modal'
-import { useColumnStates } from '@/app/(dashboard)/(home)/accounts/mutations/column-states'
-import AccountRequest from '@/app/(dashboard)/(home)/accounts/request/account-request'
+import AccountsCount from '@/app/(dashboard)/(home)/accounts-ifp/accounts-count'
+import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-requests'
+import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
+import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-ifp/mutations/column-states'
+import AccountRequest from '@/app/(dashboard)/(home)/accounts-ifp/request/account-request'
 import { PageHeader, PageTitle } from '@/components/page-header'
 import TablePagination from '@/components/table-pagination'
 import TableSearch from '@/components/table-search'
@@ -115,7 +115,7 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertColumnSorting, user?.id])
-
+  
   return (
     <AccountsProvider>
       <div className="flex flex-col">

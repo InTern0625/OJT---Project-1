@@ -24,6 +24,7 @@ import {
   User,
   Home,
   Building2,
+  BookCheck,
 } from 'lucide-react'
 import getRole from '@/utils/get-role'
 import { Book, BookCopy, Gauge, LucideDownload } from 'lucide-react'
@@ -65,6 +66,16 @@ const Navigation = async () => {
                 />
               )
             }
+            {
+              // only show pending tab if role is finance
+              role && ['finance', 'admin'].includes(role) && (
+                <NavigationItem
+                  title="Pending Renewals"
+                  href="/renewals-corporate-sme"
+                  icon={<BookCheck className="h-6 w-6" />}
+                />
+              )
+            }
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
@@ -84,6 +95,16 @@ const Navigation = async () => {
                   title="Billing Statements"
                   href="/billing-statements-ifp"
                   icon={<Book className="h-6 w-6" />}
+                />
+              )
+            }
+            {
+              // only show pending tab if role is finance
+              role && ['finance', 'admin'].includes(role) && (
+                <NavigationItem
+                  title="Pending Renewals"
+                  href="/renewals-ifp"
+                  icon={<BookCheck className="h-6 w-6" />}
                 />
               )
             }

@@ -1,6 +1,6 @@
 'use client'
 
-import accountsColumns from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import accountsColumns from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import getAccounts from '@/queries/get-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'
@@ -8,7 +8,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 const AccountsTable = () => {
   const supabase = createBrowserClient()
-  const { data } = useQuery(getAccounts(supabase))
+  const { data, isLoading } = useQuery(getAccounts(supabase))
+  if (isLoading) return null
   const filteredData = (data || [])
     .filter(
       (item: any) =>

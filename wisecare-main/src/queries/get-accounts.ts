@@ -6,7 +6,7 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
     .select(
       `
   id,
-  agent:user_profiles(first_name, last_name),
+  agent:agent_id(first_name, last_name),
   company_name,
   company_address,
   nature_of_business,
@@ -41,8 +41,11 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
   name_of_signatory,
   designation_of_contact_person,
   email_address_of_contact_person,
-  is_account_active
-
+  is_account_active,
+  is_editing,
+  editing_user,
+  editing_timestampz
+  editing:editing_user(first_name, last_name)
   `,
       {
         count: 'exact',

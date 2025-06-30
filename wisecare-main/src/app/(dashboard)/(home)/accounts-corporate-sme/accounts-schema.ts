@@ -47,6 +47,9 @@ const accountsSchema = z.object({
   contract_proposal_files: z.array(z.instanceof(File)),
   additional_benefits_text: z.string().max(1000).optional(),
   additional_benefits_files: z.array(z.instanceof(File)),
+  is_editing: z.string().max(1000).optional(),
+  editing_user: z.string().uuid().optional(),
+  editing_timestampz: z.date().optional(),
 })
 
 export default accountsSchema
