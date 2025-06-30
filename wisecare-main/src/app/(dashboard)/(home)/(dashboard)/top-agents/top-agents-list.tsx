@@ -17,12 +17,16 @@ const TopAgentsList = () => {
     supabase
       .from('user_profiles')
       .select(
-        'user_id, first_name, last_name, departments(name), accounts(created_at)',
+        `user_id, 
+        first_name, 
+        last_name, 
+        departments(name), 
+        accounts: accounts!accounts_agent_id_fkey(created_at)
+      `,
       )
       .eq('departments.name', 'agent')
       .throwOnError(),
   )
-
   const topAgents = useMemo(() => {
     if (!data) return []
 

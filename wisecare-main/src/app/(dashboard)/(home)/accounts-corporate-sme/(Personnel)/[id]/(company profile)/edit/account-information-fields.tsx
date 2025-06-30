@@ -1,4 +1,4 @@
-import companyEditsSchema from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edits-schema'
+import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema'
 import percentageOptions from '@/components/maskito/percentage-options'
 import { Button } from '@/components/ui/button'
 import {

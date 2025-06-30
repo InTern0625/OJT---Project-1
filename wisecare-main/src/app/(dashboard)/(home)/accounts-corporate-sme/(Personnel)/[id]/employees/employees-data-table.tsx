@@ -1,12 +1,12 @@
 'use client'
 
-import EmployeeActionsDropdown from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-actions-dropdown'
-import EmployeeMobileTable from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employee-mobile-table'
-import employeesColumns from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-columns'
-import EmployeesTableSearch from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/employees-table-search'
-import EmployeeExportRequests from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-export-requests'
-import ImportEmployeesButton from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/import/import-employees-button'
-import MemberType from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/member-type'
+import EmployeeActionsDropdown from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-actions-dropdown'
+import EmployeeMobileTable from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-mobile-table'
+import employeesColumns from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-columns'
+import EmployeesTableSearch from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-table-search'
+import EmployeeExportRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-requests'
+import ImportEmployeesButton from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/import-employees-button'
+import MemberType from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/member-type'
 import TablePagination from '@/components/table-pagination'
 import {
   Table,

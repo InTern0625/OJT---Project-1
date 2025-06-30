@@ -129,38 +129,6 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
           />
           {isSpecialBenefitsFilesEnabled && (
             <FileInformation
-              label={'Special Benefits'}
-              urls={signedSpecialBenefitsUrls}
-            />
-          )}
-          {!isSpecialBenefitsFilesEnabled && (
-            <CompanyInformationItem
-              label={'Special Benefits'}
-              value={
-                account?.special_benefits
-                  ? account.special_benefits.toString()
-                  : 'Special benefits feature is not enabled.'
-              }
-            />
-          )}
-          {isSpecialBenefitsFilesEnabled && (
-            <FileInformation
-              label={'Additional Benefits'}
-              urls={signedAdditionalBenefitsUrls}
-            />
-          )}
-          {!isSpecialBenefitsFilesEnabled && (
-            <CompanyInformationItem
-              label={'Additional Benefits'}
-              value={
-                account?.special_benefits
-                  ? account.special_benefits.toString()
-                  : 'Additional benefits feature is not enabled.'
-              }
-            />
-          )}
-          {isSpecialBenefitsFilesEnabled && (
-            <FileInformation
               label={'Contract and Proposal'}
               urls={signedContractProposalUrls}
             />

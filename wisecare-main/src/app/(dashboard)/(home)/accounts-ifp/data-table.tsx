@@ -115,7 +115,7 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertColumnSorting, user?.id])
-
+  
   return (
     <AccountsProvider>
       <div className="flex flex-col">

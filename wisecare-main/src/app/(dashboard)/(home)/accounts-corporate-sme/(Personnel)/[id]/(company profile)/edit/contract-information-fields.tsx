@@ -1,4 +1,4 @@
-import companyEditsSchema from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-edits-schema'
+import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema'
 import currencyOptions from '@/components/maskito/currency-options'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'

@@ -43,6 +43,18 @@ const navigationLinks: NavigationLink[] = [
     tab: 'plan_types',
     icon: Users,
   },
+  {
+    name: 'Room Plan',
+    description: 'Manage room plan types',
+    tab: 'room_plans',
+    icon: Users,
+  },
+  {
+    name: 'Program Types',
+    description: 'Manage program types',
+    tab: 'program_types',
+    icon: Users,
+  },
 ]
 
 const NavigationItem: FC<NavigationLink> = ({

@@ -4,8 +4,10 @@ import InputWithMask from '@/app/(dashboard)/(home)/accounts-ifp/forms/input-wit
 import NumberInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/number-input'
 import SelectInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/select-input'
 import TextInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/text-input'
+import ComputedAge from '@/app/(dashboard)/(home)/accounts-ifp/forms/age_compute'
 import getAgents from '@/queries/get-agents'
 import getTypes from '@/queries/get-types'
+import getEnumOptions  from '@/queries/get-enum-types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { FC } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -14,6 +16,7 @@ import accountsSchema from '../accounts-schema'
 import { createBrowserClient } from '@/utils/supabase-client'
 import FileInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/file-input'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
+import { useState, useEffect } from 'react'
 
 interface Props {
   isLoading: boolean
@@ -29,19 +32,55 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: accountTypes } = useQuery(getTypes(supabase, 'account_types'))
   const { data: planTypes } = useQuery(getTypes(supabase, 'plan_types'))
-  const { data: modeOfPayments } = useQuery(
-    getTypes(supabase, 'mode_of_payments'),
-  )
+  const { data: modeOfPayments } = useQuery(getTypes(supabase, 'mode_of_payments'))
+  const { data: programTypes } = useQuery(getTypes(supabase, 'program_types'))
+  const { data: roomPlan } = useQuery(getTypes(supabase, 'room_plans'))
+  const [genderOptions, setGenderOptions] = useState<string[]>([])
+  const [civilStatusOptions, setCivilStatusOptions] = useState<string[]>([])
+  useEffect(() => {
+    const fetchEnums = async () => {
+      try {
+        const [gender, civilStatus] = await Promise.all([
+          getEnumOptions('gender_type'),
+          getEnumOptions('civil_status_type'),
+        ])
+        setGenderOptions(gender)
+        setCivilStatusOptions(civilStatus)
+      } catch (error) {
+        console.error('Failed to load enum options:', error)
+      }
+    }
+
+    fetchEnums()
+  }, [])
+
   return (
     <div className="grid gap-4 py-4">
-      <h3 className="text-md font-semibold">Client Information</h3>
-      <div className="grid gap-4 sm:grid-flow-col sm:grid-rows-5">
+      <h3 className="text-md font-semibold">Personal Information</h3>
+      <div className="grid gap-4 sm:grid-flow-col sm:grid-rows-4">
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Representative Name"
+          label="Complete Name"
           name="company_name"
-          placeholder="Enter company name"
+          placeholder="Enter complete name"
+        />
+        <DateInput
+          form={form}
+          isLoading={isLoading}
+          label="Birthdate"
+          name="company_name"
+        />
+        
+        <SelectInput
+          form={form}
+          isLoading={isLoading}
+          label="Gender"
+          name="gender"
+          options={genderOptions.map((value) => ({
+            label: value.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+            value,
+          }))}
         />
         <TextInput
           form={form}
@@ -53,60 +92,65 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Name of Signatory"
-          name="name_of_signatory"
-          placeholder="Enter name of signatory"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Contact Person"
-          name="contact_person"
-          placeholder="Enter contact person"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Email Address of Contact Person"
-          name="email_address_of_contact_person"
-          placeholder="Enter email address of contact person"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Permanent Address"
+          label="Complete Address"
           name="company_address"
-          placeholder="Enter company address"
+          placeholder="Enter complete address"
         />
-        <ComboBox
+        
+        <ComputedAge
+          form={form}
+          label="Age"
+        />
+        <SelectInput
           form={form}
           isLoading={isLoading}
-          name="agent_id"
-          label="Agent"
-          placeholder="Select Agent"
-          options={agents?.map((agent) => ({
-            label: `${agent.first_name} ${agent.last_name}`,
-            value: agent.user_id,
+          label="Civil Status"
+          name="civil_status"
+          options={civilStatusOptions.map((value) => ({
+            label: value.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
+            value,
           }))}
         />
         <TextInput
           form={form}
           isLoading={isLoading}
-          label="Signatory Designation"
-          name="signatory_designation"
-          placeholder="Enter signatory designation"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Designation of Contact Person"
-          name="designation_of_contact_person"
-          placeholder="Enter designation of contact person"
+          label="Email Address"
+          name="email_address_of_contact_person"
+          placeholder="Enter email address"
         />
       </div>
 
       <h3 className="text-md mt-3 font-semibold">HMO Information</h3>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Card Number"
+          name="card_number"
+          placeholder="Enter card number"
+        />
+        <SelectInput
+          form={form}
+          isLoading={isLoading}
+          label="Mode of Payment"
+          name="mode_of_payment_id"
+          options={modeOfPayments?.map((modeOfPayment) => ({
+            label: modeOfPayment.name,
+            value: modeOfPayment.id,
+          }))}
+        />
+        <DateInput
+          form={form}
+          isLoading={isLoading}
+          label="Effective Date"
+          name="effective_date"
+        />
+        <DateInput
+          form={form}
+          isLoading={isLoading}
+          label="Expiration Date"
+          name="expiration_date"
+        />
         <SelectInput
           form={form}
           isLoading={isLoading}
@@ -120,63 +164,36 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
         <SelectInput
           form={form}
           isLoading={isLoading}
-          label="Previous HMO Provider"
-          name="previous_hmo_provider_id"
-          options={hmoProviders?.map((hmoProvider) => ({
-            label: hmoProvider.name,
-            value: hmoProvider.id,
-          }))}
-        />
-        <SelectInput
-          form={form}
-          isLoading={isLoading}
-          label="Old HMO Provider"
-          name="old_hmo_provider_id"
-          options={hmoProviders?.map((hmoProvider) => ({
-            label: hmoProvider.name,
-            value: hmoProvider.id,
-          }))}
-        />
-        <SelectInput
-          form={form}
-          isLoading={isLoading}
-          label="Principal Plan Type"
-          name="principal_plan_type_id"
-          options={planTypes?.map((planType) => ({
-            label: planType.name,
-            value: planType.id,
-          }))}
-        />
-        <SelectInput
-          form={form}
-          isLoading={isLoading}
-          label="Dependent Plan Type"
-          name="dependent_plan_type_id"
-          options={planTypes?.map((planType) => ({
-            label: planType.name,
-            value: planType.id,
+          label="Room Plan"
+          name="room_plan_id"
+          options={roomPlan?.map((roomPlan) => ({
+            label: roomPlan.name,
+            value: roomPlan.id,
           }))}
         />
         <InputWithMask
           form={form}
           isLoading={isLoading}
-          label="Total Utilization"
-          name="total_utilization"
+          label="MBL"
+          name="mbl"
           maskType="currency"
         />
         <InputWithMask
           form={form}
           isLoading={isLoading}
-          label="Total Premium Paid"
-          name="total_premium_paid"
+          label="Premium"
+          name="premium"
           maskType="currency"
         />
-        <TextInput
+        <SelectInput
           form={form}
           isLoading={isLoading}
-          label="Additional Benefits"
-          name="additional_benefits"
-          placeholder="Enter additional benefits"
+          label="Account Types"
+          name="program_types_id"
+          options={programTypes?.map((programTypes) => ({
+            label: programTypes.name,
+            value: programTypes.id,
+          }))}
         />
       </div>
       {isAccountBenefitUploadEnabled ? (
@@ -186,7 +203,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Contract and Proposal"
           name="contract_proposal_files"
           placeholder="Enter contract and proposal"
-          maxFiles={5}
           maxFileSize={25 * 1024 * 1024}
         />
       ) : (
@@ -198,142 +214,18 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           placeholder="Enter contract and proposal"
         />
       )}
-      {isAccountBenefitUploadEnabled ? (
-        <FileInput
-          form={form}
-          isLoading={isLoading}
-          label="Special Benefits"
-          name="special_benefits_files"
-          placeholder="Enter special benefits"
-          maxFiles={5}
-          maxFileSize={25 * 1024 * 1024}
-        />
-      ) : (
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Special Benefits"
-          name="special_benefits"
-          placeholder="Enter special benefits"
-          
-        />
-      )}
-      {isAccountBenefitUploadEnabled ? (
-        <FileInput
-          form={form}
-          isLoading={isLoading}
-          label="Additional Benefits"
-          name="additional_benefits_files"
-          placeholder="Enter additional benefits"
-          maxFiles={5}
-          maxFileSize={25 * 1024 * 1024}
-        />
-      ) : (
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Additional Benefits"
-          name="additional_benefits_text"
-          placeholder="Enter additional benefits"
-        />
-      )}
-
-      <h3 className="text-md mt-3 font-semibold">Contract Information</h3>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
-        <InputWithMask
-          form={form}
-          isLoading={isLoading}
-          label="Initial Contract Value"
-          name="initial_contract_value"
-          maskType="currency"
-        />
-        <NumberInput
-          form={form}
-          isLoading={isLoading}
-          label="Initial Head Count"
-          name="initial_head_count"
-          placeholder="Enter initial head count"
-        />
-        <SelectInput
-          form={form}
-          isLoading={isLoading}
-          label="Mode of Payment"
-          name="mode_of_payment_id"
-          options={modeOfPayments?.map((modeOfPayment) => ({
-            label: modeOfPayment.name,
-            value: modeOfPayment.id,
-          }))}
-        />
-      </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Expiration Date"
-          name="expiration_date"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Effective Date"
-          name="effective_date"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Original Effective Date"
-          name="original_effective_date"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="COC Issue Date"
-          name="coc_issue_date"
-        />
-
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Delivery Date of Membership IDs"
-          name="delivery_date_of_membership_ids"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Orientation Date"
-          name="orientation_date"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Wellness Lecture Date"
-          name="wellness_lecture_date"
-        />
-        <DateInput
-          form={form}
-          isLoading={isLoading}
-          label="Annual Physical Examination Date"
-          name="annual_physical_examination_date"
-        />
-      </div>
-
       <h3 className="text-md mt-3 font-semibold">Account Information</h3>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        <SelectInput
+        <ComboBox
           form={form}
           isLoading={isLoading}
-          label="Account Type"
-          name="account_type_id"
-          options={accountTypes
-            ?.filter(
-              (accountType) =>
-                accountType.name === 'Individual' ||
-                accountType.name === 'Family',
-            )
-            .map((accountType) => ({
-              label: accountType.name,
-              value: accountType.id,
-            }))}
+          name="agent_id"
+          label="Agent"
+          placeholder="Select Agent"
+          options={agents?.map((agent) => ({
+            label: `${agent.first_name} ${agent.last_name}`,
+            value: agent.user_id,
+          }))}
         />
         <InputWithMask
           form={form}

@@ -8,7 +8,7 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       id, 
       is_active,
       is_account_active,
-      agent:user_profiles(first_name, last_name, user_id),
+      agent:agent_id(first_name, last_name, user_id),
       company_name, 
       company_address, 
       nature_of_business, 

@@ -1,6 +1,6 @@
 'use client'
 
-import accountsColumns from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+import accountsColumns from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import getAccounts from '@/queries/get-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'

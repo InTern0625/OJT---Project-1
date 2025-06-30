@@ -8,10 +8,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import getPendingEmployeeExports from '@/queries/get-pending-employee-exports'
-import EmployeeExportRequestList from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-export-request-list'
+import EmployeeExportRequestList from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-request-list'
 import { createBrowserClient } from '@/utils/supabase-client'
 
 const EmployeeExportRequests = () => {

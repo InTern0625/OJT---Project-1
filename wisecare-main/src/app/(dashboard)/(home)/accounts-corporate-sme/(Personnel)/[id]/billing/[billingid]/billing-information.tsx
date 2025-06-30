@@ -3,7 +3,7 @@
 import {
   formatCurrency,
   formatPercentage,
-} from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+} from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import getBillingStatementById from '@/queries/get-billing-statement-by-id'

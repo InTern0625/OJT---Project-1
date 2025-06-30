@@ -1,8 +1,8 @@
 import React from 'react'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
 import getPendingEmployeeExports from '@/queries/get-pending-employee-exports'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
-import EmployeeExportRequestsListItem from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-requests/employee-export-requests-list-item'
+import EmployeeExportRequestsListItem from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-requests-list-item'
 import { createBrowserClient } from '@/utils/supabase-client'
 
 const EmployeeExportRequestList = () => {

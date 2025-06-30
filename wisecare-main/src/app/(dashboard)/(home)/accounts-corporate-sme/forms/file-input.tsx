@@ -31,7 +31,7 @@ const FileInput = ({
   placeholder?: string
   accept?: string
   maxFiles?: number
-  maxFileSize?: number // New prop for max file size
+  maxFileSize?: number 
 }) => {
   const [files, setFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);

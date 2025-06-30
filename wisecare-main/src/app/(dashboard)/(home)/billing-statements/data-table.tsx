@@ -66,7 +66,7 @@ const DataTable = <TData, TValue>({
 
   const supabase = createBrowserClient()
   const { count, isLoading } = useQuery(getBillingStatements(supabase))
-
+  const totalCount = table.getFilteredRowModel().rows.length
   const { isEditModalOpen, setIsEditModalOpen, originalData } =
     useBillingContext()
 
@@ -79,7 +79,7 @@ const DataTable = <TData, TValue>({
             {isLoading ? (
               <Skeleton className="h-4 w-20" />
             ) : (
-              <PageDescription>{count} Billing Statements</PageDescription>
+              <PageDescription>{totalCount} Billing Statements</PageDescription>
             )}
           </div>
           <div className="flex flex-row gap-4">

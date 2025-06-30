@@ -69,7 +69,7 @@ const DataTable = <TData, TValue>({
 
   const { isEditModalOpen, setIsEditModalOpen, originalData } =
     useBillingContext()
-
+  const totalCount = table.getFilteredRowModel().rows.length
   return (
     <div className="flex flex-col">
       <PageHeader>
@@ -79,7 +79,7 @@ const DataTable = <TData, TValue>({
             {isLoading ? (
               <Skeleton className="h-4 w-20" />
             ) : (
-              <PageDescription>{count} Billing Statements</PageDescription>
+              <PageDescription>{totalCount} Billing Statements</PageDescription>
             )}
           </div>
           <div className="flex flex-row gap-4">

@@ -10,11 +10,19 @@ const AccountsCount = () => {
   const { data: count, isLoading } = useQuery(getAccounts(supabase))
 
   const activeCount = useMemo(
-    () => count?.filter((account: any) => account.is_account_active).length,
+    () => count?.filter(
+      (item: any) =>
+        item.account_type?.name === 'Individual' ||
+        item.account_type?.name === 'Family'
+    ).filter((account: any) => account.is_account_active).length,
     [count],
   )
   const inactiveCount = useMemo(
-    () => count?.filter((account: any) => !account.is_account_active).length,
+    () => count?.filter(
+      (item: any) =>
+        item.account_type?.name === 'Individual' ||
+        item.account_type?.name === 'Family'
+    ).filter((account: any) => !account.is_account_active).length,
     [count],
   )
 

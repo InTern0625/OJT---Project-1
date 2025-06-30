@@ -5,7 +5,7 @@ import { useState } from 'react'
 const ImportEmployees = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/import/import-employees'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/import-employees'
     ),
   { ssr: false },
 )

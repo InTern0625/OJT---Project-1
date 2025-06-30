@@ -14,7 +14,7 @@ import {
 } from '@supabase-cache-helpers/postgrest-react-query'
 import { toast } from '@/components/ui/use-toast'
 import { Enums } from '@/types/database.types'
-import DeletePendingExportRequests from '@/app/(dashboard)/(home)/accounts/export-requests/delete-pending-export-requests'
+import DeletePendingExportRequests from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/delete-pending-export-requests'
 import getAccounts from '@/queries/get-accounts'
 import { createBrowserClient } from '@/utils/supabase-client'
 

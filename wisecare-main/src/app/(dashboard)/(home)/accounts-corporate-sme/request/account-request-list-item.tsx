@@ -1,4 +1,4 @@
-import DeleteRequest from '@/app/(dashboard)/(home)/accounts/request/delete-request'
+import DeleteRequest from '@/app/(dashboard)/(home)/accounts-corporate-sme/request/delete-request'
 import OperationTypeBadge from '@/app/(dashboard)/admin/approval-request/components/operation-badge'
 import { Tables } from '@/types/database.types'
 import { formatDistanceToNow } from 'date-fns'

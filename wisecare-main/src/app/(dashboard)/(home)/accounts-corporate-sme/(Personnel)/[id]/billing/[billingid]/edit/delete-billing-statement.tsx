@@ -32,7 +32,7 @@ const DeleteBillingStatement = ({
           title: 'Billing Statement Deleted',
           description: 'Your billing statement has been deleted.',
         })
-        router.push(`/accounts/${accountId}/billing`)
+        router.push(`/accounts-corporate-sme/${accountId}/billing`)
       },
       onError: (error) => {
         toast({

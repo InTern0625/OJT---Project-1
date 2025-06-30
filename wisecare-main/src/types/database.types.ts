@@ -127,6 +127,13 @@ export type Database = {
           total_utilization: number | null
           updated_at: string
           wellness_lecture_date: string | null
+          gender: string | null
+          civil_status: string | null
+          card_number: string | null
+          room_plan_id: string | null
+          mbl: number | null
+          program_types_id: string | null
+          premium: number | null
         }
         Insert: {
           account_type_id?: string | null
@@ -170,6 +177,13 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          gender?: string | null
+          civil_status?: string | null
+          card_number?: string | null
+          room_plan_id?: string | null
+          mbl?: number | null
+          program_types_id?: string | null
+          premium?: number | null
         }
         Update: {
           account_type_id?: string | null
@@ -213,6 +227,13 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          gender?: string | null
+          civil_status?: string | null
+          card_number?: string | null
+          room_plan_id?: string | null
+          mbl?: number | null
+          program_types_id?: string | null
+          premium?: number | null
         }
         Relationships: [
           {
@@ -269,6 +290,20 @@ export type Database = {
             columns: ['principal_plan_type_id']
             isOneToOne: false
             referencedRelation: 'plan_types'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_program_types_id_fkey'
+            columns: ['program_types_id']
+            isOneToOne: false
+            referencedRelation: '[program_types]'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_room_plan_id_fkey'
+            columns: ['room_plan_id']
+            isOneToOne: false
+            referencedRelation: '[room_plans]'
             referencedColumns: ['id']
           },
         ]
@@ -584,6 +619,48 @@ export type Database = {
         }
         Relationships: []
       }
+      program_types: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      room_plans: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       notifications: {
         Row: {
           created_at: string
@@ -705,6 +782,13 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          gender?: string | null
+          civil_status?: string | null
+          card_number?: string | null
+          room_plan_id?: string | null
+          mbl?: number | null
+          program_types_id?: string | null
+          premium?: number | null
         }
         Update: {
           account_id?: string | null
@@ -752,6 +836,13 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          gender?: string | null
+          civil_status?: string | null
+          card_number?: string | null
+          room_plan_id?: string | null
+          mbl?: number | null
+          program_types_id?: string | null
+          premium?: number | null
         }
         Relationships: [
           {
@@ -822,6 +913,20 @@ export type Database = {
             columns: ['principal_plan_type_id']
             isOneToOne: false
             referencedRelation: 'plan_types'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_program_types_id_fkey'
+            columns: ['program_types_id']
+            isOneToOne: false
+            referencedRelation: 'program_types'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_room_plan_id_fkey'
+            columns: ['room_plan_id']
+            isOneToOne: false
+            referencedRelation: 'room_plans'
             referencedColumns: ['id']
           },
         ]
