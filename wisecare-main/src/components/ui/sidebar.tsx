@@ -9,6 +9,7 @@ import { cn } from '@/utils/tailwind'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
+import { Menu } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -284,15 +285,16 @@ const SidebarTrigger = React.forwardRef<
     <Button
       ref={ref}
       data-sidebar="trigger"
-      variant="ghost"
+      variant="secondary"
       size="icon"
-      className={cn('h-7 w-7', className)}
+      className={cn('h-8 w-8 bg-sky-500 rounded-0 text-white', className)}
       onClick={(event) => {
         onClick?.(event)
         toggleSidebar()
       }}
       {...props}
     >
+      <Menu />
       <PanelLeft className="block md:hidden" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
