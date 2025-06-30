@@ -8,7 +8,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 const AccountsTable = () => {
   const supabase = createBrowserClient()
-  const { data } = useQuery(getAccounts(supabase))
+  const { data, isLoading } = useQuery(getAccounts(supabase))
+  if (isLoading) return null
   const filteredData = (data || [])
     .filter(
       (item: any) =>

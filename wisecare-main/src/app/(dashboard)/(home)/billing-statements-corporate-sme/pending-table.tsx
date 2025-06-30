@@ -9,7 +9,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 const PendingTable = () => {
   const supabase = createBrowserClient()
 
-  const { data } = useQuery(getBillingStatements(supabase))
+  const { data, isLoading } = useQuery(getBillingStatements(supabase))
+
   const filteredData = (data || [])
     .filter(
       (item: any) =>
