@@ -10,16 +10,20 @@ const AccountsTable = () => {
   const supabase = createBrowserClient()
   const { data, isLoading } = useQuery(getAccounts(supabase))
   if (isLoading) return null
+
   const filteredData = (data || [])
     .filter(
       (item: any) =>
-        item.account_type?.name === 'Individual' ||
-        item.account_type?.name === 'Family',
+        item.account_type?.name?.startsWith('Individual') ||
+        item.account_type?.name?.startsWith('Family') ||
+        item.account_type?.name?.startsWith('Prepaid')
     )
     .map((item: any) => ({
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
+    console.log("data", filteredData)
+
   return <DataTable columns={accountsColumns} data={filteredData || []} />
 }
 export default AccountsTable

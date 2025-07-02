@@ -55,6 +55,7 @@ const companyEditsSchema = z.object({
   name_of_signatory: z.string().optional(),
   designation_of_contact_person: z.string().optional(),
   email_address_of_contact_person: z.string().optional(),
+  room_plan_id: z.string().optional(),
 })
 
 export default companyEditsSchema

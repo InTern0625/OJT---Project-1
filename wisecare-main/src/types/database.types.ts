@@ -127,6 +127,7 @@ export type Database = {
           total_utilization: number | null
           updated_at: string
           wellness_lecture_date: string | null
+          birthdate: string | null
           gender: string | null
           civil_status: string | null
           card_number: string | null
@@ -177,6 +178,7 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          birthdate?: string | null
           gender?: string | null
           civil_status?: string | null
           card_number?: string | null
@@ -227,6 +229,7 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
+          birthdate?: string | null
           gender?: string | null
           civil_status?: string | null
           card_number?: string | null
@@ -313,18 +316,30 @@ export type Database = {
           columns: Json[]
           created_at: string
           updated_at: string
+          columns_ifp_accounts: Json[] | null
+          columns_sme_accounts: Json[] | null
+          columns_ifp_renewals: Json[] | null
+          columns_sme_renewals: Json[] | null
           user_id: string
         }
         Insert: {
           columns: Json[]
           created_at?: string
           updated_at?: string
+          columns_ifp_accounts?: Json[] | null
+          columns_sme_accounts?: Json[] | null
+          columns_ifp_renewals?: Json[] | null
+          columns_sme_renewals?: Json[] | null
           user_id: string
         }
         Update: {
           columns?: Json[]
           created_at?: string
           updated_at?: string
+          columns_ifp_accounts?: Json[] | null
+          columns_sme_accounts?: Json[] | null
+          columns_ifp_renewals?: Json[] | null
+          columns_sme_renewals?: Json[] | null
           user_id?: string
         }
         Relationships: [
@@ -342,18 +357,30 @@ export type Database = {
           columns: Json | null
           created_at: string | null
           updated_at: string | null
+          columns_ifp_accounts: Json | null
+          columns_sme_accounts: Json | null
+          columns_ifp_renewals: Json | null
+          columns_sme_renewals: Json | null
           user_id: string
         }
         Insert: {
           columns?: Json | null
           created_at?: string | null
           updated_at?: string | null
+          columns_ifp_accounts?: Json | null
+          columns_sme_accounts?: Json | null
+          columns_ifp_renewals?: Json | null
+          columns_sme_renewals?: Json | null
           user_id?: string
         }
         Update: {
           columns?: Json | null
           created_at?: string | null
           updated_at?: string | null
+          columns_ifp_accounts?: Json | null
+          columns_sme_accounts?: Json | null
+          columns_ifp_renewals?: Json | null
+          columns_sme_renewals?: Json | null
           user_id?: string
         }
         Relationships: []

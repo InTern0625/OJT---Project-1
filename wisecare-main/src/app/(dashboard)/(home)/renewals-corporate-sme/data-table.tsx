@@ -37,7 +37,7 @@ import DataTableRow from './data-table-row'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getAccountsColumnVisibilityByUserId from '@/queries/get-accounts-column-visibility-by-user-id'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
-import { useColumnStates } from '@/app/(dashboard)/(home)/accounts/mutations/column-states'
+import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-corporate-sme/mutations/column-states'
 import { useToast } from '@/components/ui/use-toast'
 import { useUserServer } from '@/providers/UserProvider'
 import { useRouter } from 'next/navigation'
@@ -58,22 +58,22 @@ const DataTable = <TData extends IData, TValue>({
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
-  const { upsertColumnVisibility, upsertColumnSorting } = useColumnStates()
+  const { upsertRenewalIFPColumnVisibility, upsertRenewalIFPColumnSorting } = useColumnStates()
   const [isAccountLoading, setIsAccountLoading] = useState(false)
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
-    getAccountsColumnVisibilityByUserId(supabase),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_renewals"),
   )
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase),
+    getAccountsColumnSortingByUserId(supabase, "columns_ifp_renewals"),
   )
   const [sorting, setSorting] = useState<SortingState>(
-    (columnSortingData?.columns as unknown as SortingState) ?? [],
+    (columnSortingData?.columns_ifp_renewals as unknown as SortingState) ?? [],
   )
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    (columnVisibilityData?.columns as VisibilityState) ?? {},
+    (columnVisibilityData?.columns_ifp_renewals as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
 
@@ -97,23 +97,23 @@ const DataTable = <TData extends IData, TValue>({
   useEffect(() => {
       if (!user?.id) return
   
-      upsertColumnVisibility([
+      upsertRenewalIFPColumnVisibility([
         {
           user_id: user.id,
-          columns: columnVisibility,
+          columns_ifp_renewals: columnVisibility,
         },
       ])
-    }, [columnVisibility, supabase, toast, upsertColumnVisibility, user?.id])
+    }, [columnVisibility, supabase, toast, upsertRenewalIFPColumnVisibility, user?.id])
   useEffect(() => {
     if (!user?.id) return
 
-    upsertColumnSorting([
+    upsertRenewalIFPColumnSorting([
       {
         user_id: user.id,
-        columns: sorting,
+        columns_ifp_renewals: sorting,
       },
     ])
-  }, [sorting, supabase, toast, upsertColumnSorting, user?.id])
+  }, [sorting, supabase, toast, upsertRenewalIFPColumnSorting, user?.id])
 
   const totalCount = table.getFilteredRowModel().rows.length
 

@@ -60,19 +60,19 @@ const DataTable = <TData extends IData, TValue>({
 
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
-    getAccountsColumnVisibilityByUserId(supabase),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase),
+    getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
   )
 
   const [sorting, setSorting] = useState<SortingState>(
     (columnSortingData?.columns as unknown as SortingState) ?? [],
   )
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    (columnVisibilityData?.columns as VisibilityState) ?? {},
+    (columnVisibilityData?.columns_ifp_accounts as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [isAccountLoading, setIsAccountLoading] = useState(false)
