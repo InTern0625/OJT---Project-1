@@ -8,6 +8,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { format } from 'date-fns'
+import getTypes from '@/queries/get-types'
 import { FC, Suspense, useEffect, useState } from 'react'
 
 const HmoInformationFields = dynamic(
@@ -20,13 +22,17 @@ const HmoInformationFields = dynamic(
 
 interface CompanyHmoInformationProps {
   id: string
+  account: any
+  refetchAccount: () => void
 }
 
-const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
+  const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id, account, refetchAccount }) => {
   const { editMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
-  const { data: account } = useQuery(getAccountById(supabase, id))
+  const { data: roomPlans } = useQuery(getTypes(supabase, 'room_plans'))
 
+  const roomPlanName =
+    roomPlans?.find((plan) => plan.id === account?.room_plan_id)?.name ?? '-';
   const [signedContractProposalUrls, setSignedContractProposalUrls] = useState<string[]>([])
   const [signedSpecialBenefitsUrls, setSignedSpecialBenefitsUrls] = useState<string[]>([])
   const [signedAdditionalBenefitsUrls, setSignedAdditionalBenefitsUrls] = useState<string[]>([])
@@ -65,7 +71,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
     if (additionalBenefitsFiles.length > 0) {
       getSignedUrls(additionalBenefitsFiles).then(setSignedAdditionalBenefitsUrls)
     }
-    
+
   }, [
     account?.contract_proposal_files,
     account?.special_benefits_files,
@@ -81,53 +87,49 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
           <HmoInformationFields id={id}/>
         </Suspense>
       ) : (
-        
+
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2">
+          <CompanyInformationItem
+            label="Card Number"
+            value={account?.card_number || '-'}
+        />
+        <CompanyInformationItem
+            label="Mode of Payment"
+            value={account?.mode_of_payments?.name || '-'}
+        />
+        <CompanyInformationItem
+            label="Effective Date"
+            value={
+                account?.effective_date
+                  ? format(new Date(account.effective_date), 'PPP')
+                  : '-'
+              }
+          />
+        <CompanyInformationItem
+          label={'Expiration Date'}
+          value={
+              account?.effective_date
+                ? format(new Date(account.expiration_date), 'PPP')
+                : '-'
+            }
+        />
           <CompanyInformationItem
             label={'HMO Provider'}
             value={
-              account?.hmo_provider ? (account.hmo_provider as any).name : ''
+              account?.hmo_provider ? (account.hmo_provider as any).name : '-'
             }
           />
           <CompanyInformationItem
-            label={'Previous HMO Provider'}
-            value={
-              account?.previous_hmo_provider
-                ? (account.previous_hmo_provider as any).name
-                : ''
-            }
+            label="Room Plan"
+            value={roomPlanName}
           />
           <CompanyInformationItem
-            label={'Old HMO Provider'}
-            value={
-              account?.old_hmo_provider
-                ? (account.old_hmo_provider as any).name
-                : ''
-            }
-          />
+              label={'MBL'}
+              value={formatCurrency(account?.mbl)} //premium
+            />
           <CompanyInformationItem
-            label={'Principal Plan Type'}
-            value={
-              account?.principal_plan_type
-                ? (account.principal_plan_type as any).name
-                : ''
-            }
-          />
-          <CompanyInformationItem
-            label={'Dependent Plan Type'}
-            value={
-              account?.dependent_plan_type
-                ? (account.dependent_plan_type as any).name
-                : ''
-            }
-          />
-          <CompanyInformationItem
-            label={'Total Utilization'}
-            value={account?.total_utilization?.toString()}
-          />
-          <CompanyInformationItem
-            label={'Total Premium Paid'}
-            value={formatCurrency(account?.total_premium_paid)}
+            label={'Premium'}
+            value={formatCurrency(account?.total_premium_paid)} //premium
           />
           {isSpecialBenefitsFilesEnabled && (
             <FileInformation

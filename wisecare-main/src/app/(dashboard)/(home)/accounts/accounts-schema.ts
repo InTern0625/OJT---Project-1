@@ -43,6 +43,7 @@ const accountsSchema = z.object({
   email_address_of_contact_person: z.string().optional(),
   special_benefits: z.string().max(1000).optional(),
   special_benefits_files: z.array(z.instanceof(File)),
+  room_plan_id: z.string().uuid().optional()
 })
 
 export default accountsSchema
