@@ -12,9 +12,10 @@ const AccountsTable = () => {
   if (isLoading) return null
   const filteredData = (data || [])
     .filter(
-      (item: any) =>
-        item.account_type?.name === 'SME' ||
-        item.account_type?.name === 'CORPORATE',
+    (item: any) =>
+      item.account_type?.name?.startsWith('SME') ||
+      item.account_type?.name?.startsWith('Corporate') ||
+      item.account_type?.name?.startsWith('Corporate')
     )
     .map((item: any) => ({
       ...item,

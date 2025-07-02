@@ -28,9 +28,9 @@ const AccountsPage = async () => {
   await prefetchQuery(queryClient, getAccounts(supabase))
   await prefetchQuery(
     queryClient,
-    getAccountsColumnVisibilityByUserId(supabase),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_sme_accounts"),
   )
-  await prefetchQuery(queryClient, getAccountsColumnSortingByUserId(supabase))
+  await prefetchQuery(queryClient, getAccountsColumnSortingByUserId(supabase, "columns_sme_accounts"))
 
   await pageProtect([
     'marketing',
