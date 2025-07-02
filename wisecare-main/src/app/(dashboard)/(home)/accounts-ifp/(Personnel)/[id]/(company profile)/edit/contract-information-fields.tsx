@@ -41,7 +41,7 @@ const ContractInformationFields = () => {
 
   const maskedInitialContractValueRef = useMaskito({ options: currencyOptions })
   const maskedInitialHeadCountRef = useMaskito({ options: numberOptions })
-
+  console.log("IM HERE")
   return (
     <>
       <FormField
@@ -128,7 +128,7 @@ const ContractInformationFields = () => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-                  Expiration Date:
+                  Expiration Date12:
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>

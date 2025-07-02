@@ -193,7 +193,6 @@ interface HmoInformationProps {
         control={form.control}
         name="room_plan_id"
         render={({ field }) => {
-          console.log("room_plan_id value at render:", field.value); // ✅ debug log
 
           return (
             <FormItem>

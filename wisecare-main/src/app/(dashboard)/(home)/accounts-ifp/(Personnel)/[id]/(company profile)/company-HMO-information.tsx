@@ -30,7 +30,6 @@ interface CompanyHmoInformationProps {
   const { editMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
   const { data: roomPlans } = useQuery(getTypes(supabase, 'room_plans'))
-  console.log("room_plan_id from account:", account?.room_plan_id)
 
   const roomPlanName =
     roomPlans?.find((plan) => plan.id === account?.room_plan_id)?.name ?? '-';

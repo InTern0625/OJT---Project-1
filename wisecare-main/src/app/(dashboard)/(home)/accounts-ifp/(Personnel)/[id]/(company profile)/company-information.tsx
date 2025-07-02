@@ -23,12 +23,19 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
   const { editMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, id))
-
-  // Safely format age
-  const age = account?.birthdate
-    ? new Date().getFullYear() - new Date(account.birthdate).getFullYear()
-    : '-'
-
+  const age: number | '' = (() => {
+    const birthdate = account?.birthdate
+    if (!birthdate) return ''
+    const birth = new Date(birthdate)
+    const today = new Date()
+    let age = today.getFullYear() - birth.getFullYear()
+    const monthDiff = today.getMonth() - birth.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--
+    }
+    return age >= 0 ? age : ''
+  })()
+  
   return (
     <>
       {editMode ? (
@@ -72,9 +79,8 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
           <CompanyInformationItem
             key="Age"
             label="Age"
-            value={account?.age || '-'}
+            value={age || '-'}
           />
-
           {/* group 3 */}
           <CompanyInformationItem
             key="civil-status"

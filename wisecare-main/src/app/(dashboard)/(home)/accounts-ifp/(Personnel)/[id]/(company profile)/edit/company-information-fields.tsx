@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, useWatch } from 'react-hook-form'
 import { z } from 'zod'
 import {
   Select,
@@ -17,9 +17,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select' // adjust path if needed
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Button } from '@/components/ui/button'
+import { cn } from '@/utils/tailwind'
+import { format } from 'date-fns'
+import { CalendarIcon } from 'lucide-react'
+import { Calendar } from '@/components/ui/calendar'
+
 
 const CompanyInformationFields = () => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
+  const computeAge = (birthdate: string | Date | null): number | '' => {
+    if (!birthdate) return ''
+    const birth = new Date(birthdate)
+    const today = new Date()
+    let age = today.getFullYear() - birth.getFullYear()
+    const m = today.getMonth() - birth.getMonth()
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+      age--
+    }
+    return age >= 0 ? age : ''
+  }
+  const birthdate = useWatch({
+    control: form.control,
+    name: 'birthdate',
+  })
+
+  const age = computeAge(birthdate ?? "")
 
   return (
     <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 text-[#1e293b]">
@@ -64,18 +92,47 @@ const CompanyInformationFields = () => {
           <FormItem>
             <label className="text-sm font-semibold">Birthdate:</label>
             <FormControl>
-              <input
-                type="date"
-                value={
-                  typeof field.value === 'string'
-                    ? field.value
-                    : field.value instanceof Date
-                      ? field.value.toISOString().split('T')[0]
-                      : ''
-                }
-                onChange={(e) => field.onChange(e.target.value)}
-                className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
-              />
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full min-w-[240px] rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+                            !field.value && 'text-muted-foreground',
+                            'text-left font-normal',
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ?? undefined}
+                        onSelect={field.onChange}
+                        disabled={(date) => date < new Date('1900-01-01')}
+                        initialFocus
+                        captionLayout="dropdown"
+                        toYear={new Date().getFullYear() + 20}
+                        fromYear={1900}
+                        classNames={{
+                          day_hidden: 'invisible',
+                          dropdown:
+                            'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+                          caption_dropdowns: 'flex gap-3',
+                          vhidden: 'hidden',
+                          caption_label: 'hidden',
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -86,20 +143,22 @@ const CompanyInformationFields = () => {
 
       {/* Group 3 */}
       <FormField
-        control={form.control}
         name="age"
         render={({ field }) => (
          <FormItem>
            <FormControl>
              <div>
                <label className="text-sm font-semibold">Age:</label>
-               <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" {...field} />
+               <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" 
+                 value={age}
+                 readOnly disabled
+               />
              </div>
            </FormControl>
             <FormMessage />
          </FormItem>
       )}
-    />
+      />
 
     <FormField
       control={form.control}

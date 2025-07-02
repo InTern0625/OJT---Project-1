@@ -242,14 +242,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const existingSpecialBenefits = account?.special_benefits_files || [];
         const existingContractProposals = account?.contract_proposal_files || [];
         const existingAdditionalBenefits = account?.additional_benefits_files || [];
-
+        // Toggle is editing to false
         await supabase
         .from('accounts')
         .update({
           is_editing: false, 
           editing_user: null,
-          editing_timestampz: null,
-          mode_of_payments: data.mode_of_payments,
+          editing_timestampz: null
         })
         .eq('id', companyId)
 
@@ -309,9 +308,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             ];
           }
         }
-
-        console.log('📆 Birthdate (raw):', data.birthdate)
-        console.log('📆 Birthdate (normalized):', normalizeToUTC(new Date(data.birthdate)))
 
         await mutateAsync([
           {
