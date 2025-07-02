@@ -830,14 +830,6 @@ export type Database = {
           mbl?: number | null
           program_types_id?: string | null
           premium?: number | null
-          birthdate?: string | null
-          gender?: string | null
-          civil_status?: string | null
-          card_number?: string | null
-          room_plan_id?: string | null
-          mbl?: number | null
-          program_types_id?: string | null
-          premium?: number | null
         }
         Update: {
           account_id?: string | null
@@ -893,13 +885,6 @@ export type Database = {
           program_types_id?: string | null
           premium?: number | null
           birthdate?: string | null
-          gender?: string | null
-          civil_status?: string | null
-          card_number?: string | null
-          room_plan_id?: string | null
-          mbl?: number | null
-          program_types_id?: string | null
-          premium?: number | null
         }
         Relationships: [
           {
