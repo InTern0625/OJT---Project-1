@@ -4,14 +4,8 @@ import CreateType from './create-type'
 import TypeList from './type-list'
 import TypesNavigation from './types-navigation'
 import TypesTitle from './types-title'
+import { createBrowserClient } from '@/utils/supabase-client'
 
-export type TypeTabs =
-  | 'account_types'
-  | 'hmo_providers'
-  | 'mode_of_payments'
-  | 'plan_types'
-  | 'program_types'
-  | 'room_plans'
 
 const useTypesContext = () => {
   const context = useContext(TypesContext)
@@ -21,15 +15,20 @@ const useTypesContext = () => {
   return context
 }
 
-const TypesContext = createContext({
+const TypesContext = createContext<{
+  isNavOpen: boolean
+  setIsNavOpen: (value: boolean) => void
+  page: string
+  setPage: (value: string) => void
+}>({
   isNavOpen: false,
-  setIsNavOpen: (_value: boolean) => {},
-  page: 'account_types',
-  setPage: (_value: TypeTabs) => {},
+  setIsNavOpen: () => {},
+  page: '',
+  setPage: () => {},
 })
 
 const TypeCard = () => {
-  const [page, setPage] = useState<TypeTabs>('account_types')
+  const [page, setPage] = useState<string>('account_types')
   const [isNavOpen, setIsNavOpen] = useState(false)
 
   return (
