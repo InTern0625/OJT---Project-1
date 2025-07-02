@@ -13,7 +13,7 @@ const companyEditsSchema = z.object({
   account_type_id: z.string().optional(),
   total_utilization: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),
-    z.number().optional(),
+    z.number().optional().nullable(),
   ),
   total_premium_paid: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),
@@ -28,7 +28,11 @@ const companyEditsSchema = z.object({
     (val) => (val === null ? null : parseInt(val as string)),
     z.number().optional().nullable(),
   ),
-  effective_date: z.date().optional(),
+  effective_date: z
+    .string()
+    .refine((val) => !isNaN(Date.parse(val)), {
+      message: 'Invalid date format',
+    }),
   original_effective_date: z.date().optional(),
   coc_issue_date: z.date().optional(),
   expiration_date: z.date().optional(),
@@ -38,7 +42,9 @@ const companyEditsSchema = z.object({
     (val) => (val === null ? null : parseFloat(val as string)),
     z.number().optional().nullable(),
   ),
-  mode_of_payment_id: z.string().optional(),
+  mode_of_payment_id: z.string().uuid(),
+  room_plan:room_plan_id(name, id),
+  room_plan_id,
   wellness_lecture_date: z.date().optional(),
   annual_physical_examination_date: z.date().optional(),
   commision_rate: z.preprocess(
@@ -55,6 +61,7 @@ const companyEditsSchema = z.object({
   name_of_signatory: z.string().optional(),
   designation_of_contact_person: z.string().optional(),
   email_address_of_contact_person: z.string().optional(),
+  mbl: z.number().nullable().optional(),
 })
 
 export default companyEditsSchema

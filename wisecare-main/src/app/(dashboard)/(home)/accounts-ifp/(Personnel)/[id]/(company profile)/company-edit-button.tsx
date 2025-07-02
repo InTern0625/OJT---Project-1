@@ -108,7 +108,7 @@ const CompanyEditButton: FC<Props> = ({ role, accountId }) => {
           <TooltipTrigger asChild={true}>
             <div>
               <Button className="w-full gap-2 md:max-w-xs" onClick={handleClick}>
-                {isBeingEdited ? <UserRoundPen/> : <Pencil/>}<span> Edit Company Details</span>
+                {isBeingEdited ? <UserRoundPen/> : <Pencil/>}<span> Edit Account Details</span>
               </Button>
             </div>
           </TooltipTrigger>

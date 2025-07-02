@@ -8,6 +8,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
+import { format } from 'date-fns'
+import getTypes from '@/queries/get-types'
 import { FC, Suspense, useEffect, useState } from 'react'
 
 const HmoInformationFields = dynamic(
@@ -20,13 +22,18 @@ const HmoInformationFields = dynamic(
 
 interface CompanyHmoInformationProps {
   id: string
+  account: any
+  refetchAccount: () => void
 }
 
-const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
+  const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id, account, refetchAccount }) => {
   const { editMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
-  const { data: account } = useQuery(getAccountById(supabase, id))
+  const { data: roomPlans } = useQuery(getTypes(supabase, 'room_plans'))
+  console.log("room_plan_id from account:", account?.room_plan_id)
 
+  const roomPlanName =
+    roomPlans?.find((plan) => plan.id === account?.room_plan_id)?.name ?? '-';
   const [signedContractProposalUrls, setSignedContractProposalUrls] = useState<string[]>([])
   const [signedSpecialBenefitsUrls, setSignedSpecialBenefitsUrls] = useState<string[]>([])
   const [signedAdditionalBenefitsUrls, setSignedAdditionalBenefitsUrls] = useState<string[]>([])
@@ -65,7 +72,7 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
     if (additionalBenefitsFiles.length > 0) {
       getSignedUrls(additionalBenefitsFiles).then(setSignedAdditionalBenefitsUrls)
     }
-    
+
   }, [
     account?.contract_proposal_files,
     account?.special_benefits_files,
@@ -81,47 +88,45 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
           <HmoInformationFields id={id}/>
         </Suspense>
       ) : (
-        
+
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2">
           <CompanyInformationItem
-            label={'Card Number'}
+            label="Card Number"
+            value={account?.card_number || '-'}
+        />
+        <CompanyInformationItem
+            label="Mode of Payment"
+            value={account?.mode_of_payments?.name || '-'}
+        />
+        <CompanyInformationItem
+            label="Effective Date"
             value={
-              account?.hmo_provider ? (account.hmo_provider as any).name : ''
-            }
+                account?.effective_date
+                  ? format(new Date(account.effective_date), 'PPP')
+                  : '-'
+              }
           />
-          <CompanyInformationItem
-            label={'Effectivity'}
-            value={
-              account?.previous_hmo_provider
-                ? (account.previous_hmo_provider as any).name
-                : ''
+        <CompanyInformationItem
+          label={'Expiration Date'}
+          value={
+              account?.effective_date
+                ? format(new Date(account.expiration_date), 'PPP')
+                : '-'
             }
-          />
-          <CompanyInformationItem
-            label={'Expiration'}
-            value={
-              account?.old_hmo_provider
-                ? (account.old_hmo_provider as any).name
-                : ''
-            }
-          />
-          <CompanyInformationItem
-            label={'Mode of Payment'}
-            value={
-              account?.principal_plan_type
-                ? (account.principal_plan_type as any).name
-                : ''
-            }
-          />
+        />
           <CompanyInformationItem
             label={'HMO Provider'}
             value={
-              account?.hmo_provider ? (account.hmo_provider as any).name : ''
+              account?.hmo_provider ? (account.hmo_provider as any).name : '-'
             }
           />
           <CompanyInformationItem
-            label={'MBL'}
-            value={account?.total_utilization?.toString()} //MBL
+            label="Room Plan"
+            value={roomPlanName}
+          />
+          <CompanyInformationItem
+            label="MBL"
+            value={account?.mbl != null ? account.mbl.toString() : '-'} // or format it
           />
           <CompanyInformationItem
             label={'Premium'}

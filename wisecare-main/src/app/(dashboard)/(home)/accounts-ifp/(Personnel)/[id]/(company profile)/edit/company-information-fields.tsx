@@ -1,3 +1,5 @@
+'use client'
+
 import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edits-schema'
 import {
   FormControl,
@@ -8,22 +10,29 @@ import {
 import { Input } from '@/components/ui/input'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select' // adjust path if needed
 
 const CompanyInformationFields = () => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
+
   return (
-    <>
+    <div className="grid grid-cols-2 gap-x-6 gap-y-4 pt-4 text-[#1e293b]">
+      {/* Group 1 */}
       <FormField
         control={form.control}
-        name="company_name" // ✅ Correct
+        name="company_name"
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Complete Name:
-                  <Input className="w-full" {...field} />
-                </div>
+              <div>
+                <label className="text-sm font-semibold">Complete Name:</label>
+                <Input className="w-full mt-1" {...field} />
               </div>
             </FormControl>
             <FormMessage />
@@ -33,15 +42,13 @@ const CompanyInformationFields = () => {
 
       <FormField
         control={form.control}
-        name="birthdate" // 🟢 updated from company_address
+        name="company_address"
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Birthdate:
-                  <Input className="w-full" type="date" {...field} />
-                </div>
+              <div>
+                <label className="text-sm font-semibold">Complete Address:</label>
+                <Input className="w-full mt-1" {...field} />
               </div>
             </FormControl>
             <FormMessage />
@@ -49,19 +56,112 @@ const CompanyInformationFields = () => {
         )}
       />
 
-      {/* No input for Age since it's computed */}
+      {/* Group 2 */}
+      <FormField
+        control={form.control}
+        name="birthdate"
+        render={({ field }) => (
+          <FormItem>
+            <label className="text-sm font-semibold">Birthdate:</label>
+            <FormControl>
+              <input
+                type="date"
+                value={
+                  field.value
+                    ? new Date(field.value).toISOString().split('T')[0]
+                    : ''
+                }
+                onChange={(e) => field.onChange(e.target.value)}
+                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+
+
+      {/* Age is computed, not editable */}
+
+      {/* Group 3 */}
+      <FormField
+        control={form.control}
+        name="age"
+        render={({ field }) => (
+         <FormItem>
+           <FormControl>
+             <div>
+               <label className="text-sm font-semibold">Age:</label>
+               <Input className="w-full mt-1" {...field} />
+             </div>
+           </FormControl>
+            <FormMessage />
+         </FormItem>
+      )}
+    />
+    <FormField
+      control={form.control}
+      name="gender"
+      render={({ field }) => (
+        <FormItem>
+          <label className="text-sm font-semibold">Gender:</label>
+          <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <FormControl>
+              <SelectTrigger className="w-full mt-1">
+                <SelectValue placeholder="Select gender" />
+              </SelectTrigger>
+            </FormControl>
+            <SelectContent>
+              {['Male', 'Female', 'Other', 'Prefer not to say'].map((gender) => (
+                <SelectItem key={gender} value={gender}>
+                  {gender}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <FormMessage />
+        </FormItem>
+      )}
+    />
 
       <FormField
         control={form.control}
-        name="gender" // 🟢 updated from name_of_signatory
+        name="civil_status"
+        render={({ field }) => (
+          <FormItem>
+            <label className="text-sm font-semibold">Civil Status:</label>
+            <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <FormControl>
+                <SelectTrigger className="w-full mt-1">
+                  <SelectValue placeholder="Select civil status" />
+                </SelectTrigger>
+              </FormControl>
+              <SelectContent>
+                {['Single', 'Married', 'Widowed', 'Divorced', 'Separated'].map(
+                  (status) => (
+                    <SelectItem key={status} value={status}>
+                      {status}
+                    </SelectItem>
+                  ),
+                )}
+              </SelectContent>
+            </Select>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      {/* Group 4 */}
+      <FormField
+        control={form.control}
+        name="contact_number"
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Gender:
-                  <Input className="w-full" {...field} />
-                </div>
+              <div>
+                <label className="text-sm font-semibold">Contact Number:</label>
+                <Input className="w-full mt-1" {...field} />
               </div>
             </FormControl>
             <FormMessage />
@@ -71,76 +171,20 @@ const CompanyInformationFields = () => {
 
       <FormField
         control={form.control}
-        name="civil_status" // 🟢 updated from signatory_designation
+        name="email_address_of_contact_person"
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Civil Status:
-                  <Input className="w-full" {...field} />
-                </div>
+              <div>
+                <label className="text-sm font-semibold">Email Address:</label>
+                <Input className="w-full mt-1" type="email" {...field} />
               </div>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-
-      <FormField
-        control={form.control}
-        name="company_address" // 🟢 updated from contact_person
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Address:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="contact_number" // 🟢 updated from designation_of_contact_person
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Contact Number:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      <FormField
-        control={form.control}
-        name="email_address_of_contact_person" // ✅ already correct
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <div className="pt-4">
-                <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                  Email Address:
-                  <Input className="w-full" {...field} />
-                </div>
-              </div>
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-    </>
+    </div>
   )
 }
 

@@ -5,6 +5,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import dynamic from 'next/dynamic'
 import { FC, Suspense } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { format } from 'date-fns'
 
 const CompanyInformationFields = dynamic(
   () =>
@@ -43,14 +44,18 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
             value={account?.company_name || '-'}
           />
           <CompanyInformationItem
-            key="age"
-            label="Age"
-            value={age.toString()}
+            key="birthdate"
+            label="Birthdate"
+            value={
+               account?.birthdate
+                 ? format(new Date(account.birthdate), 'PPP')
+                 : '-'
+             }
           />
           <CompanyInformationItem
-            key="civil-status"
-            label="Civil Status"
-            value={account?.civil_status || '-'}
+            key="gender"
+            label="Gender"
+            value={account?.gender || '-'}
           />
           <CompanyInformationItem
             key="contact-number"
@@ -60,21 +65,21 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
 
           {/* group 2 */}
           <CompanyInformationItem
-            key="birthdate"
-            label="Birthdate"
-            value={account?.birthdate || '-'}
+            key="Complete Address"
+            label="Complete Address"
+            value={account?.company_address || '-'}
           />
           <CompanyInformationItem
-            key="gender"
-            label="Gender"
-            value={account?.gender || '-'}
+            key="Age"
+            label="Age"
+            value={account?.age || '-'}
           />
 
           {/* group 3 */}
           <CompanyInformationItem
-            key="address"
-            label="Address"
-            value={account?.company_address || '-'}
+            key="civil-status"
+            label="Civil Status"
+            value={account?.civil_status || '-'}
           />
           <CompanyInformationItem
             key="email-address"

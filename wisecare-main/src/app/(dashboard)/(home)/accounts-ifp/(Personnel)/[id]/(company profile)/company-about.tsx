@@ -36,7 +36,7 @@ interface Props {
 const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { editMode, setEditMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
-  const { data: account } = useQuery(getAccountById(supabase, companyId))
+  const { data: account, refetch: refetchAccount } = useQuery(getAccountById(supabase, companyId));
   const { user } = useUserServer()
 
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
@@ -100,6 +100,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       expiration_date: account?.expiration_date
         ? normalizeToUTC(new Date(account.expiration_date))
         : undefined,
+      birthdate: account?.birthdate
+          ? normalizeToUTC(new Date(account.birthdate))
+          : undefined,
       delivery_date_of_membership_ids: account?.delivery_date_of_membership_ids
         ? normalizeToUTC(new Date(account.delivery_date_of_membership_ids))
         : undefined,
@@ -196,6 +199,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
+          console.log('🧪 Submitted birthdate:', data.birthdate)
+
         const {
           data: { user },
         } = await supabase.auth.getUser()
@@ -211,13 +216,14 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const existingSpecialBenefits = account?.special_benefits_files || [];
         const existingContractProposals = account?.contract_proposal_files || [];
         const existingAdditionalBenefits = account?.additional_benefits_files || [];
-        
+
         await supabase
         .from('accounts')
         .update({
           is_editing: false, 
           editing_user: null,
-          editing_timestampz: null
+          editing_timestampz: null,
+          mode_of_payments: data.mode_of_payments,
         })
         .eq('id', companyId)
 
@@ -278,9 +284,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           }
         }
 
+        console.log('📆 Birthdate (raw):', data.birthdate)
+        console.log('📆 Birthdate (normalized):', normalizeToUTC(new Date(data.birthdate)))
+
         await mutateAsync([
           {
             company_name: data.company_name,
+            room_plan_id: data?.room_plan_id,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
             contact_person: data.contact_person,
@@ -292,10 +302,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               data.email_address_of_contact_person,
             account_type_id: data?.account_type_id,
             agent_id: data.agent_id,
+            civil_status: data.civil_status,
+            gender: data.gender,
             is_active: data.is_active,
             hmo_provider_id: data?.hmo_provider_id,
             previous_hmo_provider_id: data?.previous_hmo_provider_id,
             old_hmo_provider_id: data?.old_hmo_provider_id,
+            card_number: data?.card_number,
             principal_plan_type_id: data?.principal_plan_type_id,
             dependent_plan_type_id: data?.dependent_plan_type_id,
             total_premium_paid: data.total_premium_paid,
@@ -320,6 +333,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             original_effective_date: data.original_effective_date
               ? normalizeToUTC(new Date(data.original_effective_date))
               : null,
+            birthdate: data?.birthdate
+                ? normalizeToUTC(new Date(data.birthdate))
+                : null,
             coc_issue_date: data.coc_issue_date
               ? normalizeToUTC(new Date(data.coc_issue_date))
               : null,
@@ -395,7 +411,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             </div>
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
               <span className="text-xl font-semibold">HMO Information</span>
-              <CompanyHMOInformation id={companyId} />
+                <CompanyHMOInformation id={companyId} account={account} refetchAccount={refetchAccount} />
             </div>
           </div>
         </div>

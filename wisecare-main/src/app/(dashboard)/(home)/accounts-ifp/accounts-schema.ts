@@ -22,10 +22,11 @@ const accountsSchema = z.object({
   principal_plan_type_id: z.string().uuid().optional(),
   dependent_plan_type_id: z.string().uuid().optional(),
   initial_head_count: z.string().optional(),
-  effective_date: z.date().optional(),
+  effective_date: z.string().optional(),
+  birthdate: z.string().optional(),
   original_effective_date: z.date().optional(),
   coc_issue_date: z.date().optional(),
-  expiration_date: z.date().optional(),
+  expiration_date: z.string().optional(),
   delivery_date_of_membership_ids: z.date().optional(),
   orientation_date: z.date().optional(),
   initial_contract_value: z.preprocess((val) => {
@@ -53,8 +54,16 @@ const accountsSchema = z.object({
   room_plan_id: z.string().uuid().optional(),
   mbl: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null
-    const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
-    return isNaN(parsedVal) ? null : parsedVal
+
+    if (typeof val === 'string') {
+      const parsedVal = parseFloat(val.replace(/[₱,\s]/g, ''))
+      return isNaN(parsedVal) ? null : parsedVal
+    }
+
+    // fallback if already number (e.g. from form or backend)
+    if (typeof val === 'number') return val
+
+    return null
   }, z.number().nullable()),
   program_types_id: z.string().uuid().optional(),
   premium: z.preprocess((val) => {

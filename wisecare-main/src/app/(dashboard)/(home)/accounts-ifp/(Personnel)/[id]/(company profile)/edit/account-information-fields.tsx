@@ -56,7 +56,7 @@ const AccountInformationFields = () => {
           <FormItem>
             <div className="pt-4">
               <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                Account Type:
+                Account Type
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
