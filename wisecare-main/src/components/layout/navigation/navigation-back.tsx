@@ -9,7 +9,7 @@ const goBack = async () => {
 
 export function ButtonBack() {
   return (
-    <Button onClick={() => goBack()} variant="secondary" size="icon" className="size-8 bg-sky-500 text-white">
+    <Button onClick={() => goBack()} variant="secondary" size="icon" className="size-8 text-white">
       <ChevronLeftIcon />
     </Button>
   )

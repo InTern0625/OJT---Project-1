@@ -1,29 +1,24 @@
 import { Button } from '@/components/ui/button'
 import { Menu } from 'lucide-react'
 import { FC } from 'react'
-import { TypeTabs } from './type-card'
+//import { TypeTabs } from './type-card'
+import { useEffect, useState } from 'react'
+import { createBrowserClient } from '@/utils/supabase-client'
 
 interface Props {
-  page: TypeTabs
+  page: string
   handleClick: () => void
 }
 
 const TypesTitle: FC<Props> = ({ page, handleClick }) => {
+  const supabase = createBrowserClient()
+
   const renderTitle = () => {
-    switch (page) {
-      case 'account_types':
-        return 'Account Types'
-      case 'hmo_providers':
-        return 'HMO Providers'
-      case 'mode_of_payments':
-        return 'Mode of Payments'
-      case 'plan_types':
-        return 'Plan Types'
-      case 'room_plans':
-        return 'Room Plan'
-      case 'program_types':
-        return 'Program Types'
-    }
+    if (!page) return ''
+    
+    return page
+      .replace(/_/g, ' ') 
+      .replace(/\b\w/g, (char) => char.toUpperCase())
   }
 
   return (
