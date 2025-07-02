@@ -125,9 +125,9 @@ interface CompanyHmoInformationProps {
             value={roomPlanName}
           />
           <CompanyInformationItem
-            label="MBL"
-            value={account?.mbl != null ? account.mbl.toString() : '-'} // or format it
-          />
+              label={'MBL'}
+              value={formatCurrency(account?.mbl)} //premium
+            />
           <CompanyInformationItem
             label={'Premium'}
             value={formatCurrency(account?.total_premium_paid)} //premium

@@ -17,6 +17,7 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       account_type:account_types(name, id),
       total_utilization,
       total_premium_paid,
+      mbl,
       signatory_designation,
       contact_person,
       contact_number,
@@ -49,7 +50,6 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       special_benefits_files,
       contract_proposal_files,
       card_number,
-      mbl,
       premium,
       additional_benefits_files,
       room_plan_id

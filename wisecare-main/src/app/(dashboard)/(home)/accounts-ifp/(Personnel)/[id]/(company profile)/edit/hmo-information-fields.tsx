@@ -63,15 +63,15 @@ interface HmoInformationProps {
             <FormControl>
               <Input
                 type="text"
-                className="w-full"
+                inputMode="numeric"
+                pattern="\d*"
+                className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
                 {...field}
                 value={field.value ?? ''}
-                onInput={(e) => {
-                  const val = e.currentTarget.value
-                  // Allow only integers (no decimals, no letters)
-                  if (/^\d*$/.test(val)) {
-                    field.onChange(val)
-                  }
+                onChange={(e) => {
+                  // Strip all non-digit characters
+                  const numericValue = e.target.value.replace(/\D/g, '');
+                  field.onChange(numericValue);
                 }}
               />
             </FormControl>
@@ -80,21 +80,20 @@ interface HmoInformationProps {
         )}
       />
       <FormField
-      control={form.control}
-      name="mode_of_payment_id"
-      render={({ field }) => (
-        <FormItem>
-          <FormControl>
-            <div className="pt-4">
-              <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                Mode of Payment:
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+        control={form.control}
+        name="mode_of_payment_id"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <div className="pt-1">
+                <div className="text-sm text-[#1e293b] mb-1">
+                  Mode of Payment:
+                </div>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue />
+                    <SelectTrigger
+                    className = "w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300">
+                      <SelectValue placeholder="Select a mode of payment" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -106,12 +105,12 @@ interface HmoInformationProps {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-          </FormControl>
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       {/* Row 2: Effective Date | Expiration Date */}
       <FormField
         control={form.control}
@@ -122,11 +121,13 @@ interface HmoInformationProps {
             <FormControl>
               <input
                 type="date"
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
                 value={
-                  field.value
-                    ? new Date(field.value).toISOString().split('T')[0]
-                    : ''
+                  typeof field.value === 'string'
+                    ? field.value
+                    : field.value instanceof Date
+                      ? field.value.toISOString().split('T')[0]
+                      : ''
                 }
                 onChange={(e) => field.onChange(e.target.value)} // ✅ This is required!
               />
@@ -145,11 +146,13 @@ interface HmoInformationProps {
               <FormControl>
                 <input
                   type="date"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
+                  className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
                   value={
-                    field.value
-                      ? new Date(field.value).toISOString().split('T')[0]
-                      : ''
+                    typeof field.value === 'string'
+                      ? field.value
+                      : field.value instanceof Date
+                        ? field.value.toISOString().split('T')[0]
+                        : ''
                   }
                   onChange={(e) => field.onChange(e.target.value)} // ✅ This is required!
                 />
@@ -168,7 +171,8 @@ interface HmoInformationProps {
             <div className="text-sm text-[#1e293b]">HMO Provider:</div>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger
+                   className = "w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300">
                   <SelectValue />
                 </SelectTrigger>
               </FormControl>
@@ -194,15 +198,16 @@ interface HmoInformationProps {
           return (
             <FormItem>
               <FormControl>
-                <div className="pt-4">
-                  <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
+                <div className="pt-2">
+                  <div className="text-sm grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
                     Room Plan:
                     <Select
                       onValueChange={field.onChange}
                       value={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger
+                        className = "w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300">
                           <SelectValue placeholder="Select Room Plan" />
                         </SelectTrigger>
                       </FormControl>
@@ -225,35 +230,22 @@ interface HmoInformationProps {
 
       {/* Row 4: MBL | Premium */}
        <FormField
-         control={form.control}
-         name="mbl"
-         render={({ field }) => (
-           <FormItem>
-             <FormLabel className="text-sm text-[#1e293b]">MBL</FormLabel>
-             <FormControl>
-               <input
-                 ref={maskedMBLRef}
-                 value={
-                   field.value !== null && field.value !== undefined
-                     ? `₱ ${Number(field.value).toLocaleString('en-US', {
-                         minimumFractionDigits: 2,
-                         maximumFractionDigits: 2,
-                       })}`
-                     : ''
-                 }
-                 onChange={(e) => {
-                   const rawValue = e.target.value.replace(/[₱, ]/g, '');
-                   const numericValue = parseFloat(rawValue);
-                   field.onChange(isNaN(numericValue) ? null : numericValue);
-                 }}
-                 placeholder="₱ 0.00"
-                 className="w-full px-3 py-2 border rounded"
-               />
-             </FormControl>
-             <FormMessage />
-           </FormItem>
-         )}
-       />
+       control={form.control}
+       name="mbl"
+       render={({ field }) => (
+         <FormItem>
+           <div className="text-sm text-[#1e293b]">MBL:</div>
+           <Input
+             className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
+             {...field}
+             value={field.value ?? ''}
+             ref={maskedMBLRef}
+             onInput={field.onChange}
+           />
+           <FormMessage />
+         </FormItem>
+       )}
+     />
 
       <FormField
         control={form.control}
@@ -262,7 +254,7 @@ interface HmoInformationProps {
           <FormItem>
             <div className="text-sm text-[#1e293b]">Premium:</div>
             <Input
-              className="w-full"
+              className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
               {...field}
               value={field.value ?? ''}
               ref={maskedTotalPremiumPaidRef}

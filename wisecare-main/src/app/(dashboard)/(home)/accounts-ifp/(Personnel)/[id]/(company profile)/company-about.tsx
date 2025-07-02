@@ -73,6 +73,12 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             currencyOptions,
           ) as unknown as number)
         : undefined,
+      mbl: account?.mbl
+          ? (maskitoTransform(
+              account.mbl.toString(),
+              currencyOptions,
+            ) as unknown as number)
+          : undefined,
       signatory_designation: account?.signatory_designation ?? '',
       contact_person: account?.contact_person ?? '',
       contact_number: account?.contact_number ?? '',
@@ -199,8 +205,28 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
-          console.log('🧪 Submitted birthdate:', data.birthdate)
 
+          const patchedData = {
+              ...data,
+              effective_date:
+                typeof data.effective_date === "string"
+                  ? data.effective_date
+                  : data.effective_date instanceof Date
+                  ? data.effective_date.toISOString().split("T")[0]
+                  : "",
+              expiration_date:
+                typeof data.expiration_date === "string"
+                  ? data.expiration_date
+                  : data.expiration_date instanceof Date
+                  ? data.expiration_date.toISOString().split("T")[0]
+                  : "",
+              birthdate:
+                typeof data.birthdate === "string"
+                    ? data.birthdate
+                    : data.birthdate instanceof Date
+                    ? data.birthdate.toISOString().split("T")[0]
+                    : "",
+            };
         const {
           data: { user },
         } = await supabase.auth.getUser()
@@ -312,6 +338,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             principal_plan_type_id: data?.principal_plan_type_id,
             dependent_plan_type_id: data?.dependent_plan_type_id,
             total_premium_paid: data.total_premium_paid,
+            mbl: data.mbl,
             additional_benefits: data.additional_benefits,
             initial_contract_value: data.initial_contract_value,
             mode_of_payment_id: data?.mode_of_payment_id,

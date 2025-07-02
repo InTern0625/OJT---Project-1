@@ -11,6 +11,11 @@ const accountsSchema = z.object({
   old_hmo_provider_id: z.string().uuid().optional(),
   account_type_id: z.string().uuid().optional(),
   total_utilization: z.string().optional(),
+  mbl: z.preprocess((val) => {
+      if (val === null || val === '' || val === undefined) return null
+      const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
+      return isNaN(parsedVal) ? null : parsedVal
+    }, z.number().nullable()),
   total_premium_paid: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null
     const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
@@ -52,19 +57,6 @@ const accountsSchema = z.object({
   civil_status: z.string().optional(),
   card_number: z.string().max(500).optional(),
   room_plan_id: z.string().uuid().optional(),
-  mbl: z.preprocess((val) => {
-    if (val === null || val === '' || val === undefined) return null
-
-    if (typeof val === 'string') {
-      const parsedVal = parseFloat(val.replace(/[₱,\s]/g, ''))
-      return isNaN(parsedVal) ? null : parsedVal
-    }
-
-    // fallback if already number (e.g. from form or backend)
-    if (typeof val === 'number') return val
-
-    return null
-  }, z.number().nullable()),
   program_types_id: z.string().uuid().optional(),
   premium: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null

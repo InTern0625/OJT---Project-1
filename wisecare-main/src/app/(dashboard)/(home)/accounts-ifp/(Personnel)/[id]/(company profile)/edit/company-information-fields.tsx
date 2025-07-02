@@ -32,7 +32,7 @@ const CompanyInformationFields = () => {
             <FormControl>
               <div>
                 <label className="text-sm font-semibold">Complete Name:</label>
-                <Input className="w-full mt-1" {...field} />
+                <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" {...field} />
               </div>
             </FormControl>
             <FormMessage />
@@ -48,7 +48,7 @@ const CompanyInformationFields = () => {
             <FormControl>
               <div>
                 <label className="text-sm font-semibold">Complete Address:</label>
-                <Input className="w-full mt-1" {...field} />
+                <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" {...field} />
               </div>
             </FormControl>
             <FormMessage />
@@ -67,20 +67,20 @@ const CompanyInformationFields = () => {
               <input
                 type="date"
                 value={
-                  field.value
-                    ? new Date(field.value).toISOString().split('T')[0]
-                    : ''
+                  typeof field.value === 'string'
+                    ? field.value
+                    : field.value instanceof Date
+                      ? field.value.toISOString().split('T')[0]
+                      : ''
                 }
                 onChange={(e) => field.onChange(e.target.value)}
-                className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
               />
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
-
-
 
       {/* Age is computed, not editable */}
 
@@ -93,13 +93,14 @@ const CompanyInformationFields = () => {
            <FormControl>
              <div>
                <label className="text-sm font-semibold">Age:</label>
-               <Input className="w-full mt-1" {...field} />
+               <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" {...field} />
              </div>
            </FormControl>
             <FormMessage />
          </FormItem>
       )}
     />
+
     <FormField
       control={form.control}
       name="gender"
@@ -108,7 +109,7 @@ const CompanyInformationFields = () => {
           <label className="text-sm font-semibold">Gender:</label>
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
-              <SelectTrigger className="w-full mt-1">
+              <SelectTrigger className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300">
                 <SelectValue placeholder="Select gender" />
               </SelectTrigger>
             </FormControl>
@@ -133,7 +134,7 @@ const CompanyInformationFields = () => {
             <label className="text-sm font-semibold">Civil Status:</label>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger className="w-full mt-1">
+                <SelectTrigger className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300">
                   <SelectValue placeholder="Select civil status" />
                 </SelectTrigger>
               </FormControl>
@@ -161,13 +162,25 @@ const CompanyInformationFields = () => {
             <FormControl>
               <div>
                 <label className="text-sm font-semibold">Contact Number:</label>
-                <Input className="w-full mt-1" {...field} />
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="\d*"
+                  className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
+                  {...field}
+                  value={field.value ?? ''}
+                  onChange={(e) => {
+                    const numericValue = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+                    field.onChange(numericValue);
+                  }}
+                />
               </div>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
+
 
       <FormField
         control={form.control}
@@ -177,7 +190,7 @@ const CompanyInformationFields = () => {
             <FormControl>
               <div>
                 <label className="text-sm font-semibold">Email Address:</label>
-                <Input className="w-full mt-1" type="email" {...field} />
+                <Input className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" type="email" {...field} />
               </div>
             </FormControl>
             <FormMessage />
