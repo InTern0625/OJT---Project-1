@@ -41,7 +41,6 @@ const ContractInformationFields = () => {
 
   const maskedInitialContractValueRef = useMaskito({ options: currencyOptions })
   const maskedInitialHeadCountRef = useMaskito({ options: numberOptions })
-  console.log("IM HERE")
   return (
     <>
       <FormField

@@ -110,6 +110,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Contact Number"
           name="contact_number"
           placeholder="Enter contact number"
+          validation="contactnumber"
         />
       </div>
 
@@ -171,6 +172,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Total Utilization"
           name="total_utilization"
           placeholder="Enter total utilization"
+          validation="numberOnly"
         />
         <InputWithMask
           form={form}
@@ -178,13 +180,6 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Total Premium Paid"
           name="total_premium_paid"
           maskType="currency"
-        />
-        <TextInput
-          form={form}
-          isLoading={isLoading}
-          label="Additional Benefits"
-          name="additional_benefits"
-          placeholder="Enter additional benefits"
         />
       </div>
       {isAccountBenefitUploadEnabled ? (
@@ -258,6 +253,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Initial Head Count"
           name="initial_head_count"
           placeholder="Enter initial head count"
+          validation="numberOnly"
         />
         <SelectInput
           form={form}

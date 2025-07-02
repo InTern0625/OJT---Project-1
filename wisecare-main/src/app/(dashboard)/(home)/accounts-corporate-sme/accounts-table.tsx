@@ -13,9 +13,9 @@ const AccountsTable = () => {
   const filteredData = (data || [])
     .filter(
     (item: any) =>
-      item.account_type?.name?.startsWith('SME') ||
-      item.account_type?.name?.startsWith('Corporate') ||
-      item.account_type?.name?.startsWith('Corporate')
+      item.account_type?.name?.toUpperCase().startsWith('SME') ||
+      item.account_type?.name?.toUpperCase().startsWith('CORPORATE') ||
+      item.account_type?.name === null
     )
     .map((item: any) => ({
       ...item,

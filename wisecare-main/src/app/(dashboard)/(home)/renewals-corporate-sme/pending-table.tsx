@@ -11,9 +11,10 @@ const PendingTable = () => {
 
   const { data } = useQuery(getRenewalStatements(supabase))
   const filteredData = (data || []).filter((item: any) => 
-    item.account_types?.name === 'SME' ||
-    item.account_types?.name === 'CORPORATE' ||
-    item.account_types?.name === null
+    item.account_type?.name?.toUpperCase().startsWith('SME') ||
+    item.account_type?.name?.toUpperCase().startsWith('CORPORATE') ||
+    item.account_type?.name === null || 
+    item.account_type?.name === undefined
   )
   .map((item: any) => ({
     ...item,

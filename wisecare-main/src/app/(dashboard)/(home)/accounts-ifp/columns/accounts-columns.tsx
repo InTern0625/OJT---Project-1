@@ -42,12 +42,24 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     id: 'age',
+    accessorKey: "birthdate",
     header: ({ column }) => <TableHeader column={column} title="Age" />,
     cell: ({ row }) => {
       const birthdate = row.original.birthdate
       if (!birthdate) return ''
       const age = differenceInYears(new Date(), new Date(birthdate))
       return age
+    },
+    enableSorting: true,
+    sortingFn: (rowA, rowB) => {
+      const a = rowA?.original.birthdate
+      const b = rowB?.original.birthdate
+      if ((a === null) || (b === null)){
+        return 0
+      }else{
+        return a.localeCompare(b)
+      }
+      
     },
   },
   {

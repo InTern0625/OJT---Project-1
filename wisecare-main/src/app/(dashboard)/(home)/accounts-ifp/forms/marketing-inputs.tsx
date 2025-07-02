@@ -88,6 +88,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Contact Number"
           name="contact_number"
           placeholder="Enter contact number"
+          validation="contactnumber"
         />
         <TextInput
           form={form}
@@ -128,6 +129,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Card Number"
           name="card_number"
           placeholder="Enter card number"
+          validation="alphanumeric"
         />
         <SelectInput
           form={form}
