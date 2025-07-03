@@ -25,10 +25,10 @@ const AdminNavigation = async () => {
   const supabase = createServerClient(await cookies())
   if (!(await isAdmin(supabase))) return null
 
-  const totalCount = await getTotal() > 0 ? "pending" : "none"
-  const accExCount = await isPendAccExp() > 0 ? "pending" : "none"
-  const accCount = await isPendAcc() > 0 ? "pending" : "none"
-  const empExCount = await isPendEmpExp() > 0 ? "pending" : "none"
+  const totalCount = await getTotal(supabase)
+  const accExCount = await isPendAccExp(supabase) 
+  const accCount = await isPendAcc(supabase)
+  const empExCount = await isPendEmpExp(supabase) 
 
   return (
     <>
@@ -47,8 +47,8 @@ const AdminNavigation = async () => {
                           Approval Request
                         </span>
                       </div>
-                      <div data-count={totalCount} className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full">
-                        {getTotal()}
+                      <div data-count={totalCount > 0 ? "pending " : "none"} className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full">
+                        {totalCount}
                       </div>
                       <Plus className="ml-auto h-4 w-4 group-data-[state=open]/collapsible:hidden" />
                       <Minus className="ml-auto h-4 w-4 group-data-[state=closed]/collapsible:hidden" />
@@ -62,10 +62,10 @@ const AdminNavigation = async () => {
                       href="/admin/approval-request/accounts"
                       badge={
                       <div
-                        data-count={accCount}
+                        data-count={accCount > 0 ? "pending" : "none"}
                         className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
                       >
-                        {isPendAcc()}
+                        {accCount}
                       </div>
                       }
                     />
@@ -74,10 +74,10 @@ const AdminNavigation = async () => {
                       href="/admin/approval-request/account-exports"
                       badge={
                       <div
-                        data-count={accExCount}
+                        data-count={accExCount > 0 ? "pending" : "none"}
                         className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
                       >
-                        {isPendAccExp()}
+                        {accExCount}
                       </div>
                       }
                     />
@@ -86,10 +86,10 @@ const AdminNavigation = async () => {
                       href="/admin/approval-request/employee-exports"
                       badge={
                       <div
-                        data-count={empExCount}
+                        data-count={empExCount > 0 ? "pending" : "none"}
                         className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
                       >
-                        {isPendEmpExp()}
+                        {empExCount}
                       </div>
                       }
                     />

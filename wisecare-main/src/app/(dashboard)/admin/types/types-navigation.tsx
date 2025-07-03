@@ -109,72 +109,71 @@ const TypesNavigation: FC<Props> = ({ open }) => {
   useEffect(() => {
     const fetchTypes = async () => {
       const { data, error } = await supabase.from('type_registry').select('name')
-      console.log(data)
       if (error) {
         console.log('Failed to fetch types:', error)
         return
       }
 
       const dynamicLinks: NavigationLink[] = data.map((item) => {
-      
+
         const tab = item.name
-        const name = tab.replace(/_/g, ' ').replace(/\b\w/g, (c:string) => c.toUpperCase())
+        const name = tab.replace(/_/g, ' ').replace(/\b\w/g, (c: string) => c.toUpperCase())
         const description = `Manage ${name}`
         const icon = iconMap[tab] || UserCircle
         console.log('success')
         return { name, description, tab, icon }
-    })
+      })
 
       setNavigationLinks(dynamicLinks)
     }
 
     fetchTypes()
   }, [])
-  
+
   const { setIsNavOpen } = useTypesContext()
 
   const addtypeSchema = z.object({
     title: z.string().min(2,
-        {message: "Title must be more than 2 characters"}
-    ).max(30,{
-        message: "Title must be less than 30 characters"
+      { message: "Title must be more than 2 characters" }
+    ).max(30, {
+      message: "Title must be less than 30 characters"
     }) || z.null(),
   })
-    
+
   const form = useForm<z.infer<typeof addtypeSchema>>({
     resolver: zodResolver(addtypeSchema),
     defaultValues: {
-        title: "",
+      title: "",
     },
   })
-  
+
   const onSubmit = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
-      console.log(data)
-      const name = `${data.title}`.toLowerCase().replace(/\s+/g, '_')
-      const { error } = await supabase.from('type_registry').insert([
-        {
-          name,
-        },
-      ])
+        console.log(data)
+        const name = `${data.title}`.toLowerCase().replace(/\s+/g, '_')
+        const { error } = await supabase.from('type_registry').insert([
+          {
+            name,
+          },
+        ])
 
-      if (error) {
-        console.error('Insert failed:', error)
-      } else {
-        console.log(`Inserted into type_registry:`, name)
-        form.reset()
-      }
-    toast({
-    title: `Type: ${name}`,
-    description: 'Created successfully!',
-    variant: 'default', 
-    })
-    setOpenForm(false)
-    })(e)
-  },
-  [form]
-)
+        if (error) {
+          console.error('Insert failed:', error)
+        } else {
+          console.log(`Inserted into type_registry:`, name)
+          form.reset()
+        }
+        toast({
+          title: `Type: ${name}`,
+          description: 'Created successfully!',
+          variant: 'default',
+        })
+        setOpenForm(false)
+      })(e)
+    },
+    [form]
+  )
 
   return (
     <>
@@ -195,33 +194,33 @@ const TypesNavigation: FC<Props> = ({ open }) => {
                 <DialogTitle className="mb-3">Add Type</DialogTitle>
               </DialogHeader>
               <Form {...form}>
-              <form className="grid grid-cols-1 items-center justify-items-center gap-6" onSubmit={onSubmit}>
-                <FormField 
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem className="grid grid-cols-4 w-full flex-column col-span-1 gap-6 items-center">
-                      <Label className="col-span-1">Enter Title</Label>
-                      <Input
-                        className="col-span-3"
-                        id="link"
-                        placeholder="Title"
-                        {...field}
-                      />
-                    </FormItem>
-                  )}
-                />  
-                <Button type="submit" className="col-span-1 w-60">Create Type</Button>
-              </form>
-            </Form>
-          </DialogContent>
+                <form className="grid grid-cols-1 items-center justify-items-center gap-6" onSubmit={onSubmit}>
+                  <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                      <FormItem className="grid grid-cols-4 w-full flex-column col-span-1 gap-6 items-center">
+                        <Label className="col-span-1">Enter Title</Label>
+                        <Input
+                          className="col-span-3"
+                          id="link"
+                          placeholder="Title"
+                          {...field}
+                        />
+                      </FormItem>
+                    )}
+                  />
+                  <Button type="submit" className="col-span-1 w-60">Create Type</Button>
+                </form>
+              </Form>
+            </DialogContent>
           </Dialog>
         </div>
         <div className="divide-border border-border divide-y border-y">
           {navigationLinks.map((link) => (
             <NavigationItem {...link} key={link.tab} />
           ))}
-          {navigationLinks.length === 0  && <div>Loading Types</div>}
+          {navigationLinks.length === 0 && <div>Loading Types</div>}
         </div>
       </div>
       <div
