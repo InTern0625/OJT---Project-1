@@ -53,7 +53,7 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
   room_plan_id,
   mbl,
   premium,
-  program_types_id
+  program_type: program_types_id(name, id)
   `,
       {
         count: 'exact',

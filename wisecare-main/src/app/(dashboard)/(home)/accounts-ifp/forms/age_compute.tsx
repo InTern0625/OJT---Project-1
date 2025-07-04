@@ -10,7 +10,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import accountsSchema from '../accounts-schema'
 
-const calculateAge = (birthdate: Date | string | null): number | '' => {
+const calculateAge = (birthdate: Date | string | null | undefined): number | '' => {
   if (!birthdate) return ''
   const birth = new Date(birthdate)
   const today = new Date()
@@ -29,7 +29,7 @@ const ComputedAge = ({
   form: UseFormReturn<z.infer<typeof accountsSchema>>
   label?: string
 }) => {
-  const birthdate = form.watch('company_name')
+  const birthdate = form.watch('birthdate')
   const age = calculateAge(birthdate)
 
   return (

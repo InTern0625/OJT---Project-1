@@ -10,14 +10,15 @@ const AccountsTable = () => {
   const supabase = createBrowserClient()
   const { data, isLoading } = useQuery(getAccounts(supabase))
   if (isLoading) return null
-
   const filteredData = (data || [])
     .filter(
       (item: any) =>
         item.account_type?.name?.toUpperCase().startsWith('PREPAID') ||
         item.account_type?.name?.toUpperCase().startsWith('FAMILY') ||
         item.account_type?.name?.toUpperCase().startsWith('INDIVIDUAL') ||
-        item.account_type?.name === null
+        item.program_type?.name?.toUpperCase().startsWith('PREPAID') ||
+        item.program_type?.name?.toUpperCase().startsWith('FAMILY') ||
+        item.program_type?.name?.toUpperCase().startsWith('INDIVIDUAL')
     )
     .map((item: any) => ({
       ...item,

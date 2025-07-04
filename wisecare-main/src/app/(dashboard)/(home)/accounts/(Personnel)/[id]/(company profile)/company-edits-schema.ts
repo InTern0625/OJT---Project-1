@@ -29,8 +29,8 @@ const companyEditsSchema = z.object({
     (val) => (val === null ? null : parseInt(val as string)),
     z.number().optional().nullable(),
   ),
-  effective_date: z.coerce().optional(),
-  original_effective_date: z.coerce().optional(),
+  effective_date: z.date().optional(),
+  original_effective_date: z.date().optional(),
   coc_issue_date: z.date().optional(),
   expiration_date: z.date().optional(),
   delivery_date_of_membership_ids: z.date().optional(),
@@ -51,7 +51,11 @@ const companyEditsSchema = z.object({
   special_benefits_files: z.array(z.instanceof(File)),
   name_of_signatory: z.string().optional(),
   designation_of_contact_person: z.string().optional(),
-  email_address_of_contact_person: z.string().optional(),
+  email_address_of_contact_person: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .optional()
+    .or(z.literal('')),
 })
 
 export default companyEditsSchema

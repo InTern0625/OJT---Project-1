@@ -67,6 +67,10 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
       contract_proposal_files: [],
       additional_benefits_text: '',
       additional_benefits_files: [],
+      birthdate: undefined,
+      card_number: '',
+      mbl: null,
+      premium: null,
     },
   })
 
@@ -267,6 +271,14 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
               created_by: user?.id,
               operation_type: 'insert',
             }),
+            birthdate: data.birthdate,
+            gender: data.gender, //change this
+            civil_status: data.civil_status, //change this
+            card_number: data.card_number,
+            room_plan_id: data.room_plan_id,
+            mbl: data.mbl,
+            premium: data.premium,
+            program_types_id: data.program_types_id,
           },
         ])
       })(e)

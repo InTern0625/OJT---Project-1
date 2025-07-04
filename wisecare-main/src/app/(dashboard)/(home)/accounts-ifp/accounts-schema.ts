@@ -46,7 +46,11 @@ const accountsSchema = z.object({
   additional_benefits: z.string().max(1000).optional(),
   name_of_signatory: z.string().max(255).optional(),
   designation_of_contact_person: z.string().max(255).optional(),
-  email_address_of_contact_person: z.string().optional(),
+  email_address_of_contact_person: z
+    .string()
+    .email({ message: 'Invalid email address' })
+    .optional()
+    .or(z.literal('')),
   special_benefits: z.string().max(1000).optional(),
   special_benefits_files: z.array(z.instanceof(File)).optional(),
   contract_proposal: z.string().max(1000).optional(),
