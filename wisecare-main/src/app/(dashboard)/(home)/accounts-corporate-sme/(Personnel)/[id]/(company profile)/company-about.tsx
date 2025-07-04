@@ -45,6 +45,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
     resolver: zodResolver(accountsSchema),
     defaultValues: {
       is_active: account?.is_active ?? true,
+      room_plan_id: account?.room_plan_id ?? undefined,
       agent_id: account?.agent?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
@@ -281,6 +282,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         await mutateAsync([
           {
             company_name: data.company_name,
+            room_plan_id: data?.room_plan_id,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
             contact_person: data.contact_person,

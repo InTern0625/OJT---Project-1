@@ -13,7 +13,7 @@ const companyEditsSchema = z.object({
   account_type_id: z.string().optional(),
   total_utilization: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),
-    z.number().optional(),
+    z.number().optional().nullable(),
   ),
   total_premium_paid: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),
@@ -38,7 +38,7 @@ const companyEditsSchema = z.object({
     (val) => (val === null ? null : parseFloat(val as string)),
     z.number().optional().nullable(),
   ),
-  mode_of_payment_id: z.string().optional(),
+  mode_of_payment_id: z.string().uuid(),
   wellness_lecture_date: z.date().optional(),
   annual_physical_examination_date: z.date().optional(),
   commision_rate: z.preprocess(
@@ -55,7 +55,20 @@ const companyEditsSchema = z.object({
   name_of_signatory: z.string().optional(),
   designation_of_contact_person: z.string().optional(),
   email_address_of_contact_person: z.string().optional(),
+  birthdate: z.date().optional(),
+  gender: z.string().optional(),
+  civil_status: z.string().optional(),
+  card_number: z.string().optional(),
   room_plan_id: z.string().optional(),
+  mbl: z.preprocess(
+    (val) => (val === null ? null : parseFloat(val as string)),
+    z.number().optional().nullable(),
+  ),
+  premium: z.preprocess(
+    (val) => (val === null ? null : parseFloat(val as string)),
+    z.number().optional().nullable(),
+  ),
+  program_types_id: z.string().optional(),
 })
 
 export default companyEditsSchema

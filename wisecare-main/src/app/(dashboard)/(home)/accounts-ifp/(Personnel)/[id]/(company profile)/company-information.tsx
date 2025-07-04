@@ -5,6 +5,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import dynamic from 'next/dynamic'
 import { FC, Suspense } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { format } from 'date-fns'
 
 const CompanyInformationFields = dynamic(
   () =>
@@ -22,7 +23,19 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
   const { editMode } = useCompanyEditContext()
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, id))
-
+  const age: number | '' = (() => {
+    const birthdate = account?.birthdate
+    if (!birthdate) return ''
+    const birth = new Date(birthdate)
+    const today = new Date()
+    let age = today.getFullYear() - birth.getFullYear()
+    const monthDiff = today.getMonth() - birth.getMonth()
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--
+    }
+    return age >= 0 ? age : ''
+  })()
+  
   return (
     <>
       {editMode ? (
@@ -30,49 +43,55 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
           <CompanyInformationFields />
         </Suspense>
       ) : (
-        <div className="flex flex-col gap-2 pt-4 md:grid md:grid-flow-col md:grid-rows-5">
+        <div className="flex flex-col gap-2 pt-4 md:grid md:grid-flow-col md:grid-rows-4">
           {/* group 1 */}
           <CompanyInformationItem
-            label="Company Name"
-            value={account?.company_name?.toString()}
+            key="complete-name"
+            label="Complete Name"
+            value={account?.company_name || '-'}
           />
           <CompanyInformationItem
-            label="Company Address12"
-            value={account?.company_address?.toString()}
+            key="birthdate"
+            label="Birthdate"
+            value={
+               account?.birthdate
+                 ? format(new Date(account.birthdate), 'PPP')
+                 : '-'
+             }
           />
           <CompanyInformationItem
-            label="Nature of Business"
-            value={account?.nature_of_business?.toString()}
+            key="gender"
+            label="Gender"
+            value={account?.gender || '-'}
           />
-          {/* end of group 1 */}
+          <CompanyInformationItem
+            key="contact-number"
+            label="Contact Number"
+            value={account?.contact_number || '-'}
+          />
+
           {/* group 2 */}
           <CompanyInformationItem
-            label="Name of Signatory"
-            value={account?.name_of_signatory?.toString()}
+            key="Complete Address"
+            label="Complete Address"
+            value={account?.company_address || '-'}
           />
           <CompanyInformationItem
-            label="Signatory Designation"
-            value={account?.signatory_designation?.toString()}
+            key="Age"
+            label="Age"
+            value={age || '-'}
           />
-          {/* end of group 2 */}
           {/* group 3 */}
           <CompanyInformationItem
-            label="Contact Person"
-            value={account?.contact_person?.toString()}
+            key="civil-status"
+            label="Civil Status"
+            value={account?.civil_status || '-'}
           />
           <CompanyInformationItem
-            label="Designation of Contact Person"
-            value={account?.designation_of_contact_person?.toString()}
+            key="email-address"
+            label="Email Address"
+            value={account?.email_address_of_contact_person || '-'}
           />
-          <CompanyInformationItem
-            label="Email Address of Contact Person"
-            value={account?.email_address_of_contact_person?.toString()}
-          />
-          <CompanyInformationItem
-            label="Contact Number"
-            value={account?.contact_number?.toString()}
-          />
-          {/* end of group 3 */}
         </div>
       )}
     </>
