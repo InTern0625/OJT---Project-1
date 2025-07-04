@@ -74,12 +74,6 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       formatCurrency(getValue<number | null | undefined>()),
   },
   {
-    accessorKey: 'billing_period',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Billing Period" />
-    ),
-  },
-  {
     accessorKey: 'billing_start',
     header: ({ column }) => <TableHeader column={column} title="Billing Start" />,
     cell: ({ row }) => {

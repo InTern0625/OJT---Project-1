@@ -1,12 +1,5 @@
 import { TypedSupabaseClient } from '@/types/typedSupabaseClient'
-
-export type TypeTabs =
-  | 'account_types'
-  | 'hmo_providers'
-  | 'mode_of_payments'
-  | 'plan_types'
-  | 'program_types'
-  | 'room_plans'
+import { TypeTabs } from '../app/(dashboard)/admin/types/type-card'
 
 const getTypes = (supabase: TypedSupabaseClient, page: TypeTabs) => {
   return supabase
