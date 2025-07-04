@@ -6,6 +6,8 @@ const BillingStatementSchema = z
     due_date: z.date().optional(),
     or_number: z.string().optional(),
     or_date: z.date().optional(),
+    billing_start: z.date().optional(),
+    billing_end: z.date().optional(),
     sa_number: z.string().optional(),
     total_contract_value: z.preprocess((val) => {
       if (val === '' || val === undefined) return undefined

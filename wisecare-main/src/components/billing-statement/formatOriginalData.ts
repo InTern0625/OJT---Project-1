@@ -22,6 +22,12 @@ const formatOriginalData = (originalData: Tables<'billing_statements'>) => {
     or_date: originalData.or_date
       ? normalizeToUTC(new Date(originalData.or_date))
       : undefined,
+    billing_start: originalData.billing_start
+      ? normalizeToUTC(new Date(originalData.billing_start))
+      : undefined,
+    billing_end: originalData.billing_end
+      ? normalizeToUTC(new Date(originalData.billing_end))
+      : undefined,
     total_contract_value: originalData.total_contract_value
       ? maskitoTransform(
           originalData.total_contract_value.toString(),

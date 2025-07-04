@@ -16,18 +16,29 @@ const NumberInput = ({
   label,
   name,
   placeholder,
+  validation
 }: {
   form: UseFormReturn<z.infer<typeof accountsSchema>>
   isLoading: boolean
   label: string
   name: keyof z.infer<typeof accountsSchema>
   placeholder?: string
+  validation?: string
 }) => {
   const handleInputChange = (
     field: ControllerRenderProps<z.infer<typeof accountsSchema>, any>,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const value = e.target.value === '' ? null : e.target.value
+    let value = e.target.value === '' ? null : e.target.value
+    if (value != null){
+      switch (validation){
+        case 'numberOnly':
+          value = value?.replace(/[^0-9]/g, '')
+          break
+        default:
+          break
+      }
+    }
     field.onChange(value)
   }
   return (
@@ -40,7 +51,7 @@ const NumberInput = ({
           <FormControl>
             <Input
               {...field}
-              type="number"
+              type="numeric"
               value={
                 typeof field.value === 'string' ||
                 typeof field.value === 'number'
@@ -50,6 +61,7 @@ const NumberInput = ({
               onChange={(e) => handleInputChange(field, e)}
               disabled={isLoading}
               placeholder={placeholder}
+              min={0}
             />
           </FormControl>
           <FormMessage />

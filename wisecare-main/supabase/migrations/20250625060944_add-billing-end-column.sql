@@ -1,0 +1,1 @@
+alter table billing_statements add column billing_end date

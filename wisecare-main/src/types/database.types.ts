@@ -422,6 +422,8 @@ export type Database = {
           amount_paid: number | null
           balance: number | null
           billing_period: number | null
+          billing_start: string | null
+          billing_end: string | null
           commission_earned: number | null
           commission_rate: number | null
           created_at: string
@@ -441,6 +443,8 @@ export type Database = {
           amount_paid?: number | null
           balance?: number | null
           billing_period?: number | null
+          billing_start?: string | null
+          billing_end?: string | null
           commission_earned?: number | null
           commission_rate?: number | null
           created_at?: string
@@ -460,6 +464,8 @@ export type Database = {
           amount_paid?: number | null
           balance?: number | null
           billing_period?: number | null
+          billing_start?: string | null
+          billing_end?: string | null
           commission_earned?: number | null
           commission_rate?: number | null
           created_at?: string
@@ -762,6 +768,14 @@ export type Database = {
           total_utilization: number | null
           updated_at: string
           wellness_lecture_date: string | null
+          birthdate: string | null
+          gender: string | null
+          civil_status: string | null
+          card_number: string | null
+          room_plan_id: string | null
+          mbl: number | null
+          program_types_id: string | null
+          premium: number | null
         }
         Insert: {
           account_id?: string | null
@@ -870,6 +884,7 @@ export type Database = {
           mbl?: number | null
           program_types_id?: string | null
           premium?: number | null
+          birthdate?: string | null
         }
         Relationships: [
           {

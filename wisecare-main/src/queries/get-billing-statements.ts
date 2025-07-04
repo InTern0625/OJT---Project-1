@@ -21,6 +21,8 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
     total_contract_value,
     balance,
     billing_period,
+    billing_start,
+    billing_end,
     amount_billed,
     amount_paid,
     commission_rate,

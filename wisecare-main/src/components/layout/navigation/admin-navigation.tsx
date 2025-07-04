@@ -19,10 +19,16 @@ import isAdmin from '@/utils/is-admin'
 import { createServerClient } from '@/utils/supabase'
 import { BookType, FileText, ListTodo, Minus, Plus, Users } from 'lucide-react'
 import { cookies } from 'next/headers'
+import { isPendEmpExp, isPendAcc, isPendAccExp, getTotal } from '@/utils/get-pending-count'
 
 const AdminNavigation = async () => {
   const supabase = createServerClient(await cookies())
   if (!(await isAdmin(supabase))) return null
+
+  const totalCount = await getTotal(supabase)
+  const accExCount = await isPendAccExp(supabase) 
+  const accCount = await isPendAcc(supabase)
+  const empExCount = await isPendEmpExp(supabase) 
 
   return (
     <>
@@ -41,6 +47,9 @@ const AdminNavigation = async () => {
                           Approval Request
                         </span>
                       </div>
+                      <div data-count={totalCount > 0 ? "pending " : "none"} className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full">
+                        {totalCount}
+                      </div>
                       <Plus className="ml-auto h-4 w-4 group-data-[state=open]/collapsible:hidden" />
                       <Minus className="ml-auto h-4 w-4 group-data-[state=closed]/collapsible:hidden" />
                     </div>
@@ -51,14 +60,38 @@ const AdminNavigation = async () => {
                     <SubNavigationItem
                       title="Accounts"
                       href="/admin/approval-request/accounts"
+                      badge={
+                      <div
+                        data-count={accCount > 0 ? "pending" : "none"}
+                        className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
+                      >
+                        {accCount}
+                      </div>
+                      }
                     />
                     <SubNavigationItem
                       title="Account Exports"
                       href="/admin/approval-request/account-exports"
+                      badge={
+                      <div
+                        data-count={accExCount > 0 ? "pending" : "none"}
+                        className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
+                      >
+                        {accExCount}
+                      </div>
+                      }
                     />
                     <SubNavigationItem
                       title="Company Employee Exports"
                       href="/admin/approval-request/employee-exports"
+                      badge={
+                      <div
+                        data-count={empExCount > 0 ? "pending" : "none"}
+                        className="data-[count=pending]:opacity-100 data-[count=none]:opacity-0 flex text-white text-[10px] justify-center items-center w-4 h-4 bg-red-400 rounded-full"
+                      >
+                        {empExCount}
+                      </div>
+                      }
                     />
                   </SidebarMenuSub>
                 </CollapsibleContent>

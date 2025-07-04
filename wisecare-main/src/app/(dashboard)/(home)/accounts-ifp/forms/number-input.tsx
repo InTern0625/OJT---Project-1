@@ -40,7 +40,7 @@ const NumberInput = ({
           <FormControl>
             <Input
               {...field}
-              type="number"
+              type="numeric"
               value={
                 typeof field.value === 'string' ||
                 typeof field.value === 'number'
@@ -51,7 +51,6 @@ const NumberInput = ({
               disabled={isLoading}
               placeholder={placeholder}
               min={0}
-              max={5}
             />
           </FormControl>
           <FormMessage />

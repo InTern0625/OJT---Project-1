@@ -14,8 +14,10 @@ const PendingTable = () => {
   const filteredData = (data || [])
     .filter(
       (item: any) =>
-        item.accounts.account_type?.name === 'Family' ||
-        item.accounts.account_type?.name === 'Individual',
+        item.accounts.account_type?.name?.toUpperCase().startsWith('PREPAID') ||
+        item.accounts.account_type?.name?.toUpperCase().startsWith('FAMILY') ||
+        item.accounts.account_type?.name?.toUpperCase().startsWith('INDIVIDUAL') ||
+        item.accounts.account_type?.name === null
     )
     .map((item: any) => ({
       ...item,

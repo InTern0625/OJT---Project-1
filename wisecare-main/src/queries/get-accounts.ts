@@ -44,8 +44,16 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
   is_account_active,
   is_editing,
   editing_user,
-  editing_timestampz
-  editing:editing_user(first_name, last_name)
+  editing_timestampz,
+  editing:editing_user(first_name, last_name),
+  birthdate,
+  gender,
+  civil_status,
+  card_number,
+  room_plan_id,
+  mbl,
+  premium,
+  program_types_id
   `,
       {
         count: 'exact',

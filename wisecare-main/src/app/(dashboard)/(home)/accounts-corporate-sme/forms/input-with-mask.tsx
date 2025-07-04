@@ -48,7 +48,7 @@ const InputWithMask = ({
               <Input
                 {...field}
                 // @ts-ignore
-                value={field.value ?? ''}
+                value={field.value ?? (maskType === "currency" ? "₱ " : "")}
                 disabled={isLoading}
                 onInput={field.onChange}
                 ref={ref}

@@ -16,18 +16,35 @@ const TextInput = ({
   label,
   name,
   placeholder,
+  validation,
 }: {
   form: UseFormReturn<z.infer<typeof accountsSchema>>
   isLoading: boolean
   label: string
   name: keyof z.infer<typeof accountsSchema>
   placeholder?: string
+  validation?: string
 }) => {
   const handleInputChange = (
     field: ControllerRenderProps<z.infer<typeof accountsSchema>, any>,
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    const value = e.target.value === '' ? null : e.target.value
+    let value = e.target.value === '' ? null : e.target.value
+    if (value != null){
+      switch (validation){
+        case 'contactnumber':
+          value = value?.replace(/[^0-9+]/g, '')
+          break
+        case 'alphaOnly':
+          value = value?.replace(/[^a-zA-Z]/g, '')
+          break
+        case 'alphanumeric':
+          value = value?.replace(/[^a-zA-Z0-9]/g, '')
+          break
+        default:
+          break
+      }
+    }
     field.onChange(value)
   }
   return (

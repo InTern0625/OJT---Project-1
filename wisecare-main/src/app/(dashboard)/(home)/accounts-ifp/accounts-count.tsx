@@ -12,8 +12,10 @@ const AccountsCount = () => {
   const activeCount = useMemo(
     () => count?.filter(
       (item: any) =>
-        item.account_type?.name === 'Individual' ||
-        item.account_type?.name === 'Family'
+        item.account_type?.name?.toUpperCase().startsWith('PREPAID') ||
+        item.account_type?.name?.toUpperCase().startsWith('FAMILY') ||
+        item.account_type?.name?.toUpperCase().startsWith('INDIVIDUAL') ||
+        item.account_type?.name === null
     ).filter((account: any) => account.is_account_active).length,
     [count],
   )

@@ -95,6 +95,30 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
     ),
   },
   {
+    accessorKey: 'billing_start',
+    header: ({ column }) => <TableHeader column={column} title="Billing Start" />,
+    cell: ({ row }) => {
+      const billStart = row.original.billing_start
+        ? normalizeToUTC(new Date(row.original.billing_start))
+        : null
+      return <div>{billStart ? format(billStart, 'MMMM dd, yyyy') : ''}</div>
+    },
+    accessorFn: (originalRow) =>
+      originalRow.billing_start ? format(originalRow.billing_start, 'MMMM dd, yyyy') : '',
+  },
+  {
+    accessorKey: 'billing_end',
+    header: ({ column }) => <TableHeader column={column} title="Billing End" />,
+    cell: ({ row }) => {
+      const billEnd = row.original.billing_end
+        ? normalizeToUTC(new Date(row.original.billing_end))
+        : null
+      return <div>{billEnd ? format(billEnd, 'MMMM dd, yyyy') : ''}</div>
+    },
+    accessorFn: (originalRow) =>
+      originalRow.billing_end ? format(originalRow.billing_end, 'MMMM dd, yyyy') : '',
+  },
+  {
     accessorKey: 'amount_paid',
     header: ({ column }) => <TableHeader column={column} title="Amount Paid" />,
     cell: ({ getValue }) =>
