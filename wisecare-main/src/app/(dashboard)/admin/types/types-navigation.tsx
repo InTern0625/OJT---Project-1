@@ -10,6 +10,8 @@ import {
   //Hospital,
   BookCopy,
   Plus,
+  Mars,
+  HeartHandshake
 } from 'lucide-react'
 import { ComponentType, FC } from 'react'
 import { useTypesContext } from './type-card'
@@ -58,6 +60,18 @@ const navigationLinks: NavigationLink[] = [
     description: 'Manage program types',
     tab: 'program_types',
     icon: BookCopy,
+  },
+  {
+    name: 'Gender',
+    description: 'Manage gender',
+    tab: 'gender_types',
+    icon: Mars,
+  },
+  {
+    name: 'Civil Status',
+    description: 'Manage civil status',
+    tab: 'civil_status_types',
+    icon: HeartHandshake,
   },
 ]
 

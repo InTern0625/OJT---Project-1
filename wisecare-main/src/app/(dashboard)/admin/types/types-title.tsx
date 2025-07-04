@@ -24,6 +24,10 @@ const TypesTitle: FC<Props> = ({ page, handleClick }) => {
         return 'Room Plan'
       case 'program_types':
         return 'Program Types'
+      case 'gender_types':
+        return 'Gender'
+      case 'civil_status_types':
+        return 'Civil Status'
     }
   }
 

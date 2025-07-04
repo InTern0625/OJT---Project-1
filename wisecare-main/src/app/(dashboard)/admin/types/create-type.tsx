@@ -38,6 +38,10 @@ const CreateType: FC<Props> = ({ page }) => {
         return 'Program Types'
       case 'room_plans':
         return 'Room Plans'
+      case 'gender_types':
+        return 'Gender'
+      case 'civil_status_types':
+        return 'Civil Status'
     }
   }
 
