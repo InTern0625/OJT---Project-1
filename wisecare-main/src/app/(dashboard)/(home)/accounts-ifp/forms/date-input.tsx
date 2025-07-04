@@ -23,11 +23,13 @@ const DateInput = ({
   label,
   name,
   isLoading,
+  validation,
 }: {
   form: UseFormReturn<z.infer<typeof accountsSchema>>
   label: string
   name: keyof z.infer<typeof accountsSchema>
   isLoading: boolean
+  validation?: string
 }) => {
   return (
     <div className="space-y-2">
@@ -65,7 +67,11 @@ const DateInput = ({
                     field.value instanceof Date ? field.value : undefined
                   }
                   onSelect={field.onChange}
-                  disabled={(date) => date < new Date('1900-01-01')}
+                  disabled={
+                    validation === "birthdate"
+                    ? (date) => date < new Date('1900-01-01') || date > new Date(new Date().setHours(23, 59, 59, 999))
+                    : (date) => date < new Date('1900-01-01')
+                  } 
                   initialFocus
                   captionLayout="dropdown"
                   toYear={new Date().getFullYear() + 20}

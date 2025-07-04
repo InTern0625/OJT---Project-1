@@ -70,6 +70,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           isLoading={isLoading}
           label="Birthdate"
           name="birthdate"
+          validation="birthdate"
         />
         <SelectInput
           form={form}
