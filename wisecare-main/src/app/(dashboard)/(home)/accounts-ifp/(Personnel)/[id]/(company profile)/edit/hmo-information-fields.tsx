@@ -129,7 +129,7 @@ interface HmoInformationProps {
                       ? field.value.toISOString().split('T')[0]
                       : ''
                 }
-                onChange={(e) => field.onChange(e.target.value)} // ✅ This is required!
+                onChange={(e) => field.onChange(e.target.value)} 
               />
             </FormControl>
             <FormMessage />
@@ -154,7 +154,7 @@ interface HmoInformationProps {
                         ? field.value.toISOString().split('T')[0]
                         : ''
                   }
-                  onChange={(e) => field.onChange(e.target.value)} // ✅ This is required!
+                  onChange={(e) => field.onChange(e.target.value)}
                 />
               </FormControl>
               <FormMessage />
@@ -262,7 +262,7 @@ interface HmoInformationProps {
             <FormMessage />
           </FormItem>
         )}
-      />
+      />x
 
       {/* Row 5: Contract and Proposal */}
       <div className="md:col-span-2">
