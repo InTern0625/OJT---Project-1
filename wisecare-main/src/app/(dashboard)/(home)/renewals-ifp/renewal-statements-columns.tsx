@@ -64,7 +64,13 @@ const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
       return order.indexOf(statusA) - order.indexOf(statusB)
     },
   },
-  { accessorKey: 'is_active', header: ({ column }) => <TableHeader column={column} title="Active" /> },
+  {
+    accessorKey: 'status_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.status_type?.name ?? '',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Account Status" />
+    ),
+  },
   { accessorKey: 'company_name', header: ({ column }) => <TableHeader column={column} title="Company Name" /> },
   { accessorKey: 'company_address', header: ({ column }) => <TableHeader column={column} title="Address" /> },
   { accessorKey: 'nature_of_business', header: ({ column }) => <TableHeader column={column} title="Business Nature" /> },

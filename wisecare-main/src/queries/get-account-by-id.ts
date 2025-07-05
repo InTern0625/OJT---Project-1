@@ -36,7 +36,6 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       annual_physical_examination_date, 
       commision_rate, 
       additional_benefits, 
-      special_benefits, 
       summary_of_benefits, 
       name_of_signatory, 
       designation_of_contact_person, 
@@ -46,6 +45,9 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       special_benefits_files,
       contract_proposal_files,
       additional_benefits_files,
+      special_benefits,
+      contract_proposal,
+      additional_benefits_text,
       birthdate,
       gender,
       civil_status,
@@ -53,7 +55,9 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       room_plan_id,
       mbl,
       premium,
-      program_types_id
+      program_type: program_types_id(name, id),
+      gender_type: gender_types_id(name, id),
+      civil_status_type: civil_status_id(name,id)
       `,
     )
     .eq('id', id)

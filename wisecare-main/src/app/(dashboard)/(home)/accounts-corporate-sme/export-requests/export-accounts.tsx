@@ -5,6 +5,7 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 const ExportAccounts = ({ id }: { id: string }) => {
   const supabase = createBrowserClient()
+  console.log("a")
 
   const exportAccounts = async () => {
     const { data: accountsData } = await supabase

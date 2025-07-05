@@ -14,6 +14,7 @@ export type TypeTabs =
   | 'room_plans'
   | 'gender_types'
   | 'civil_status_types'
+  | 'status_types'
 
 const useTypesContext = () => {
   const context = useContext(TypesContext)

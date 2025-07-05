@@ -6,7 +6,7 @@ const getTypes = (supabase: TypedSupabaseClient, page: TypeTabs) => {
     .from(page)
     .select('name, id, created_at')
     .eq('is_active', true)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: true })
     .throwOnError()
 }
 

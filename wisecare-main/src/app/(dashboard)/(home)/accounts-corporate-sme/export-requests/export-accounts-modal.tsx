@@ -20,9 +20,10 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 interface ExportAccountsModalProps {
   exportData: Enums<'export_type'>
+  exportType?: string
 }
 
-const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData }) => {
+const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const supabase = createBrowserClient()
   const [pendingRequest, setIsPendingRequest] = useState('')
@@ -88,9 +89,30 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData }) => {
       })
       return
     }
+    const accountsData = oldAccountsData.filter((account) =>{
+      if (exportType == "renewals"){
+        const now = new Date()
+        const threeMonthsLater = new Date()
+        threeMonthsLater.setMonth(now.getMonth() + 3)
+        const accountType = account.account_type?.name?.toUpperCase()
+        const expiration = account.expiration_date ? new Date(account.expiration_date) : null
 
-    const accountsData = oldAccountsData.map((account) => {
-      const { id, created_at, updated_at, is_account_active, ...rest } = account
+        const isTypeValid = accountType
+          ? (accountType.startsWith('SME') ||
+          accountType.startsWith('CORPORATE')) 
+          : false
+        
+        const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
+        return isTypeValid && isExpirationValid
+      }else if (exportType == "accounts"){
+        const type = account?.account_type?.name.toUpperCase()
+        return type === 'SME' || type === 'CORPORATE'
+      }else{
+        return account
+      }
+    }
+    ).map((account) => {
+      const { id, created_at, updated_at, is_account_active, is_editing, ...rest } = account
 
       return {
         Agent: account.agent
@@ -143,9 +165,11 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData }) => {
         'Additional Benefits': account.additional_benefits || '',
         'Special Benefits': account.special_benefits || '',
         'Summary of Benefits': account.summary_of_benefits || '',
+        'Account Type': account.account_type ? `${account_type.name}`: '',
+
       }
     })
-
+    console.log(accountsData)
     await mutateAsync([
       {
         export_type: exportData,

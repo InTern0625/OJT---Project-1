@@ -39,14 +39,22 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
       contract_proposal_files,
       additional_benefits_files,
       principal_plan_type:plan_types!principal_plan_type_id(name),
-      dependent_plan_type:plan_types!dependent_plan_type_id(name)
-
+      dependent_plan_type:plan_types!dependent_plan_type_id(name),
+      birthdate,
+      gender,
+      civil_status,
+      card_number,
+      room_plan_id,
+      mbl,
+      premium,
+      program_type: program_types!program_types_id(name)
   `,
       {
         count: 'exact',
       },
     )
     .eq('is_active', true)
+    .eq('is_account_active', true)
     .order('expiration_date', { ascending: false })
     .throwOnError()
 }

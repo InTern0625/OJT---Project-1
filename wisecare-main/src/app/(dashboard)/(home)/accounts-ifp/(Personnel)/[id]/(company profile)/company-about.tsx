@@ -28,7 +28,8 @@ import { useUpload } from '@supabase-cache-helpers/storage-react-query'
 import { FC, FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
-
+import { Loader2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
 interface Props {
   companyId: string
 }
@@ -38,113 +39,64 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const supabase = createBrowserClient()
   const { data: account, refetch: refetchAccount } = useQuery(getAccountById(supabase, companyId));
   const { user } = useUserServer()
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
 
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
-      is_active: account?.is_active ?? true,
-      agent_id: account?.agent?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
-      nature_of_business: account?.nature_of_business ?? '',
-      hmo_provider_id: account?.hmo_provider
-        ? (account.hmo_provider as any).id
+      birthdate: account?.birthdate
+        ? normalizeToUTC(new Date(account.birthdate))
         : undefined,
-      previous_hmo_provider_id: account?.previous_hmo_provider
-        ? (account.previous_hmo_provider as any).id
+      gender_types_id: account?.gender_type
+        ? (account.gender_type as any).id
         : undefined,
-      old_hmo_provider_id: account?.old_hmo_provider
-        ? (account.old_hmo_provider as any).id
+      civil_status_id: account?.civil_status_type
+        ? (account.civil_status_type as any).id
         : undefined,
-      account_type_id: account?.account_type
-        ? (account.account_type as any).id
-        : undefined,
-      total_utilization: account?.total_utilization
-        ? (maskitoTransform(
-            account.total_utilization.toString(),
-            numberOptions,
-          ) as unknown as string)
-        : undefined,
-      total_premium_paid: account?.total_premium_paid
-        ? (maskitoTransform(
-            account.total_premium_paid.toString(),
-            currencyOptions,
-          ) as unknown as number)
-        : undefined,
-      mbl: account?.mbl
-          ? (maskitoTransform(
-              account.mbl.toString(),
-              currencyOptions,
-            ) as unknown as number)
-          : undefined,
-      signatory_designation: account?.signatory_designation ?? '',
-      contact_person: account?.contact_person ?? '',
       contact_number: account?.contact_number ?? '',
-      principal_plan_type_id: account?.principal_plan_type
-        ? (account.principal_plan_type as any).id
-        : undefined,
-      dependent_plan_type_id: account?.dependent_plan_type
-        ? (account.dependent_plan_type as any).id
-        : undefined,
-      initial_head_count: account?.initial_head_count
-        ? (maskitoTransform(
-            account.initial_head_count.toString(),
-            numberOptions,
-          ) as unknown as string)
+      email_address_of_contact_person:
+        account?.email_address_of_contact_person ?? '',
+      card_number: account?.card_number ?? '',
+      expiration_date: account?.expiration_date
+        ? normalizeToUTC(new Date(account.expiration_date))
         : undefined,
       effective_date: account?.effective_date
         ? normalizeToUTC(new Date(account.effective_date))
         : undefined,
-      original_effective_date: account?.original_effective_date
-        ? normalizeToUTC(new Date(account.original_effective_date))
-        : undefined,
-      coc_issue_date: account?.coc_issue_date
-        ? normalizeToUTC(new Date(account.coc_issue_date))
-        : undefined,
-      expiration_date: account?.expiration_date
-        ? normalizeToUTC(new Date(account.expiration_date))
-        : undefined,
-      birthdate: account?.birthdate
-          ? normalizeToUTC(new Date(account.birthdate))
-          : undefined,
-      delivery_date_of_membership_ids: account?.delivery_date_of_membership_ids
-        ? normalizeToUTC(new Date(account.delivery_date_of_membership_ids))
-        : undefined,
-      orientation_date: account?.orientation_date
-        ? normalizeToUTC(new Date(account.orientation_date))
-        : undefined,
-      initial_contract_value: account?.initial_contract_value
-        ? (maskitoTransform(
-            account.initial_contract_value.toString(),
-            currencyOptions,
-          ) as unknown as number)
-        : undefined,
       mode_of_payment_id: account?.mode_of_payment
         ? (account.mode_of_payment as any).id
         : undefined,
-      wellness_lecture_date: account?.wellness_lecture_date
-        ? normalizeToUTC(new Date(account.wellness_lecture_date))
+      hmo_provider_id: account?.hmo_provider
+        ? (account.hmo_provider as any).id
         : undefined,
-      annual_physical_examination_date:
-        account?.annual_physical_examination_date
-          ? normalizeToUTC(new Date(account.annual_physical_examination_date))
-          : undefined,
+      mbl: account?.mbl
+        ? (maskitoTransform(
+            account.mbl.toString(),
+            currencyOptions,
+          ) as unknown as number)
+        : undefined,
+      program_types_id: account?.program_type
+        ? (account.program_type as any).id
+        : undefined,
+      premium: account?.premium
+        ? (maskitoTransform(
+            account.premium.toString(),
+            currencyOptions,
+          ) as unknown as number)
+        : undefined,
+      agent_id: account?.agent?.user_id ?? undefined,
       commision_rate: account?.commision_rate
         ? (maskitoTransform(
             account.commision_rate.toString(),
             percentageOptions,
           ) as unknown as string)
         : '',
-      additional_benefits: account?.additional_benefits ?? '',
-      special_benefits: account?.special_benefits ?? '',
-      special_benefits_files: [],
-      name_of_signatory: account?.name_of_signatory ?? '',
-      designation_of_contact_person:
-        account?.designation_of_contact_person ?? '',
-      email_address_of_contact_person:
-        account?.email_address_of_contact_person ?? '',
+      contract_proposal: account?.contract_proposal ?? '',
+      contract_proposal_files: []
     },
   })
 
@@ -204,32 +156,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
+      
       form.handleSubmit(async (data) => {
-
-          const patchedData = {
-              ...data,
-              effective_date:
-                typeof data.effective_date === "string"
-                  ? data.effective_date
-                  : data.effective_date instanceof Date
-                  ? data.effective_date.toISOString().split("T")[0]
-                  : "",
-              expiration_date:
-                typeof data.expiration_date === "string"
-                  ? data.expiration_date
-                  : data.expiration_date instanceof Date
-                  ? data.expiration_date.toISOString().split("T")[0]
-                  : "",
-              birthdate:
-                typeof data.birthdate === "string"
-                    ? data.birthdate
-                    : data.birthdate instanceof Date
-                    ? data.birthdate.toISOString().split("T")[0]
-                    : "",
-            };
+        setIsSubmitting (true)
         const {
           data: { user },
         } = await supabase.auth.getUser()
+
         if (!user) {
           toast({
             title: 'Something went wrong',
@@ -238,11 +171,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
           return
         }
-        // Get existing files
-        const existingSpecialBenefits = account?.special_benefits_files || [];
-        const existingContractProposals = account?.contract_proposal_files || [];
-        const existingAdditionalBenefits = account?.additional_benefits_files || [];
-        // Toggle is editing to false
+
         await supabase
         .from('accounts')
         .update({
@@ -252,141 +181,100 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         })
         .eq('id', companyId)
 
-        // Handle file inputs
+        // Handle file input
         const specialBenefitsFiles = data.special_benefits_files
           ? Array.from(data.special_benefits_files)
-          : [];
+          : []
         const contractProposalFiles = data.contract_proposal_files
           ? Array.from(data.contract_proposal_files)
-          : [];
+          : []
         const additionalBenefitsFiles = data.additional_benefits_files
           ? Array.from(data.additional_benefits_files)
-          : [];
-
-        // Upload new files and combine with existing
-        let specialBenefitsLink: string[] = [...existingSpecialBenefits];
-        if (isSpecialBenefitsFilesEnabled && specialBenefitsFiles.length > 0) {
+          : []
+          
+        // Upload special benefits files only if the feature is enabled and there are files
+        let specialBenefitsLink: string[] = []
+        if (
+          isSpecialBenefitsFilesEnabled &&
+          Array.isArray(data.special_benefits_files) &&
+          data.special_benefits_files?.length > 0
+        ) {
           const uploadResult = await uploadSpecialBenefits({
             files: specialBenefitsFiles,
-          });
+          })
+
           if (uploadResult.length > 0) {
-            specialBenefitsLink = [
-              ...specialBenefitsLink,
-              ...uploadResult
-                .map((result) => result.data?.path)
-                .filter((path): path is string => typeof path === 'string')
-            ];
+            specialBenefitsLink = uploadResult
+              .map((result) => result.data?.path)
+              .filter((path): path is string => typeof path === 'string')
           }
         }
 
-        let contractProposalLink: string[] = [...existingContractProposals];
-        if (isSpecialBenefitsFilesEnabled && contractProposalFiles.length > 0) {
+        let contractProposalLink: string[] = []
+        if (
+          isSpecialBenefitsFilesEnabled &&
+          Array.isArray(data.contract_proposal_files) &&
+          data.contract_proposal_files.length > 0
+        ) {
           const uploadResult = await uploadContractProposal({
             files: contractProposalFiles,
-          });
+          })
+
           if (uploadResult.length > 0) {
-            contractProposalLink = [
-              ...contractProposalLink,
-              ...uploadResult
-                .map((result) => result.data?.path)
-                .filter((path): path is string => typeof path === 'string')
-            ];
+            contractProposalLink = uploadResult
+              .map((result) => result.data?.path)
+              .filter((path): path is string => typeof path === 'string')
           }
         }
 
-        let additionalBenefitsLink: string[] = [...existingAdditionalBenefits];
-        if (isSpecialBenefitsFilesEnabled && additionalBenefitsFiles.length > 0) {
+        let additionalBenefitsLink: string[] = []
+        if (
+          isSpecialBenefitsFilesEnabled &&
+          Array.isArray(data.additional_benefits_files) &&
+          data.additional_benefits_files.length > 0
+        ) {
           const uploadResult = await uploadAdditionalBenefits({
             files: additionalBenefitsFiles,
-          });
+          })
+
           if (uploadResult.length > 0) {
-            additionalBenefitsLink = [
-              ...additionalBenefitsLink,
-              ...uploadResult
-                .map((result) => result.data?.path)
-                .filter((path): path is string => typeof path === 'string')
-            ];
+            additionalBenefitsLink = uploadResult
+              .map((result) => result.data?.path)
+              .filter((path): path is string => typeof path === 'string')
           }
         }
 
         await mutateAsync([
           {
             company_name: data.company_name,
-            room_plan_id: data?.room_plan_id,
             company_address: data.company_address,
-            nature_of_business: data.nature_of_business,
-            contact_person: data.contact_person,
+            birthdate: data?.birthdate
+              ? normalizeToUTC(new Date(data.birthdate))
+              : null,
+            gender_types_id: data?.gender_types_id,
+            civil_status_id: data?.civil_status_id,
             contact_number: data.contact_number,
-            signatory_designation: data.signatory_designation,
-            name_of_signatory: data.name_of_signatory,
-            designation_of_contact_person: data.designation_of_contact_person,
             email_address_of_contact_person:
               data.email_address_of_contact_person,
-            account_type_id: data?.account_type_id,
-            agent_id: data.agent_id,
-            civil_status: data.civil_status,
-            gender: data.gender,
-            is_active: data.is_active,
-            hmo_provider_id: data?.hmo_provider_id,
-            previous_hmo_provider_id: data?.previous_hmo_provider_id,
-            old_hmo_provider_id: data?.old_hmo_provider_id,
-            card_number: data?.card_number,
-            principal_plan_type_id: data?.principal_plan_type_id,
-            dependent_plan_type_id: data?.dependent_plan_type_id,
-            total_premium_paid: data.total_premium_paid,
-            mbl: data.mbl,
-            additional_benefits: data.additional_benefits,
-            initial_contract_value: data.initial_contract_value,
-            mode_of_payment_id: data?.mode_of_payment_id,
-            commision_rate: data.commision_rate
-              ? parseFloat(data.commision_rate.replace('%', ''))
-              : null,
-            total_utilization: data.total_utilization
-              ? parseInt(data.total_utilization.split(',').join(''))
-              : null,
-            initial_head_count: data.initial_head_count
-              ? parseInt(data.initial_head_count.split(',').join(''))
-              : null,
+            card_number: data.card_number,
             expiration_date: data.expiration_date
               ? normalizeToUTC(new Date(data.expiration_date))
               : null,
             effective_date: data.effective_date
               ? normalizeToUTC(new Date(data.effective_date))
               : null,
-            original_effective_date: data.original_effective_date
-              ? normalizeToUTC(new Date(data.original_effective_date))
+            mode_of_payment_id: data?.mode_of_payment_id,
+            hmo_provider_id: data?.hmo_provider_id,
+            mbl: data.mbl,
+            program_types_id: data.program_types_id,
+            premium: data.premium,
+            agent_id: data.agent_id,
+            commision_rate: data.commision_rate
+              ? parseFloat(data.commision_rate.replace('%', ''))
               : null,
-            birthdate: data?.birthdate
-                ? normalizeToUTC(new Date(data.birthdate))
-                : null,
-            coc_issue_date: data.coc_issue_date
-              ? normalizeToUTC(new Date(data.coc_issue_date))
-              : null,
-            delivery_date_of_membership_ids:
-              data.delivery_date_of_membership_ids
-                ? normalizeToUTC(new Date(data.delivery_date_of_membership_ids))
-                : null,
-            orientation_date: data.orientation_date
-              ? normalizeToUTC(new Date(data.orientation_date))
-              : null,
-            wellness_lecture_date: data.wellness_lecture_date
-              ? normalizeToUTC(new Date(data.wellness_lecture_date))
-              : null,
-            special_benefits: data.special_benefits,
-            special_benefits_files:
-              isSpecialBenefitsFilesEnabled && specialBenefitsLink,
             contract_proposal: data.contract_proposal,
             contract_proposal_files:
               isSpecialBenefitsFilesEnabled && contractProposalLink,
-            additional_benefits_text: data.special_benefits,
-            additional_benefits_files:
-              isSpecialBenefitsFilesEnabled && additionalBenefitsLink,
-            annual_physical_examination_date:
-              data.annual_physical_examination_date
-                ? normalizeToUTC(
-                    new Date(data.annual_physical_examination_date),
-                  )
-                : null,
             ...(['marketing', 'after-sales'].includes(
               user?.user_metadata?.department,
             )
@@ -410,13 +298,14 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       supabase,
       uploadSpecialBenefits,
       uploadContractProposal,
-      uploadAdditionalBenefits,
-      account?.special_benefits_files,
-      account?.additional_benefits_files,
-      account?.contract_proposal_files
+      uploadAdditionalBenefits
     ],
   )
-
+  useEffect(() => {
+    if (editMode) {
+      setIsSubmitting(false)
+    }
+  }, [editMode])
   return (
     <Form {...form}>
       <form onSubmit={onSubmitHandler}>
@@ -446,8 +335,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
                 type="submit"
                 variant="default"
                 className="w-full lg:w-auto"
+                disabled={isSubmitting}
               >
-                Submit
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Submit'
+                )}
               </Button>
             </>
           )}

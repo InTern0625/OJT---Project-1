@@ -28,6 +28,8 @@ const TypesTitle: FC<Props> = ({ page, handleClick }) => {
         return 'Gender'
       case 'civil_status_types':
         return 'Civil Status'
+      case 'status_types':
+        return 'Account Status'
     }
   }
 

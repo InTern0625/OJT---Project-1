@@ -120,7 +120,9 @@ export type Database = {
           signatory_designation: string | null
           special_benefits: string | null
           special_benefits_files: string[] | null
+          contract_proposal: string | null
           contract_proposal_files: string[] | null
+          additional_benefits_text: string | null
           additional_benefits_files: string[] | null
           summary_of_benefits: string | null
           total_premium_paid: number | null
@@ -135,6 +137,9 @@ export type Database = {
           mbl: number | null
           program_types_id: string | null
           premium: number | null
+          gender_types_id: string | null
+          civil_status_id: string | null
+          status_id: string | null
         }
         Insert: {
           account_type_id?: string | null
@@ -171,7 +176,9 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal?: string | null
           contract_proposal_files?: string[] | null
+          additional_benefits_text?: string | null
           additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
@@ -186,6 +193,9 @@ export type Database = {
           mbl?: number | null
           program_types_id?: string | null
           premium?: number | null
+          gender_types_id?: string | null
+          civil_status_id?: string | null
+          status_id?: string | null
         }
         Update: {
           account_type_id?: string | null
@@ -222,7 +232,9 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal?: string | null
           contract_proposal_files?: string[] | null
+          additional_benefits_text?: string | null
           additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
@@ -237,6 +249,9 @@ export type Database = {
           mbl?: number | null
           program_types_id?: string | null
           premium?: number | null
+          gender_types_id?: string | null
+          civil_status_id?: string | null
+          status_id?: string | null
         }
         Relationships: [
           {
@@ -309,6 +324,27 @@ export type Database = {
             referencedRelation: '[room_plans]'
             referencedColumns: ['id']
           },
+          {
+            foreignKeyName: 'accounts_gender_types_id_fkey'
+            columns: ['gender_types_id']
+            isOneToOne: false
+            referencedRelation: '[gender_types]'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_civil_status_id_fkey'
+            columns: ['civil_status_id']
+            isOneToOne: false
+            referencedRelation: '[civil_status_types]'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'accounts_status_id_fkey'
+            columns: ['status_id']
+            isOneToOne: false
+            referencedRelation: '[status_types]'
+            referencedColumns: ['id']
+          }
         ]
       }
       accounts_column_sorting: {
@@ -1080,6 +1116,27 @@ export type Database = {
         Relationships: []
       }
       civil_status_types: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      status_types: {
         Row: {
           created_at: string | null
           id: string

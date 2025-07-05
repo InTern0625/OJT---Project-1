@@ -28,6 +28,17 @@ import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 import getAccountById from '@/queries/get-account-by-id'
 import { FC } from 'react'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import { CalendarIcon } from 'lucide-react'
+import { cn } from '@/utils/tailwind'
+import { format } from 'date-fns'
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 interface HmoInformationProps {
   id: string
@@ -117,50 +128,116 @@ interface HmoInformationProps {
         name="effective_date"
         render={({ field }) => (
           <FormItem>
-            <div className="text-sm text-[#1e293b]">Effective Date:</div>
             <FormControl>
-              <input
-                type="date"
-                className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
-                value={
-                  typeof field.value === 'string'
-                    ? field.value
-                    : field.value instanceof Date
-                      ? field.value.toISOString().split('T')[0]
-                      : ''
-                }
-                onChange={(e) => field.onChange(e.target.value)} 
-              />
+              <div className="pt-4">
+                <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
+                  Effective Date:
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full min-w-[240px] rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+                            !field.value && 'text-muted-foreground',
+                            'text-left font-normal',
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ?? undefined}
+                        onSelect={field.onChange}
+                        disabled={(date) => date < new Date('1900-01-01')}
+                        initialFocus
+                        captionLayout="dropdown"
+                        toYear={new Date().getFullYear() + 20}
+                        fromYear={1900}
+                        classNames={{
+                          day_hidden: 'invisible',
+                          dropdown:
+                            'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+                          caption_dropdowns: 'flex gap-3',
+                          vhidden: 'hidden',
+                          caption_label: 'hidden',
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
             </FormControl>
             <FormMessage />
           </FormItem>
         )}
       />
 
-        <FormField
-          control={form.control}
-          name="expiration_date"
-          render={({ field }) => (
-            <FormItem>
-              <div className="text-sm text-[#1e293b]">Expiration Date:</div>
-              <FormControl>
-                <input
-                  type="date"
-                  className="w-full rounded border border-gray-200 bg-white px-4 py-2 shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
-                  value={
-                    typeof field.value === 'string'
-                      ? field.value
-                      : field.value instanceof Date
-                        ? field.value.toISOString().split('T')[0]
-                        : ''
-                  }
-                  onChange={(e) => field.onChange(e.target.value)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+      <FormField
+        control={form.control}
+        name="expiration_date"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <div className="pt-4">
+                <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
+                  Expiration Date:
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant={'outline'}
+                          className={cn(
+                            'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex h-12 w-full min-w-[240px] rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+                            !field.value && 'text-muted-foreground',
+                            'text-left font-normal',
+                          )}
+                        >
+                          {field.value ? (
+                            format(field.value, 'PPP')
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ?? undefined}
+                        onSelect={field.onChange}
+                        disabled={(date) => date < new Date('1900-01-01')}
+                        initialFocus
+                        captionLayout="dropdown"
+                        toYear={new Date().getFullYear() + 20}
+                        fromYear={1900}
+                        classNames={{
+                          day_hidden: 'invisible',
+                          dropdown:
+                            'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+                          caption_dropdowns: 'flex gap-3',
+                          vhidden: 'hidden',
+                          caption_label: 'hidden',
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              </div>
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
 
       {/* Row 3: HMO Provider | Room Plan */}
       <FormField

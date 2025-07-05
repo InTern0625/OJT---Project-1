@@ -28,6 +28,8 @@ import { useUpload } from '@supabase-cache-helpers/storage-react-query'
 import { FC, FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import { Loader2 } from 'lucide-react'
+import { useState, useEffect } from 'react'
 
 interface Props {
   companyId: string
@@ -38,14 +40,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, companyId))
   const { user } = useUserServer()
-
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
 
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
       is_active: account?.is_active ?? true,
-      room_plan_id: account?.room_plan_id ?? undefined,
       agent_id: account?.agent?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
@@ -132,6 +133,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       additional_benefits: account?.additional_benefits ?? '',
       special_benefits: account?.special_benefits ?? '',
       special_benefits_files: [],
+      contract_proposal: account?.contract_proposal ?? '',
+      contract_proposal_files: [],
+      additional_benefits_text: account?.additional_benefits_text ?? '',
+      additional_benefits_files: [],
       name_of_signatory: account?.name_of_signatory ?? '',
       designation_of_contact_person:
         account?.designation_of_contact_person ?? '',
@@ -196,7 +201,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
+      
       form.handleSubmit(async (data) => {
+        setIsSubmitting (true)
         const {
           data: { user },
         } = await supabase.auth.getUser()
@@ -234,7 +241,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let specialBenefitsLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
-          data.special_benefits_files.length > 0
+          Array.isArray(data.special_benefits_files) &&
+          data.special_benefits_files?.length > 0
         ) {
           const uploadResult = await uploadSpecialBenefits({
             files: specialBenefitsFiles,
@@ -250,6 +258,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let contractProposalLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
+          Array.isArray(data.contract_proposal_files) &&
           data.contract_proposal_files.length > 0
         ) {
           const uploadResult = await uploadContractProposal({
@@ -266,6 +275,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         let additionalBenefitsLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
+          Array.isArray(data.additional_benefits_files) &&
           data.additional_benefits_files.length > 0
         ) {
           const uploadResult = await uploadAdditionalBenefits({
@@ -282,7 +292,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         await mutateAsync([
           {
             company_name: data.company_name,
-            room_plan_id: data?.room_plan_id,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
             contact_person: data.contact_person,
@@ -376,7 +385,11 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       uploadAdditionalBenefits
     ],
   )
-
+  useEffect(() => {
+    if (editMode) {
+      setIsSubmitting(false)
+    }
+  }, [editMode])
   return (
     <Form {...form}>
       <form onSubmit={onSubmitHandler}>
@@ -412,8 +425,13 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
                 type="submit"
                 variant="default"
                 className="w-full lg:w-auto"
+                disabled={isSubmitting}
               >
-                Submit
+                {isSubmitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  'Submit'
+                )}
               </Button>
             </>
           )}

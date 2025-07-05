@@ -127,7 +127,7 @@ const ContractInformationFields = () => {
             <FormControl>
               <div className="pt-4">
                 <div className="text-md w-full text-[#1e293b] md:grid md:grid-cols-2 lg:grid-cols-1">
-                  Expiration Date12:
+                  Expiration Date:
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>

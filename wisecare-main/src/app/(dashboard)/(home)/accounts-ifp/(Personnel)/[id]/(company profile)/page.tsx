@@ -3,7 +3,7 @@ import CompanyAbout from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]
 import CompanyEditButton from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-button'
 import CompanyEditProvider from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider'
 import CompanyDeleteButton from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/delete/company-delete-button'
-import ToggleCompanyActive from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/toggle-company-active'
+import SelectCompanyActive from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/select-company-active'
 import { FeatureFlagProvider } from '@/providers/FeatureFlagProvider'
 import { accountBenefitUpload } from '@/utils/flags'
 import getRole from '@/utils/get-role'
@@ -24,7 +24,7 @@ const CompanyAboutPage = async (props: { params: Promise<{ id: string }> }) => {
         flags={{ 'account-benefit-upload': isAccountBenefitUploadEnabled }}
       >
         <div className="flex w-full flex-row items-center gap-2 pb-4 sm:justify-end">
-          {role === 'admin' && <ToggleCompanyActive accountId={accountId} />}
+          {role === 'admin' && <SelectCompanyActive accountId={accountId} />}
           <CompanyEditButton role={role} accountId={accountId} />
         </div>
         <CompanyAbout companyId={accountId} />

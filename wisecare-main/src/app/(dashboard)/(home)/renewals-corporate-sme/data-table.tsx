@@ -41,8 +41,8 @@ import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-corporate-sme
 import { useToast } from '@/components/ui/use-toast'
 import { useUserServer } from '@/providers/UserProvider'
 import { useRouter } from 'next/navigation'
-import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-requests'
-import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
+import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-requests'
+import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts-modal'
 
 interface IData {
   id: string
@@ -132,7 +132,7 @@ const DataTable = <TData extends IData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} />
-            <ExportAccountsModal exportData={'accounts'} />
+            <ExportAccountsModal exportData={'accounts'} exportType ='renewals'/>
           </div>
         </div>
       </PageHeader>

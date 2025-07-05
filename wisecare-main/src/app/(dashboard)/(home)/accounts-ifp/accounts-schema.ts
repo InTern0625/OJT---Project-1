@@ -67,6 +67,8 @@ const accountsSchema = z.object({
     const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))
     return isNaN(parsedVal) ? null : parsedVal
   }, z.number().nullable()),
+  gender_types_id: z.string().uuid().optional(),
+  civil_status_id: z.string().uuid().optional(),
 })
 
 export default accountsSchema

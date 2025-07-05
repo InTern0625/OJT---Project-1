@@ -1,6 +1,12 @@
 'use client'
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
-import { Switch } from '@/components/ui/switch'
+
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from '@/components/ui/select'
 import {
   Tooltip,
   TooltipContent,
@@ -11,29 +17,25 @@ import {
   useQuery,
   useUpdateMutation,
 } from '@supabase-cache-helpers/postgrest-react-query'
-import { debounce } from 'lodash'
 import { useEffect, useState } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getTypes from '@/queries/get-types'
 
-const ToggleCompanyActive = ({ accountId }: { accountId: string }) => {
+const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
   const supabase = createBrowserClient()
   const { toast } = useToast()
+
   const { data: statusTypes } = useQuery(getTypes(supabase, 'status_types'))
   const [getStatusTypes, setStatusTypes] = useState<string>('')
 
   const { data: accountData } = useQuery(
-    supabase.from('accounts').select('status_id').eq('id', accountId),
+    supabase.from('accounts').select('status_id').eq('id', accountId)
   )
 
   useEffect(() => {
     if (accountData?.[0]?.status_id) {
       setStatusTypes(accountData[0].status_id)
-    }
-    else if (accountData?.[0].status_id != null || accountData?.[0].status_id != undefined ){
-      setStatusTypes(accountData?.[0]?.status_id)
-    }
-    else if (statusTypes && statusTypes.length > 0) {
+    } else if (statusTypes && statusTypes.length > 0) {
       setStatusTypes(statusTypes[0].id)
     }
   }, [accountData, statusTypes])
@@ -46,8 +48,8 @@ const ToggleCompanyActive = ({ accountId }: { accountId: string }) => {
       onSuccess: () => {
         toast({
           variant: 'default',
-          title: 'Account active status updated!',
-          description: 'Successfully updated account active status',
+          title: 'Account status updated!',
+          description: 'Successfully updated account  status',
         })
       },
       onError: (err: any) => {
@@ -57,35 +59,37 @@ const ToggleCompanyActive = ({ accountId }: { accountId: string }) => {
           description: err.message,
         })
       },
-    },
+    }
   )
-
 
   return (
     <Tooltip>
-      <TooltipTrigger asChild={true}>
-        <div>
-          <select
+      <TooltipTrigger asChild>
+        <div className="w-48">
+          <Select
             value={getStatusTypes}
-            onChange={async (e) => {
-              const newStatusId = e.target.value
+            onValueChange={async (newStatusId) => {
               setStatusTypes(newStatusId)
               await mutateAsync({ id: accountId, status_id: newStatusId })
             }}
             disabled={isPending}
-            className="border px-2 py-1 rounded w-full"
           >
-            {statusTypes?.map((type: { id: string; name: string }) => (
-              <option key={type.id} value={type.id}>
-                {type.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="w-full bg-white/60 rounded-full focus:outline-none focus:ring-0 shadow-none">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
+            <SelectContent>
+              {statusTypes?.map((type: { id: string; name: string }) => (
+                <SelectItem key={type.id} value={type.id}>
+                  {type.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </TooltipTrigger>
-      <TooltipContent>Toggle company active</TooltipContent>
+      <TooltipContent>Select account status</TooltipContent>
     </Tooltip>
   )
 }
 
-export default ToggleCompanyActive
+export default SelectCompanyActive

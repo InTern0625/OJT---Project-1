@@ -21,6 +21,7 @@ const AccountsTable = () => {
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
+  console.log(filteredData)
   return <DataTable columns={accountsColumns} data={filteredData || []} />
 }
 export default AccountsTable

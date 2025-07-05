@@ -36,6 +36,7 @@ import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-ifp/mutations
 import { useToast } from '@/components/ui/use-toast'
 import { useUserServer } from '@/providers/UserProvider'
 import { useRouter } from 'next/navigation'
+import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
 
 interface IData {
   id: string
@@ -122,6 +123,8 @@ const DataTable = <TData extends IData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} />
+            <ExportAccountsModal exportData={'accounts'} exportType ='renewals'/>
+            
           </div>
         </div>
       </PageHeader>

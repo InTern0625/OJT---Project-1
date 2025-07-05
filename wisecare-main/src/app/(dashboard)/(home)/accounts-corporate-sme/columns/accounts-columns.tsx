@@ -28,6 +28,13 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
     ),
   },
   {
+    accessorKey: 'status_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.status_type?.name ?? '',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Account Status" />
+    ),
+  },
+  {
     accessorKey: 'company_name',
     header: ({ column }) => (
       <TableHeader column={column} title="Company Name" />

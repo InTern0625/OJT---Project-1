@@ -22,7 +22,6 @@ const RenewalList = () => {
       )
       .order('expiration_date', { ascending: true }),
   )
-
   return (
     <div className="max-h-[370px] space-y-4 overflow-y-auto">
       {data?.map((item) => (

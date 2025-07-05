@@ -42,6 +42,8 @@ const CreateType: FC<Props> = ({ page }) => {
         return 'Gender'
       case 'civil_status_types':
         return 'Civil Status'
+      case 'status_types':
+        return 'Account Status'
     }
   }
 

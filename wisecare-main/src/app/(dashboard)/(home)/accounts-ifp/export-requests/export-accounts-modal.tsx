@@ -20,9 +20,10 @@ import { createBrowserClient } from '@/utils/supabase-client'
 
 interface ExportAccountsModalProps {
   exportData: Enums<'export_type'>
+  exportType?: string
 }
 
-const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData }) => {
+const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const supabase = createBrowserClient()
   const [pendingRequest, setIsPendingRequest] = useState('')
@@ -89,63 +90,73 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData }) => {
       return
     }
 
-    const accountsData = oldAccountsData.map((account) => {
+    const accountsData = oldAccountsData
+      .filter((account) =>{
+        if (exportType == "renewals"){
+          const now = new Date()
+          const threeMonthsLater = new Date()
+          threeMonthsLater.setMonth(now.getMonth() + 3)
+          const accountType = account.program_type?.name?.toUpperCase()
+          const expiration = account.expiration_date ? new Date(account.expiration_date) : null
+
+          const isTypeValid = accountType
+            ? (accountType.startsWith('PREPAID') ||
+            accountType.startsWith('FAMILY') ||
+            accountType.startsWith('INDIVIDUAL')) 
+            : false
+          
+          const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
+          return isTypeValid && isExpirationValid
+        }else if (exportType == "accounts"){
+          const type = account?.account_types?.name.toUpperCase()
+          return type === 'SME' || type === 'CORPORATE'
+        }else{
+          return account
+        }
+      })
+      .map((account) => {
       const { id, created_at, updated_at, is_account_active, ...rest } = account
+      const birthdate = account.birthdate ? new Date(account.birthdate) : null
+      const age = birthdate
+        ? new Date().getFullYear() - birthdate.getFullYear() -
+          (new Date().getMonth() < birthdate.getMonth() || 
+          (new Date().getMonth() === birthdate.getMonth() && new Date().getDate() < birthdate.getDate()) ? 1 : 0)
+        : null
 
       return {
-        Agent: account.agent
-          ? `${account.agent.first_name} ${account.agent.last_name}`
+        'Complete Name': account.company_name || '',
+        'Age': age || '',
+        'Gender': account.gender
+          ? (account.gender as any).name || ''
           : '',
-        'Company Name': account.company_name || '',
-        'Company Address': account.company_address || '',
-        'HMO Provider': account.hmo_provider
-          ? (account.hmo_provider as any).name
+        'Civil Status': account.civil_status
+          ? (account.civil_status as any).name || ''
           : '',
-        'Old HMO Provider': account.old_hmo_provider
-          ? (account.old_hmo_provider as any).name
-          : '',
-        'Previous HMO Provider': account.previous_hmo_provider
-          ? (account.previous_hmo_provider as any).name
-          : '',
-        'COC Issue Date': account.coc_issue_date || '',
-        'Commission Rate': account.commision_rate || '',
+        'Permanent Address': account.company_address || '',
         'Contact Number': account.contact_number || '',
-        'Contact Person': account.contact_person || '',
+        'Email Address':
+          account.email_address_of_contact_person || '',
+        'Card Number': account.contact_number || '',
+        'Effective Date': account.effective_date || '',
         'Expiration Date': account.expiration_date || '',
         'Mode of Payment': account.mode_of_payment
           ? (account.mode_of_payment as any).name
           : '',
-        'Effective Date': account.effective_date || '',
-        'Original Effective Date': account.original_effective_date || '',
-        'Orientation Date': account.orientation_date || '',
-        'Name of Signatory': account.name_of_signatory || '',
-        'Total Utilization': account.total_utilization || '',
-        'Initial Head Count': account.initial_head_count || '',
-        'Nature of Business': account.nature_of_business || '',
-        'Total Premium Paid': account.total_premium_paid || '',
-        'Dependent Plan Type': account.dependent_plan_type
-          ? (account.dependent_plan_type as any).name
+        'HMO Provider': account.hmo_provider
+          ? (account.hmo_provider as any).name
           : '',
-        'Principal Plan Type': account.principal_plan_type
-          ? (account.principal_plan_type as any).name
+        'Program Type': account.program_type
+          ? (account.program_type as any).name
           : '',
-        'Signatory Designation': account.signatory_designation || '',
-        'Wellness Lecture Date': account.wellness_lecture_date || '',
-        'Initial Contract Value': account.initial_contract_value || '',
-        'Designation of Contact Person':
-          account.designation_of_contact_person || '',
-        'Delivery Date of Membership IDs':
-          account.delivery_date_of_membership_ids || '',
-        'Email Address of Contact Person':
-          account.email_address_of_contact_person || '',
-        'Annual Physical Examination Date':
-          account.annual_physical_examination_date || '',
-        'Additional Benefits': account.additional_benefits || '',
-        'Special Benefits': account.special_benefits || '',
-        'Summary of Benefits': account.summary_of_benefits || '',
+        'MBL': account.mbl || '',
+        'Premium': account.premium || '',
+        Agent: account.agent
+          ? `${account.agent.first_name} ${account.agent.last_name}`
+          : '',
+        'Commission Rate': account.commision_rate || '',
       }
     })
-
+    console.log("exportData",accountsData)
     await mutateAsync([
       {
         export_type: exportData,

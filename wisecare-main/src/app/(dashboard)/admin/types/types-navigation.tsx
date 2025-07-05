@@ -7,11 +7,11 @@ import {
   UserCircle,
   Users,
   X,
-  //Hospital,
   BookCopy,
   Plus,
   Mars,
-  HeartHandshake
+  HeartHandshake,
+  IdCardLanyard,
 } from 'lucide-react'
 import { ComponentType, FC } from 'react'
 import { useTypesContext } from './type-card'
@@ -72,6 +72,12 @@ const navigationLinks: NavigationLink[] = [
     description: 'Manage civil status',
     tab: 'civil_status_types',
     icon: HeartHandshake,
+  },
+  {
+    name: 'Account Status',
+    description: 'Manage Account status',
+    tab: 'status_types',
+    icon: IdCardLanyard,
   },
 ]
 
