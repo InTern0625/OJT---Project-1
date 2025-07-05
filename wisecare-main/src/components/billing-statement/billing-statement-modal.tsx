@@ -44,7 +44,6 @@ import getTypes from '@/queries/get-types'
 import { Tables } from '@/types/database.types'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { cn } from '@/utils/tailwind'
-import { calcWeeks } from '@/utils/get-weeks'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMaskito } from '@maskito/react'
 import {
@@ -149,8 +148,6 @@ const BillingStatementModal = <TData,>({
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
-        //get weeks    
-        const weeks = calcWeeks(data.billing_start, data.billing_end);
 
         await mutateAsync([
           {
@@ -173,7 +170,6 @@ const BillingStatementModal = <TData,>({
               ? normalizeToUTC(new Date(data.billing_end))
               : undefined,    
             //assign weeks to billing period
-            billing_period: weeks ?? 1,
           },
         ])
       })(e)

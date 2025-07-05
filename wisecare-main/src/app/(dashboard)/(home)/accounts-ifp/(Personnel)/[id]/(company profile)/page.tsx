@@ -7,6 +7,7 @@ import ToggleCompanyActive from '@/app/(dashboard)/(home)/accounts-ifp/(Personne
 import { FeatureFlagProvider } from '@/providers/FeatureFlagProvider'
 import { accountBenefitUpload } from '@/utils/flags'
 import getRole from '@/utils/get-role'
+import { ButtonBack } from '@/components/layout/navigation/navigation-back'
 
 const CompanyAboutPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params
@@ -23,9 +24,14 @@ const CompanyAboutPage = async (props: { params: Promise<{ id: string }> }) => {
       <FeatureFlagProvider
         flags={{ 'account-benefit-upload': isAccountBenefitUploadEnabled }}
       >
-        <div className="flex w-full flex-row items-center gap-2 pb-4 sm:justify-end">
+       <div className="flex w-full flex-row items-center pb-4 sm:justify-between">
+          <div>
+            <ButtonBack />
+          </div>
+          <div className="flex flex-row gap-2 items-center">
           {role === 'admin' && <ToggleCompanyActive accountId={accountId} />}
           <CompanyEditButton role={role} accountId={accountId} />
+          </div>
         </div>
         <CompanyAbout companyId={accountId} />
         <div className="flex w-full justify-end md:justify-start">

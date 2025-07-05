@@ -46,11 +46,15 @@ interface IData {
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  initialPageIndex?: number
+  initialPageSize?: number
 }
 
 const DataTable = <TData extends IData, TValue>({
   columns,
   data,
+  initialPageIndex = 0,
+  initialPageSize = 10,
 }: DataTableProps<TData, TValue>) => {
   const router = useRouter()
   const { toast } = useToast()
@@ -92,6 +96,12 @@ const DataTable = <TData extends IData, TValue>({
       columnVisibility,
       globalFilter,
     },
+    initialState: {
+      pagination: {
+        pageIndex: initialPageIndex ?? 0,
+        pageSize: initialPageSize ?? 10,
+      },
+    }
   })
 
   useEffect(() => {
@@ -170,7 +180,9 @@ const DataTable = <TData extends IData, TValue>({
                         className={`hover:bg-muted/50 cursor-pointer transition-colors ${isAccountLoading ? 'cursor-wait' : ''}`}
                         onClick={() => {
                           setIsAccountLoading(true)
-                          router.push(`/accounts-ifp/${row.original.id}`)
+                          const currentPage = table.getState().pagination.pageIndex
+                          const pageSize = table.getState().pagination.pageSize
+                          router.push(`/accounts-ifp/${row.original.id}?fromPage=${currentPage}&pageSize=${pageSize}&fromPath=/accounts-ifp`)
                         }}
                       >
                         {row.getVisibleCells().map((cell) => (

@@ -6,7 +6,12 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'
 import { createBrowserClient } from '@/utils/supabase-client'
 
-const AccountsTable = () => {
+interface AccountsTableProps {
+  initialPageIndex: number
+  initialPageSize: number
+}
+
+const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps) => {
   const supabase = createBrowserClient()
   const { data, isLoading } = useQuery(getAccounts(supabase))
   if (isLoading) return null
@@ -20,6 +25,10 @@ const AccountsTable = () => {
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
-  return <DataTable columns={accountsColumns} data={filteredData || []} />
+  return <DataTable 
+            columns={accountsColumns} 
+            data={filteredData || []} 
+            initialPageIndex={initialPageIndex}
+            initialPageSize={initialPageSize}/>
 }
 export default AccountsTable

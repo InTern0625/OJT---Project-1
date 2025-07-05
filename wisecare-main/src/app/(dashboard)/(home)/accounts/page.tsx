@@ -22,7 +22,11 @@ export const metadata = async (): Promise<Metadata> => {
   }
 }
 
-const AccountsPage = async () => {
+const AccountsPage = async ({
+  searchParams,
+  }: {
+    searchParams: { [key: string]: string | string[] | undefined }
+  }) => {
   const supabase = createServerClient(await cookies())
   const queryClient = new QueryClient()
   await prefetchQuery(queryClient, getAccounts(supabase))
@@ -42,6 +46,9 @@ const AccountsPage = async () => {
 
   const isAccountBenefitUploadEnabled = await accountBenefitUpload()
 
+  const initialPageIndex = Number(searchParams?.fromPage ?? '0')
+  const initialPageSize = Number(searchParams?.pageSize ?? '10')
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <FeatureFlagProvider
@@ -49,7 +56,7 @@ const AccountsPage = async () => {
           'account-benefit-upload': isAccountBenefitUploadEnabled,
         }}
       >
-        <AccountsTable />
+        <AccountsTable initialPageIndex={initialPageIndex} initialPageSize={initialPageSize}/>
       </FeatureFlagProvider>
     </HydrationBoundary>
   )
