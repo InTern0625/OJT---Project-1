@@ -812,6 +812,9 @@ export type Database = {
           mbl: number | null
           program_types_id: string | null
           premium: number | null
+          gender_types_id: string | null
+          civil_status_id: string | null
+          status_id: string | null
         }
         Insert: {
           account_id?: string | null
@@ -866,6 +869,10 @@ export type Database = {
           mbl?: number | null
           program_types_id?: string | null
           premium?: number | null
+          birthdate?: string | null
+          gender_types_id: string | null
+          civil_status_id: string | null
+          status_id: string | null
         }
         Update: {
           account_id?: string | null
@@ -921,6 +928,9 @@ export type Database = {
           program_types_id?: string | null
           premium?: number | null
           birthdate?: string | null
+          gender_types_id?: string | null
+          civil_status_id?: string | null
+          status_id?: string | null
         }
         Relationships: [
           {
