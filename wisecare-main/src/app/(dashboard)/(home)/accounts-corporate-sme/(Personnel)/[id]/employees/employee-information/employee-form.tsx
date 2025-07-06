@@ -29,16 +29,32 @@ import normalizeToUTC from '@/utils/normalize-to-utc'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { cn } from '@/utils/tailwind'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useUpsertMutation } from '@supabase-cache-helpers/postgrest-react-query'
+import { useUpsertMutation, useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Loader2 } from 'lucide-react'
 import { FC, FormEventHandler, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+import getTypes from '@/queries/get-types'
+//Extend gender_type to company schema
+interface ExtendedEmployeeData extends Tables<'company_employees'> {
+  gender_type?: {
+    id: string
+    name: string
+  } | null
+  room_plan_type?: {
+    id: string
+    name: string
+  } | null
+  civil_status_type?: {
+    id: string
+    name: string
+  } | null
+}
 
 interface EmployeeFormProps {
   setIsOpen: (value: boolean) => void
-  oldEmployeeData?: Tables<'company_employees'>
+  oldEmployeeData?: ExtendedEmployeeData
 }
 
 const EmployeeForm: FC<EmployeeFormProps> = ({
@@ -58,12 +74,12 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
       middle_name: '',
       suffix: '',
       birth_date: undefined,
-      gender: undefined,
-      civil_status: undefined,
+      gender_types_id: undefined,
+      civil_status_id: undefined,
       principal_member_name: '',
       card_number: '',
       effective_date: undefined,
-      room_plan: '',
+      room_plan_id: undefined,
       maximum_benefit_limit: '',
       member_type: undefined,
       dependent_relation: undefined,
@@ -156,17 +172,19 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
         birth_date: oldEmployeeData.birth_date
           ? normalizeToUTC(new Date(oldEmployeeData.birth_date ?? ''))
           : undefined,
-        gender: oldEmployeeData.gender
-          ? (oldEmployeeData.gender as any).toString()
+        gender_types_id: oldEmployeeData.gender_type?.name
+          ? (oldEmployeeData.gender_type as any).name.toString()
           : undefined,
-        civil_status: oldEmployeeData.civil_status
-          ? (oldEmployeeData.civil_status as any).toString()
+        civil_status_id: oldEmployeeData.civil_status_type?.name
+          ? (oldEmployeeData.civil_status_type as any).name.toString()
           : undefined,
         card_number: oldEmployeeData.card_number ?? '',
         effective_date: oldEmployeeData.effective_date
           ? normalizeToUTC(new Date(oldEmployeeData.effective_date ?? ''))
           : undefined,
-        room_plan: oldEmployeeData.room_plan ?? '',
+        room_plan_id: oldEmployeeData.room_plan_type?.name
+          ? (oldEmployeeData.room_plan_type as any).name.toString()
+          : undefined,
         maximum_benefit_limit: oldEmployeeData.maximum_benefit_limit ?? '',
         member_type: oldEmployeeData.member_type ?? undefined,
         dependent_relation: oldEmployeeData.dependent_relation ?? undefined,
@@ -184,7 +202,10 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
       setIsDone(true)
     }
   }, [form, oldEmployeeData])
-
+  const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
+  const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
+  const { data: roomPlanTypes } = useQuery(getTypes(supabase, 'room_plans'))
+  
   return (
     <Form {...form}>
       {/* key is used to trigger a re-render */}
@@ -301,7 +322,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
           />
           <FormField
             control={form.control}
-            name="gender"
+            name="gender_types_id"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
                 <FormLabel className="text-right">Gender</FormLabel>
@@ -316,8 +337,11 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
                       <SelectValue placeholder="Select Gender" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
+                      {genderTypes?.map((type: { id: string; name: string }) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -327,7 +351,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
           />
           <FormField
             control={form.control}
-            name="civil_status"
+            name="civil_status_id"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
                 <FormLabel className="text-right">Civil Status</FormLabel>
@@ -342,10 +366,11 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
                       <SelectValue placeholder="Select Civil Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="single">Single</SelectItem>
-                      <SelectItem value="married">Married</SelectItem>
-                      <SelectItem value="divorced">Divorced</SelectItem>
-                      <SelectItem value="widowed">Widowed</SelectItem>
+                      {civilStatusTypes?.map((type: { id: string; name: string }) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -421,12 +446,28 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
           />
           <FormField
             control={form.control}
-            name="room_plan"
+            name="room_plan_id"
             render={({ field }) => (
               <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
                 <FormLabel className="text-right">Room Plan</FormLabel>
                 <FormControl className="col-span-3">
-                  <Input type="text" {...field} disabled={isPending} />
+                  <Select
+                    {...field}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={isPending}
+                  >
+                    <SelectTrigger className="col-span-3">
+                      <SelectValue placeholder="Select Room Plan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {roomPlanTypes?.map((type: { id: string; name: string }) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage className="col-span-3 col-start-2" />
               </FormItem>

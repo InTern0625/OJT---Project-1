@@ -25,8 +25,8 @@ import {
 } from '@tanstack/react-table'
 import { Suspense, useState } from 'react'
 
-import AddBillingStatementButton from '@/app/(dashboard)/(home)/billing-statements/add-billing-statement-button'
-import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements/billing-provider'
+import AddBillingStatementButton from '@/app/(dashboard)/(home)/billing-statements-ifp/add-billing-statement-button'
+import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-ifp/billing-provider'
 import BillingStatementModal from '@/components/billing-statement/billing-statement-modal'
 import TableSearch from '@/components/table-search'
 import { Skeleton } from '@/components/ui/skeleton'

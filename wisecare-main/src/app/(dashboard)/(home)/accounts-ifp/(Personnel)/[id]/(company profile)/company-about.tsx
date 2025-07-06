@@ -29,7 +29,9 @@ import { FC, FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import getTypes from '@/queries/get-types'
+
 interface Props {
   companyId: string
 }
@@ -40,12 +42,19 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { data: account, refetch: refetchAccount } = useQuery(getAccountById(supabase, companyId));
   const { user } = useUserServer()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  
+  const { data: activeTypes } = useQuery(getTypes(supabase, 'status_types'))
+  const defaultStatusID = activeTypes?.[0]?.id ?? undefined
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
-
+  const existingContractFiles = useMemo(
+    () => account?.contract_proposal_files ?? [],
+    [account?.contract_proposal_files]
+  )
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
+      status_id: account?.status_type
+        ? (account.status_type as any).id
+        : defaultStatusID,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
       birthdate: account?.birthdate
@@ -72,6 +81,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         : undefined,
       hmo_provider_id: account?.hmo_provider
         ? (account.hmo_provider as any).id
+        : undefined,
+      room_plan_id: account?.room_plan
+        ? (account.room_plan as any).id
         : undefined,
       mbl: account?.mbl
         ? (maskitoTransform(
@@ -135,29 +147,17 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
     },
   )
 
-  const { mutateAsync: uploadSpecialBenefits } = useUpload(supabase.storage.from('accounts'), {
-    buildFileName: ({ fileName }) => {
-      const randomId = Math.random().toString(36).substring(2, 15)
-      return `benefits/${randomId}-${fileName}`
-    },
-  })
   const { mutateAsync: uploadContractProposal } = useUpload(supabase.storage.from('accounts'), {
     buildFileName: ({ fileName }) => {
       const randomId = Math.random().toString(36).substring(2, 15)
       return `contract_proposal/${randomId}-${fileName}`
     },
   })
-  const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
-    buildFileName: ({ fileName }) => {
-      const randomId = Math.random().toString(36).substring(2, 15)
-      return `additional_benefits/${randomId}-${fileName}`
-    },
-  })
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
-      
       form.handleSubmit(async (data) => {
+
         setIsSubmitting (true)
         const {
           data: { user },
@@ -182,34 +182,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         .eq('id', companyId)
 
         // Handle file input
-        const specialBenefitsFiles = data.special_benefits_files
-          ? Array.from(data.special_benefits_files)
-          : []
         const contractProposalFiles = data.contract_proposal_files
           ? Array.from(data.contract_proposal_files)
           : []
-        const additionalBenefitsFiles = data.additional_benefits_files
-          ? Array.from(data.additional_benefits_files)
-          : []
-          
         // Upload special benefits files only if the feature is enabled and there are files
-        let specialBenefitsLink: string[] = []
-        if (
-          isSpecialBenefitsFilesEnabled &&
-          Array.isArray(data.special_benefits_files) &&
-          data.special_benefits_files?.length > 0
-        ) {
-          const uploadResult = await uploadSpecialBenefits({
-            files: specialBenefitsFiles,
-          })
-
-          if (uploadResult.length > 0) {
-            specialBenefitsLink = uploadResult
-              .map((result) => result.data?.path)
-              .filter((path): path is string => typeof path === 'string')
-          }
-        }
-
         let contractProposalLink: string[] = []
         if (
           isSpecialBenefitsFilesEnabled &&
@@ -221,27 +197,12 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
 
           if (uploadResult.length > 0) {
-            contractProposalLink = uploadResult
+            const uploadProposalLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
+            contractProposalLink = [...new Set([...existingContractFiles, ...uploadProposalLink].filter(x => x))]
           }
-        }
-
-        let additionalBenefitsLink: string[] = []
-        if (
-          isSpecialBenefitsFilesEnabled &&
-          Array.isArray(data.additional_benefits_files) &&
-          data.additional_benefits_files.length > 0
-        ) {
-          const uploadResult = await uploadAdditionalBenefits({
-            files: additionalBenefitsFiles,
-          })
-
-          if (uploadResult.length > 0) {
-            additionalBenefitsLink = uploadResult
-              .map((result) => result.data?.path)
-              .filter((path): path is string => typeof path === 'string')
-          }
+          
         }
 
         await mutateAsync([
@@ -265,6 +226,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               : null,
             mode_of_payment_id: data?.mode_of_payment_id,
             hmo_provider_id: data?.hmo_provider_id,
+            room_plan_id: data?.room_plan_id,
             mbl: data.mbl,
             program_types_id: data.program_types_id,
             premium: data.premium,
@@ -296,9 +258,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       isSpecialBenefitsFilesEnabled,
       mutateAsync,
       supabase,
-      uploadSpecialBenefits,
       uploadContractProposal,
-      uploadAdditionalBenefits
+      existingContractFiles
     ],
   )
   useEffect(() => {

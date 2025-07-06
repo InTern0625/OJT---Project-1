@@ -27,7 +27,7 @@ import {
 } from '@tanstack/react-table'
 import { Suspense, useState, useEffect } from 'react'
 import TableViewOptions from '@/components/table-view-options'
-import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements/billing-provider'
+import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
 import TableSearch from '@/components/table-search'
 import { Skeleton } from '@/components/ui/skeleton'
 import getRenewalStatements from '@/queries/get-renewal-statements'

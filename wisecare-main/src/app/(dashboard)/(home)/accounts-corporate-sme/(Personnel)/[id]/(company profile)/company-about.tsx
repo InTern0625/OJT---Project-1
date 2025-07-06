@@ -29,7 +29,8 @@ import { FC, FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { Loader2 } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import getTypes from '@/queries/get-types'
 
 interface Props {
   companyId: string
@@ -41,12 +42,27 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { data: account } = useQuery(getAccountById(supabase, companyId))
   const { user } = useUserServer()
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const { data: activeTypes } = useQuery(getTypes(supabase, 'status_types'))
+  const defaultStatusID = activeTypes?.[0]?.id ?? undefined
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
-
+  const existingContractFiles = useMemo(
+    () => account?.contract_proposal_files ?? [],
+    [account?.contract_proposal_files]
+  )
+  const existingSpecialBenefitsFiles = useMemo(
+    () => account?.special_benefits_files ?? [],
+    [account?.special_benefits_files]
+  )
+  const existingAdditionalFiles = useMemo(
+    () => account?.additional_benefits_files ?? [],
+    [account?.additional_benefits_files]
+  )
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
-      is_active: account?.is_active ?? true,
+      status_id: account?.status_type
+        ? (account.status_type as any).id
+        : defaultStatusID,
       agent_id: account?.agent?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
@@ -249,9 +265,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
 
           if (uploadResult.length > 0) {
-            specialBenefitsLink = uploadResult
+            const uploadSpecialBenefitsLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
+            specialBenefitsLink = [...new Set([...existingSpecialBenefitsFiles, ...uploadSpecialBenefitsLink].filter(x => x))]
           }
         }
 
@@ -266,9 +283,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
 
           if (uploadResult.length > 0) {
-            contractProposalLink = uploadResult
+            const uploadContractProposalLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
+            contractProposalLink = [...new Set([...existingContractFiles, ...uploadContractProposalLink].filter(x => x))]
           }
         }
 
@@ -283,9 +301,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           })
 
           if (uploadResult.length > 0) {
-            additionalBenefitsLink = uploadResult
+            const uploadAdditionalBenefitsLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
+            additionalBenefitsLink = [...new Set([...existingAdditionalFiles, ...uploadAdditionalBenefitsLink].filter(x => x))]
           }
         }
 
@@ -303,7 +322,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               data.email_address_of_contact_person,
             account_type_id: data?.account_type_id,
             agent_id: data.agent_id,
-            is_active: data.is_active,
             hmo_provider_id: data?.hmo_provider_id,
             previous_hmo_provider_id: data?.previous_hmo_provider_id,
             old_hmo_provider_id: data?.old_hmo_provider_id,
@@ -382,7 +400,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       supabase,
       uploadSpecialBenefits,
       uploadContractProposal,
-      uploadAdditionalBenefits
+      uploadAdditionalBenefits,
+      existingContractFiles,
+      existingSpecialBenefitsFiles,
+      existingAdditionalFiles
     ],
   )
   useEffect(() => {

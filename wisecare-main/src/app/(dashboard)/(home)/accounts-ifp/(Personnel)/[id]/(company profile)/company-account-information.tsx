@@ -35,9 +35,9 @@ const CompanyAccountInformation: FC<CompanyAccountInformationProps> = ({
       ) : (
         <div className="flex flex-col gap-2 pt-4 md:grid md:grid-cols-2 lg:grid-cols-1">
           <CompanyInformationItem
-            label="Account Type"
+            label="Program Type"
             value={
-              account?.account_type ? (account.account_type as any).name : ''
+              account?.program_type ? (account.program_type as any).name : ''
             }
           />
           <CompanyInformationItem

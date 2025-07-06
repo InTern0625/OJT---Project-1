@@ -56,9 +56,9 @@ const companyEditsSchema = z.object({
   designation_of_contact_person: z.string().optional(),
   email_address_of_contact_person: z.string().optional(),
   birthdate: z.date().optional(),
-  gender: z.string().optional(),
-  civil_status: z.string().optional(),
   card_number: z.string().optional(),
+  gender_types_id: z.string().optional(),
+  civil_status_id: z.string().optional(),
   room_plan_id: z.string().optional(),
   mbl: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),

@@ -31,8 +31,6 @@ interface CompanyHmoInformationProps {
   const supabase = createBrowserClient()
   const { data: roomPlans } = useQuery(getTypes(supabase, 'room_plans'))
 
-  const roomPlanName =
-    roomPlans?.find((plan) => plan.id === account?.room_plan_id)?.name ?? '-';
   const [signedContractProposalUrls, setSignedContractProposalUrls] = useState<string[]>([])
   const [signedSpecialBenefitsUrls, setSignedSpecialBenefitsUrls] = useState<string[]>([])
   const [signedAdditionalBenefitsUrls, setSignedAdditionalBenefitsUrls] = useState<string[]>([])
@@ -95,7 +93,7 @@ interface CompanyHmoInformationProps {
         />
         <CompanyInformationItem
             label="Mode of Payment"
-            value={account?.mode_of_payments?.name || '-'}
+            value={account?.mode_of_payment?.name || '-'}
         />
         <CompanyInformationItem
             label="Effective Date"
@@ -121,15 +119,17 @@ interface CompanyHmoInformationProps {
           />
           <CompanyInformationItem
             label="Room Plan"
-            value={roomPlanName}
+            value={
+              account?.room_plan ? (account.room_plan as any).name : '-'
+            }
           />
           <CompanyInformationItem
               label={'MBL'}
-              value={formatCurrency(account?.mbl)} //premium
+              value={formatCurrency(account?.mbl)} 
             />
           <CompanyInformationItem
             label={'Premium'}
-            value={formatCurrency(account?.total_premium_paid)} //premium
+            value={formatCurrency(account?.premium)} 
           />
           {isSpecialBenefitsFilesEnabled && (
             <FileInformation
@@ -139,7 +139,7 @@ interface CompanyHmoInformationProps {
           )}
           {!isSpecialBenefitsFilesEnabled && (
             <CompanyInformationItem
-              label={'Special Benefits'}
+              label={'Contract and Proposal'}
               value={
                 account?.special_benefits
                   ? account.special_benefits.toString()

@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { DialogTitle } from '@radix-ui/react-dialog'
+import { useState } from 'react'
 
 const EditTypeFields = dynamic(() => import('./edit-type-fields'), {
   ssr: false,
@@ -39,7 +40,7 @@ const EditType: FC<EditTypeProps> = ({ id, name, page }) => {
 
   const supabase = createBrowserClient()
   const { toast } = useToast()
-
+  const [open, setOpen] = useState(false)
   const { mutateAsync, isPending, error } = useUpdateMutation(
     // @ts-ignore
     supabase.from(page),
@@ -57,15 +58,16 @@ const EditType: FC<EditTypeProps> = ({ id, name, page }) => {
 
   const handleEdit = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
-      form.handleSubmit((data) => {
-        mutateAsync({ id, name: data.name })
+      form.handleSubmit(async (data) => {
+        await mutateAsync({ id, name: data.name })
+        setOpen(false)
       })(e)
     },
     [id, mutateAsync, form],
   )
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <Form {...form}>
         <DialogTrigger asChild={true}>
           <Button

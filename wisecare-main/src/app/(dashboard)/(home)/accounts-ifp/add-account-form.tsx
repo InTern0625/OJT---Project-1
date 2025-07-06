@@ -29,7 +29,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
-      is_active: true,
       agent_id: undefined,
       company_name: '',
       company_address: '',
@@ -198,7 +197,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
         await mutateAsync([
           {
             company_name: data.company_name,
-            is_active: data.is_active,
             agent_id: data.agent_id,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
@@ -272,8 +270,8 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
               operation_type: 'insert',
             }),
             birthdate: data.birthdate,
-            gender: data.gender, //change this
-            civil_status: data.civil_status, //change this
+            gender_types_id: data.gender_types_id,
+            civil_status_id: data.civil_status_id, 
             card_number: data.card_number,
             room_plan_id: data.room_plan_id,
             mbl: data.mbl,

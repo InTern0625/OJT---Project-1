@@ -55,8 +55,7 @@ interface Props {
 const TypeList: FC<Props> = ({ page }) => {
   const supabase = createBrowserClient()
   const { data, isPending } = useQuery(getTypes(supabase, page))
-  console.log(data)
-  console.log(page)
+
   return (
     <div className="divide-border border-border mt-9 flex w-full flex-col divide-y border-y px-6 lg:px-12">
       {isPending &&

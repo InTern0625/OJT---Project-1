@@ -42,7 +42,7 @@ import { createBrowserClient } from '@/utils/supabase-client'
 const AccountInformationFields = () => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
   const supabase = createBrowserClient()
-  const { data: accountType } = useQuery(getTypes(supabase, 'account_types'))
+  const { data: programTypes } = useQuery(getTypes(supabase, 'program_types'))
   const { data: agents } = useQuery(getAgents(supabase))
 
   const maskedPercentageRef = useMaskito({ options: percentageOptions })
@@ -51,12 +51,12 @@ const AccountInformationFields = () => {
     <>
       <FormField
         control={form.control}
-        name="account_type_id"
+        name="program_types_id"
         render={({ field }) => (
           <FormItem>
             <div className="pt-4">
               <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
-                Account Type
+                Program Type:
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
@@ -67,7 +67,7 @@ const AccountInformationFields = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {accountType?.map((type) => (
+                    {programTypes?.map((type) => (
                       <SelectItem key={type.id} value={type.id}>
                         {type.name}
                       </SelectItem>

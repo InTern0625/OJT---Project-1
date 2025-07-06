@@ -11,11 +11,11 @@ const getEmployeeInputs = (supabase: TypedSupabaseClient, id: string) => {
       middle_name,
       suffix,
       birth_date,
-      gender,
-      civil_status,
+      gender_type_id,
+      civil_status_id,
       card_number,
       effective_date,
-      room_plan,
+      room_plan_id,
       maximum_benefit_limit
       `,
     )

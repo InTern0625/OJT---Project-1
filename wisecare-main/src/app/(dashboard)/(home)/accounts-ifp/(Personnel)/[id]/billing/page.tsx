@@ -2,7 +2,7 @@
 import CompanyProvider from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import BillingStatementsTable from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-statements-table'
 import StatsCard from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/stats-card'
-import AddBillingStatementButton from '@/app/(dashboard)/(home)/billing-statements/add-billing-statement-button'
+import AddBillingStatementButton from '@/app/(dashboard)/(home)/billing-statements-ifp/add-billing-statement-button'
 import getBillingStatementByCompanyId from '@/queries/get-billing-statement-by-company-id'
 import getRole from '@/utils/get-role'
 import { createServerClient } from '@/utils/supabase'

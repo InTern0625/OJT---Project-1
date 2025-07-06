@@ -20,7 +20,7 @@ const EmployeesInformation: FC<EmployeesInformationProps> = ({ data }) => {
             EMPLOYEE NUMBER
           </span>
           <span className="text-md font-semibold text-[#161a1d]">
-            {data.gender || 'N/A'}
+            {data?.gender_types_id || 'N/A'}
           </span>
           <span className="text-sm font-medium text-[#64748b]">GENDER</span>
           <span className="text-md font-semibold text-[#161a1d]">
@@ -52,7 +52,7 @@ const EmployeesInformation: FC<EmployeesInformationProps> = ({ data }) => {
             EFFECTIVE DATE
           </span>
           <span className="text-md font-semibold text-[#161a1d]">
-            {data.room_plan || 'N/A'}
+            {data.room_plan_id || 'N/A'}
           </span>
           <span className="text-sm font-medium text-[#64748b]">ROOM PLAN</span>
           <span className="text-md font-semibold text-[#161a1d]">

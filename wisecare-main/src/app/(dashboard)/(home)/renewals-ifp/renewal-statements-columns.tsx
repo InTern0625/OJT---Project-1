@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import {
   formatCurrency,
   formatPercentage,
-} from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
+} from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import { formatDate, isAfter, isBefore, addMonths } from 'date-fns'
 
 const getStatusFromExpirationDate = (expirationDate: string | null) => {

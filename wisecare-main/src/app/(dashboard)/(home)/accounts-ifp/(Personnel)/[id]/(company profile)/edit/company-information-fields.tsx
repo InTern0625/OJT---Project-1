@@ -27,10 +27,14 @@ import { cn } from '@/utils/tailwind'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { Calendar } from '@/components/ui/calendar'
+import getTypes from '@/queries/get-types'
+import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
+import { createBrowserClient } from '@/utils/supabase-client'
 
 
 const CompanyInformationFields = () => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
+  const supabase = createBrowserClient()
   const computeAge = (birthdate: string | Date | null): number | '' => {
     if (!birthdate) return ''
     const birth = new Date(birthdate)
@@ -46,7 +50,8 @@ const CompanyInformationFields = () => {
     control: form.control,
     name: 'birthdate',
   })
-
+  const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
+  const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
   const age = computeAge(birthdate ?? "")
 
   return (
@@ -117,7 +122,7 @@ const CompanyInformationFields = () => {
                         mode="single"
                         selected={field.value ?? undefined}
                         onSelect={field.onChange}
-                        disabled={(date) => date < new Date('1900-01-01')}
+                        disabled={(date) => date < new Date('1900-01-01') || date > new Date(new Date().setHours(23, 59, 59, 999))}
                         initialFocus
                         captionLayout="dropdown"
                         toYear={new Date().getFullYear() + 20}
@@ -162,7 +167,7 @@ const CompanyInformationFields = () => {
 
     <FormField
       control={form.control}
-      name="gender"
+      name="gender_types_id"
       render={({ field }) => (
         <FormItem>
           <label className="text-sm font-semibold">Gender:</label>
@@ -173,9 +178,9 @@ const CompanyInformationFields = () => {
               </SelectTrigger>
             </FormControl>
             <SelectContent>
-              {['Male', 'Female', 'Other', 'Prefer not to say'].map((gender) => (
-                <SelectItem key={gender} value={gender}>
-                  {gender}
+              {genderTypes?.map((type) => (
+                <SelectItem key={type.id} value={type.id}>
+                  {type.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -187,7 +192,7 @@ const CompanyInformationFields = () => {
 
       <FormField
         control={form.control}
-        name="civil_status"
+        name="civil_status_id"
         render={({ field }) => (
           <FormItem>
             <label className="text-sm font-semibold">Civil Status:</label>
@@ -198,13 +203,11 @@ const CompanyInformationFields = () => {
                 </SelectTrigger>
               </FormControl>
               <SelectContent>
-                {['Single', 'Married', 'Widowed', 'Divorced', 'Separated'].map(
-                  (status) => (
-                    <SelectItem key={status} value={status}>
-                      {status}
-                    </SelectItem>
-                  ),
-                )}
+                {civilStatusTypes?.map((type) => (
+                  <SelectItem key={type.id} value={type.id}>
+                    {type.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
             <FormMessage />

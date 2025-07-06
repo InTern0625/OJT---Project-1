@@ -17,7 +17,6 @@ const EmployeesPage = async (props: { params: Promise<{ id: string }> }) => {
   const params = await props.params
   const supabase = createServerClient(await cookies())
   const companyId = params.id
-
   const queryClient = new QueryClient()
   await prefetchQuery(queryClient, getEmployeeByCompanyId(supabase, companyId))
 

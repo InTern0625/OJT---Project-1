@@ -35,24 +35,8 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const { data: modeOfPayments } = useQuery(getTypes(supabase, 'mode_of_payments'))
   const { data: programTypes } = useQuery(getTypes(supabase, 'program_types'))
   const { data: roomPlan } = useQuery(getTypes(supabase, 'room_plans'))
-  const [genderOptions, setGenderOptions] = useState<string[]>([])
-  const [civilStatusOptions, setCivilStatusOptions] = useState<string[]>([])
-  useEffect(() => {
-    const fetchEnums = async () => {
-      try {
-        const [gender, civilStatus] = await Promise.all([
-          getEnumOptions('gender_type'),
-          getEnumOptions('civil_status_type'),
-        ])
-        setGenderOptions(gender)
-        setCivilStatusOptions(civilStatus)
-      } catch (error) {
-        console.error('Failed to load enum options:', error)
-      }
-    }
-
-    fetchEnums()
-  }, [])
+  const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
+  const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
 
   return (
     <div className="grid gap-4 py-4">
@@ -76,10 +60,10 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           form={form}
           isLoading={isLoading}
           label="Gender"
-          name="gender"
-          options={genderOptions.map((value) => ({
-            label: value.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-            value,
+          name="gender_types_id"
+          options={genderTypes?.map((genderType) => ({
+            label: genderType.name,
+            value: genderType.id,
           }))}
         />
         <TextInput
@@ -106,10 +90,10 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           form={form}
           isLoading={isLoading}
           label="Civil Status"
-          name="civil_status"
-          options={civilStatusOptions.map((value) => ({
-            label: value.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase()),
-            value,
+          name="civil_status_id"
+          options={civilStatusTypes?.map((civilStatusType) => ({
+            label: civilStatusType.name,
+            value: civilStatusType.id,
           }))}
         />
         <TextInput

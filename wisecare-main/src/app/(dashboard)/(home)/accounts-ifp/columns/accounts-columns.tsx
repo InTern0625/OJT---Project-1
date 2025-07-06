@@ -22,13 +22,6 @@ export const formatPercentage = (value: number | null | undefined) => {
 }
 const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   {
-    accessorKey: 'is_account_active',
-    header: ({ column }) => <TableHeader column={column} title="Active" />,
-    cell: ({ row }) => (
-      <ActiveBadge isActive={row.original.is_account_active} />
-    ),
-  },
-  {
     accessorKey: 'status_type.name',
     accessorFn: (originalRow) => (originalRow as any)?.status_type?.name ?? '',
     header: ({ column }) => (
@@ -70,13 +63,15 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
     },
   },
   {
-    accessorKey: 'gender',
+    accessorKey: 'gender_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.gender_type?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Gender" />
     ),
   },
   {
-    accessorKey: 'civil_status',
+    accessorKey: 'civil_status.name',
+    accessorFn: (originalRow) => (originalRow as any)?.civil_status?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Civil Status" />
     ),
@@ -146,34 +141,34 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     accessorKey: 'mode_of_payment.name',
+    accessorFn: (originalRow) => (originalRow as any)?.mode_of_payment?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Mode of Payment" />
     ),
   },
   {
     accessorKey: 'hmo_provider.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.hmo_provider?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="HMO Provider" />
     ),
   },
   {
-    accessorKey: 'room_plans.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorKey: 'room_plan.name',
+    accessorFn: (originalRow) => (originalRow as any)?.room_plan?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Room Plans" />
     ),
   },
   {
-    accessorKey: 'MBL',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorKey: 'mbl',
     header: ({ column }) => (
-      <TableHeader column={column} title="MBL" />
+      <TableHeader column={column} title="Premium" />
     ),
   },
   {
-    accessorKey: 'program_types.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorKey: 'program_type.name',
+    accessorFn: (originalRow) => (originalRow as any)?.program_type?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Program Types" />
     ),

@@ -1,4 +1,4 @@
-import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements/billing-provider'
+import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { ColumnDef, Table, flexRender } from '@tanstack/react-table'
 

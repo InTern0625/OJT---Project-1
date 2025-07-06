@@ -29,7 +29,6 @@ const PendingTable = () => {
     ...item,
     account_type_id: item.account_types?.id ?? null, 
   }))
-  console.log(filteredData)
   return <DataTable columns={renewalStatementsColumns} data={filteredData || []} />
 }
 export default PendingTable

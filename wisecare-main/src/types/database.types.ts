@@ -130,8 +130,6 @@ export type Database = {
           updated_at: string
           wellness_lecture_date: string | null
           birthdate: string | null
-          gender: string | null
-          civil_status: string | null
           card_number: string | null
           room_plan_id: string | null
           mbl: number | null
@@ -186,8 +184,6 @@ export type Database = {
           updated_at?: string
           wellness_lecture_date?: string | null
           birthdate?: string | null
-          gender?: string | null
-          civil_status?: string | null
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null
@@ -242,8 +238,6 @@ export type Database = {
           updated_at?: string
           wellness_lecture_date?: string | null
           birthdate?: string | null
-          gender?: string | null
-          civil_status?: string | null
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null
@@ -538,7 +532,6 @@ export type Database = {
           birth_date: string | null
           cancelation_date: string | null
           card_number: string | null
-          civil_status: string | null
           created_at: string
           created_by: string | null
           dependent_relation:
@@ -547,7 +540,6 @@ export type Database = {
           effective_date: string | null
           expiration_date: string | null
           first_name: string | null
-          gender: string | null
           id: string
           is_active: boolean
           last_name: string | null
@@ -556,16 +548,17 @@ export type Database = {
           middle_name: string | null
           principal_member_name: string | null
           remarks: string | null
-          room_plan: string | null
           suffix: string | null
           updated_at: string
+          gender_types_id: string | null
+          civil_status_id: string | null
+          room_plan_id: string | null
         }
         Insert: {
           account_id?: string | null
           birth_date?: string | null
           cancelation_date?: string | null
           card_number?: string | null
-          civil_status?: string | null
           created_at?: string
           created_by?: string | null
           dependent_relation?:
@@ -574,7 +567,6 @@ export type Database = {
           effective_date?: string | null
           expiration_date?: string | null
           first_name?: string | null
-          gender?: string | null
           id?: string
           is_active?: boolean
           last_name?: string | null
@@ -583,16 +575,17 @@ export type Database = {
           middle_name?: string | null
           principal_member_name?: string | null
           remarks?: string | null
-          room_plan?: string | null
           suffix?: string | null
           updated_at?: string
+          gender_types_id?: string | null
+          civil_status_id?: string | null
+          room_plan_id?: string | null
         }
         Update: {
           account_id?: string | null
           birth_date?: string | null
           cancelation_date?: string | null
           card_number?: string | null
-          civil_status?: string | null
           created_at?: string
           created_by?: string | null
           dependent_relation?:
@@ -601,7 +594,6 @@ export type Database = {
           effective_date?: string | null
           expiration_date?: string | null
           first_name?: string | null
-          gender?: string | null
           id?: string
           is_active?: boolean
           last_name?: string | null
@@ -610,9 +602,11 @@ export type Database = {
           middle_name?: string | null
           principal_member_name?: string | null
           remarks?: string | null
-          room_plan?: string | null
           suffix?: string | null
           updated_at?: string
+          gender_types_id?: string | null
+          civil_status_id?: string | null
+          room_plan_id?: string | null
         }
         Relationships: [
           {
@@ -628,6 +622,27 @@ export type Database = {
             isOneToOne: false
             referencedRelation: 'user_profiles'
             referencedColumns: ['user_id']
+          },
+          {
+            foreignKeyName: 'company_employees_gender_types_id_fkey'
+            columns: ['gender_types_id']
+            isOneToOne: false
+            referencedRelation: 'gender_types'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_civil_status_id_fkey'
+            columns: ['civil_status_id']
+            isOneToOne: false
+            referencedRelation: 'civil_status_types'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_room_plan_id_fkey'
+            columns: ['room_plan_id']
+            isOneToOne: false
+            referencedRelation: 'room_plans'
+            referencedColumns: ['id']
           },
         ]
       }
@@ -805,8 +820,6 @@ export type Database = {
           updated_at: string
           wellness_lecture_date: string | null
           birthdate: string | null
-          gender: string | null
-          civil_status: string | null
           card_number: string | null
           room_plan_id: string | null
           mbl: number | null
@@ -862,8 +875,6 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
-          gender?: string | null
-          civil_status?: string | null
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null
@@ -920,8 +931,6 @@ export type Database = {
           total_utilization?: number | null
           updated_at?: string
           wellness_lecture_date?: string | null
-          gender?: string | null
-          civil_status?: string | null
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null

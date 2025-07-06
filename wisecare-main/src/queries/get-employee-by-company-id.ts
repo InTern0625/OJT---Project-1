@@ -15,11 +15,8 @@ const getEmployeeByCompanyId = (
       middle_name,
       suffix,
       birth_date,
-      gender,
-      civil_status,
       card_number,
       effective_date,
-      room_plan,
       maximum_benefit_limit,
       member_type,
       dependent_relation,
@@ -27,7 +24,10 @@ const getEmployeeByCompanyId = (
       cancelation_date,
       remarks,
       principal_member_name,
-      created_at
+      created_at,
+      gender_type: gender_types_id(name, id),
+      civil_status_type: civil_status_id(name, id),
+      room_plan_type: room_plan_id(name, id)
     `,
     )
     .eq('account_id', companyId)

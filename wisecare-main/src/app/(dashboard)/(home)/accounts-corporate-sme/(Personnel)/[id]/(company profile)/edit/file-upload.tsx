@@ -13,6 +13,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { Input } from '@/components/ui/input'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { Loader2 } from 'lucide-react'
 
 interface FileInputProps {
   form: UseFormReturn<any>
@@ -42,6 +43,7 @@ const FileInput = ({
   const [existingFileUrls, setExistingFileUrls] = useState<string[]>([])
   const [errorOccurred, setErrorOccurred] = useState(false)
   const [hasMounted, setHasMounted] = useState(false)
+  const [isLoadingFiles, setLoadingFiles] = useState(false)
   const supabase = createBrowserClient()
 
   useEffect(() => {
@@ -52,6 +54,7 @@ const FileInput = ({
     if (!hasMounted || errorOccurred || existingFiles.length === 0) return
 
     const getSignedUrls = async () => {
+      setLoadingFiles(true)
       const signedUrls = await Promise.all(
         existingFiles.map(async (filePath) => {
           const { data, error } = await supabase.storage
@@ -66,10 +69,17 @@ const FileInput = ({
         })
       )
       setExistingFileUrls(signedUrls.filter((url) => url !== null) as string[])
+      setLoadingFiles(false)
     }
 
     getSignedUrls()
   }, [hasMounted, existingFiles, supabase, errorOccurred])
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return `${bytes} bytes`
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
+  }
 
   const validateFiles = useCallback((newFiles: File[]) => {
     if (maxFileSize) {
@@ -86,58 +96,48 @@ const FileInput = ({
   }, [form, name, maxFileSize])
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(e.target.files || [])
+    if (!validateFiles(selectedFiles)) return
 
-    const selectedFiles = Array.from(e.target.files || []);
-    if (!validateFiles(selectedFiles)) return;
+    let updated = [...files, ...selectedFiles]
+    if (maxFiles && updated.length > maxFiles) {
+      form.setError(name, {
+        type: 'max',
+        message: `Maximum ${maxFiles} files allowed`,
+      })
+      updated = updated.slice(0, maxFiles)
+    } else {
+      form.clearErrors(name)
+    }
 
-    setFiles(prev => {
-      // Combine previous files with new files
-      const updated = [...prev, ...selectedFiles];
-      
-      if (maxFiles && updated.length > maxFiles) {
-        form.setError(name, {
-          type: 'max',
-          message: `Maximum ${maxFiles} files allowed`,
-        });
-        return prev.slice(0, maxFiles); // Keep only up to maxFiles
-      }
-      
-      form.clearErrors(name);
-      form.setValue(name, updated);
-      return updated;
-    });
+    setFiles(updated)
+    form.setValue(name, updated)
 
-    // Reset the input value to allow selecting the same files again
-    e.target.value = '';
-  }, [form, name, maxFiles, validateFiles]);
+    e.target.value = ''
+  }, [files, form, name, maxFiles, validateFiles])
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault()
     e.stopPropagation()
     setDragActive(false)
+
     const selectedFiles = Array.from(e.dataTransfer.files || [])
     if (!validateFiles(selectedFiles)) return
 
-    setFiles(prev => {
-      const updated = [...prev, ...selectedFiles]
-      if (maxFiles && updated.length > maxFiles) {
-        form.setError(name, {
-          type: 'max',
-          message: `Maximum ${maxFiles} files allowed`,
-        })
-        return prev
-      }
+    let updated = [...files, ...selectedFiles]
+    if (maxFiles && updated.length > maxFiles) {
+      form.setError(name, {
+        type: 'max',
+        message: `Maximum ${maxFiles} files allowed`,
+      })
+      updated = updated.slice(0, maxFiles)
+    } else {
       form.clearErrors(name)
-      form.setValue(name, updated)
-      return updated
-    })
-  }, [form, name, maxFiles, validateFiles])
+    }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} bytes`
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-  }
+    setFiles(updated)
+    form.setValue(name, updated)
+  }, [files, form, name, maxFiles, validateFiles])
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -150,15 +150,15 @@ const FileInput = ({
   }, [])
 
   const handleRemove = useCallback((index: number) => {
-    setFiles(prev => {
-      const updated = prev.filter((_, i) => i !== index)
-      form.setValue(name, updated)
-      if (updated.length === 0 || (maxFiles && updated.length <= maxFiles)) {
-        form.clearErrors(name)
-      }
-      return updated
-    })
-  }, [form, name, maxFiles])
+    const updated = [...files]
+    updated.splice(index, 1)
+    setFiles(updated)
+    form.setValue(name, updated)
+
+    if (updated.length === 0 || (maxFiles && updated.length <= maxFiles)) {
+      form.clearErrors(name)
+    }
+  }, [files, form, name, maxFiles])
 
   const handleRemoveExisting = useCallback(async (index: number, filePath: string) => {
     const updatedFiles = [...existingFiles]
@@ -214,13 +214,13 @@ const FileInput = ({
                     variant="outline"
                     size="sm"
                     className="mt-2"
-                    disabled={(maxFiles ? (files.length + existingFileUrls.length) >= maxFiles : false)}
+                    disabled={maxFiles ? (files.length + existingFileUrls.length) >= maxFiles : false}
                   >
                     Select Files
                     <input
                       type="file"
                       multiple
-                      disabled={(maxFiles ? (files.length + existingFileUrls.length) >= maxFiles : false)}
+                      disabled={maxFiles ? (files.length + existingFileUrls.length) >= maxFiles : false}
                       onChange={handleChange}
                       accept={accept}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -233,70 +233,71 @@ const FileInput = ({
                   )}
                 </div>
               </div>
-
-              {(files.length > 0 || existingFileUrls.length > 0) && (
-                <div className="space-y-2">
-                  <h4 className="text-sm font-medium">Selected Files</h4>
+              {isLoadingFiles ? <Loader2 className="animate-spin" /> :
+                ((files.length > 0 || existingFileUrls.length > 0) && (
                   <div className="space-y-2">
-                    {existingFileUrls.map((url, index) => (
-                      <div
-                        key={`existing-${index}`}
-                        className="flex items-center justify-between gap-2 rounded border p-3 text-sm"
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <File className="h-4 w-4 text-muted-foreground" />
-                          <a 
-                            href={url} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="truncate font-medium hover:underline"
+                    <h4 className="text-sm font-medium">Selected Files</h4>
+                    <div className="space-y-2">
+                      {existingFileUrls.map((url, index) => (
+                        <div
+                          key={`existing-${index}`}
+                          className="flex items-center justify-between gap-2 rounded border p-3 text-sm"
+                        >
+                          <div className="flex items-center gap-2 min-w-0">
+                            <File className="h-4 w-4 text-muted-foreground" />
+                            <a 
+                              href={url} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="truncate font-medium hover:underline"
+                            >
+                              {extractFileName(url)}
+                            </a>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                            onClick={() => handleRemoveExisting(index, existingFiles[index])}
                           >
-                            {extractFileName(url)}
-                          </a>
+                            <X size={16} />
+                          </Button>
                         </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                          onClick={() => handleRemoveExisting(index, existingFiles[index])}
+                      ))}
+                      {files.map((file, index) => (
+                        <div
+                          key={`new-${file.name}-${index}`}
+                          className={`flex items-center justify-between gap-2 rounded border p-3 text-sm ${
+                            maxFileSize && file.size > maxFileSize ? 'border-destructive' : ''
+                          }`}
                         >
-                          <X size={16} />
-                        </Button>
-                      </div>
-                    ))}
-                    {files.map((file, index) => (
-                      <div
-                        key={`new-${file.name}-${index}`}
-                        className={`flex items-center justify-between gap-2 rounded border p-3 text-sm ${
-                          maxFileSize && file.size > maxFileSize ? 'border-destructive' : ''
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="truncate font-medium">{file.name}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {formatFileSize(file.size)}
-                          </span>
-                          {maxFileSize && file.size > maxFileSize && (
-                            <span className="text-xs text-destructive">
-                              (Exceeds limit)
+                          <div className="flex items-center gap-2 min-w-0">
+                            <span className="truncate font-medium">{file.name}</span>
+                            <span className="text-xs text-muted-foreground">
+                              {formatFileSize(file.size)}
                             </span>
-                          )}
+                            {maxFileSize && file.size > maxFileSize && (
+                              <span className="text-xs text-destructive">
+                                (Exceeds limit)
+                              </span>
+                            )}
+                          </div>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0 text-destructive hover:text-destructive"
+                            onClick={() => handleRemove(index)}
+                          >
+                            <X size={16} />
+                          </Button>
                         </div>
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0 text-destructive hover:text-destructive"
-                          onClick={() => handleRemove(index)}
-                        >
-                          <X size={16} />
-                        </Button>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                ))
+              }
             </div>
           </FormControl>
           <FormMessage />

@@ -35,7 +35,6 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
     }
     return age >= 0 ? age : ''
   })()
-  
   return (
     <>
       {editMode ? (
@@ -62,7 +61,7 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
           <CompanyInformationItem
             key="gender"
             label="Gender"
-            value={account?.gender || '-'}
+            value={(account as any)?.gender_type?.name || '-'}
           />
           <CompanyInformationItem
             key="contact-number"
@@ -85,7 +84,7 @@ const CompanyInformation: FC<CompanyInformationProps> = ({ id }) => {
           <CompanyInformationItem
             key="civil-status"
             label="Civil Status"
-            value={account?.civil_status || '-'}
+            value={(account as any)?.civil_status_type?.name || '-'}
           />
           <CompanyInformationItem
             key="email-address"

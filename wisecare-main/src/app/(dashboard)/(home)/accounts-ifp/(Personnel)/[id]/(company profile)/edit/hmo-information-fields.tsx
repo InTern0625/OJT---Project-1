@@ -44,7 +44,7 @@ interface HmoInformationProps {
   id: string
 }
 
-  const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
+const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
 
   const currencyOptions = maskitoNumberOptionsGenerator({
@@ -63,6 +63,7 @@ interface HmoInformationProps {
   const { data: modeOfPayments } = useQuery(getTypes(supabase, 'mode_of_payments'))
   const { data: roomPlans } = useQuery(getTypes(supabase, 'room_plans'))
   return (
+    <>
     <div className="grid grid-cols-1 gap-4 pt-4 md:grid-cols-2 md:grid-auto-rows-auto">
       {/* Row 1: Card Number | Mode of Payment */}
       <FormField
@@ -325,7 +326,7 @@ interface HmoInformationProps {
 
       <FormField
         control={form.control}
-        name="total_premium_paid"
+        name="premium"
         render={({ field }) => (
           <FormItem>
             <div className="text-sm text-[#1e293b]">Premium:</div>
@@ -339,7 +340,7 @@ interface HmoInformationProps {
             <FormMessage />
           </FormItem>
         )}
-      />x
+      />
 
       {/* Row 5: Contract and Proposal */}
       <div className="md:col-span-2">
@@ -367,6 +368,7 @@ interface HmoInformationProps {
         )}
       </div>
     </div>
+    </>
   )
 }
 

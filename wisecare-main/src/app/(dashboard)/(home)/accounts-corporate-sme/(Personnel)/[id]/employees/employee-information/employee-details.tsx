@@ -42,9 +42,24 @@ const EmployeeDetailsItem = (item: {
   )
 }
 
+//Extend gender_type to company schema
+interface ExtendedEmployeeData extends Tables<'company_employees'> {
+  gender_type?: {
+    id: string
+    name: string
+  } | null
+  room_plan_type?: {
+    id: string
+    name: string
+  } | null
+  civil_status_type?: {
+    id: string
+    name: string
+  } | null
+}
 interface EmployeeDetailsProps {
   button: ReactNode
-  employeeData: Tables<'company_employees'>
+  employeeData: ExtendedEmployeeData
 }
 
 const EmployeeDetails: FC<EmployeeDetailsProps> = ({
@@ -59,8 +74,8 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
         : 'N/A',
       icon: Calendar,
     },
-    { label: 'Gender', value: employeeData.gender, icon: User },
-    { label: 'Civil Status', value: employeeData.civil_status, icon: Heart },
+    { label: 'Gender', value: employeeData?.gender_type?.name, icon: User },
+    { label: 'Civil Status', value: employeeData.civil_status_type?.name, icon: Heart },
     { label: 'Card Number', value: employeeData.card_number, icon: CreditCard },
     {
       label: 'Effective Date',
@@ -69,7 +84,7 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
         : 'N/A',
       icon: CalendarDays,
     },
-    { label: 'Room Plan', value: employeeData.room_plan, icon: Home },
+    { label: 'Room Plan', value: employeeData.room_plan_type?.name, icon: Home },
     {
       label: 'Maximum Benefit Limit',
       value: employeeData.maximum_benefit_limit,

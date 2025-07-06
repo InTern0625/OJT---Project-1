@@ -1,6 +1,6 @@
 'use server'
 
-import { BillingProvider } from '@/app/(dashboard)/(home)/billing-statements/billing-provider'
+import { BillingProvider } from '@/app/(dashboard)/(home)/billing-statements-ifp/billing-provider'
 import getRenewalStatements from '@/queries/get-renewal-statements'
 import pageProtect from '@/utils/page-protect'
 import { createServerClient } from '@/utils/supabase'

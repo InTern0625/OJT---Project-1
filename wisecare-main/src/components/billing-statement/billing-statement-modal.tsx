@@ -1,7 +1,7 @@
 'use client'
 
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/(company profile)/company-provider'
-import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements/billing-statement-schema'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
+import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-statement-schema'
 import DeleteBillingStatement from '@/components/billing-statement/delete-billing-statement'
 import formatOriginalData from '@/components/billing-statement/formatOriginalData'
 import currencyOptions from '@/components/maskito/currency-options'

@@ -1,4 +1,4 @@
-import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements/billing-statement-schema'
+import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-statement-schema'
 import currencyOptions from '@/components/maskito/currency-options'
 import percentageOptions from '@/components/maskito/percentage-options'
 import { Tables } from '@/types/database.types'

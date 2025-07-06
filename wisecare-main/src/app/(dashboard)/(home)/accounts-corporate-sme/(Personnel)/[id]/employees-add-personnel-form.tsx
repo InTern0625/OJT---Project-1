@@ -27,7 +27,7 @@ import {
 import { useToast } from '@/components/ui/use-toast'
 import { cn } from '@/utils/tailwind'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query'
+import { useInsertMutation, useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 import { useParams } from 'next/navigation'
@@ -35,27 +35,30 @@ import { FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createBrowserClient } from '@/utils/supabase-client'
+import getTypes from '@/queries/get-types'
 
 const EmployeesAddPersonnelForm = () => {
   const { toast } = useToast()
   const params = useParams<{ id: string }>()
-
+  const supabase = createBrowserClient()
+  const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
+  const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
+  const { data: roomPlanTypes } = useQuery(getTypes(supabase, 'room_plans'))
   const form = useForm<z.infer<typeof employeesSchema>>({
     resolver: zodResolver(employeesSchema),
     defaultValues: {
       first_name: '',
       last_name: '',
       birth_date: new Date(),
-      gender: 'male',
-      civil_status: 'single',
+      gender_types_id: undefined,
+      civil_status_id: undefined,
       card_number: '',
       effective_date: new Date(),
-      room_plan: '',
+      room_plan_id: undefined,
       maximum_benefit_limit: 0,
     },
   })
 
-  const supabase = createBrowserClient()
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore
     supabase.from('company_employees'),
@@ -170,19 +173,21 @@ const EmployeesAddPersonnelForm = () => {
           />
           <FormField
             control={form.control}
-            name="gender"
+            name="gender_types_id"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Gender</FormLabel>
+                <FormLabel>Civil Status</FormLabel>
                 <FormControl>
                   <Select disabled={isPending}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select Gender" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                      {genderTypes?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -192,7 +197,7 @@ const EmployeesAddPersonnelForm = () => {
           />
           <FormField
             control={form.control}
-            name="civil_status"
+            name="civil_status_id"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Civil Status</FormLabel>
@@ -202,10 +207,11 @@ const EmployeesAddPersonnelForm = () => {
                       <SelectValue placeholder="Select Civil Status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="single">Single</SelectItem>
-                      <SelectItem value="married">Married</SelectItem>
-                      <SelectItem value="divorced">Divorced</SelectItem>
-                      <SelectItem value="widowed">Widowed</SelectItem>
+                      {civilStatusTypes?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -271,12 +277,23 @@ const EmployeesAddPersonnelForm = () => {
           />
           <FormField
             control={form.control}
-            name="room_plan"
+            name="room_plan_id"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Room Plan</FormLabel>
+                <FormLabel>Civil Status</FormLabel>
                 <FormControl>
-                  <Input {...field} disabled={isPending} />
+                  <Select disabled={isPending}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select Room Plan" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {roomPlanTypes?.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>

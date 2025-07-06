@@ -156,7 +156,6 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
         'Commission Rate': account.commision_rate || '',
       }
     })
-    console.log("exportData",accountsData)
     await mutateAsync([
       {
         export_type: exportData,

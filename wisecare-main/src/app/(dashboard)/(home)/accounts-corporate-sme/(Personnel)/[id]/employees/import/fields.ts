@@ -89,7 +89,7 @@ const importFields = [
   },
   {
     label: 'Gender',
-    key: 'gender',
+    key: 'gender_type.name',
     alternateMatches: ['gender', 'sex', 'Gender', 'Sex'],
     fieldType: {
       type: 'select',
@@ -110,7 +110,7 @@ const importFields = [
   },
   {
     label: 'Civil Status',
-    key: 'civil_status',
+    key: 'civil_status_type.name',
     alternateMatches: ['civil status', 'civil', 'civil_status'],
     fieldType: {
       type: 'select',
@@ -159,7 +159,7 @@ const importFields = [
   },
   {
     label: 'Room Plan',
-    key: 'room_plan',
+    key: 'room_plan_type.name',
     alternateMatches: [
       'room plan',
       'room',

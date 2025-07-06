@@ -41,10 +41,10 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
       principal_plan_type:plan_types!principal_plan_type_id(name),
       dependent_plan_type:plan_types!dependent_plan_type_id(name),
       birthdate,
-      gender,
-      civil_status,
+      gender_type: gender_types!gender_types_id(name),
+      civil_status: civil_status_types!civil_status_id(name),
       card_number,
-      room_plan_id,
+      room_plan: room_plans!room_plan_id(name),
       mbl,
       premium,
       program_type: program_types!program_types_id(name)

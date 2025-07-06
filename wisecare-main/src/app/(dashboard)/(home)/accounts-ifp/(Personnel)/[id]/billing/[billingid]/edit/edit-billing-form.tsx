@@ -1,7 +1,7 @@
 'use client'
 
 import DeleteBillingStatement from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/delete-billing-statement'
-import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements/billing-statement-schema'
+import BillingStatementSchema from '@/app/(dashboard)/(home)/billing-statements-ifp/billing-statement-schema'
 import formatOriginalData from '@/components/billing-statement/formatOriginalData'
 import currencyOptions from '@/components/maskito/currency-options'
 import percentageOptions from '@/components/maskito/percentage-options'

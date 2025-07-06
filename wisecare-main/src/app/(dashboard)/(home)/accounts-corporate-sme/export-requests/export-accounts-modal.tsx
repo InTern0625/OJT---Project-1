@@ -169,7 +169,6 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
 
       }
     })
-    console.log(accountsData)
     await mutateAsync([
       {
         export_type: exportData,

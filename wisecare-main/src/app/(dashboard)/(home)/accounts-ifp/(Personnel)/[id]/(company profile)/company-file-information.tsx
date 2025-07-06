@@ -20,7 +20,7 @@ const FileInformation = ({ urls, label }: FileInformationProps) => {
             key={index}
             className="text-md font-semibold text-pretty break-words"
           >
-            <a href={fileUrl} target="_blank" rel="noopener noreferrer">{extractFileName(fileUrl)} {label}</a>
+            <a href={fileUrl} target="_blank" rel="noopener noreferrer">{extractFileName(fileUrl)}</a>
           </div>
         ))
       ) : (
