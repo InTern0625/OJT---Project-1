@@ -57,7 +57,6 @@ const getPendingAccounts = (
       },
     )
     .eq('is_approved', false)
-    .eq('is_active', true)
     .order('created_at', { ascending: sort === 'asc' })
     .throwOnError()
 

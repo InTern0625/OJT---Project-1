@@ -19,9 +19,7 @@ const PendingTable = () => {
     const expiration = item.expiration_date ? new Date(item.expiration_date) : null
 
     const isTypeValid = accountType
-      ? (accountType.startsWith('PREPAID') ||
-      accountType.startsWith('FAMILY') ||
-      accountType.startsWith('INDIVIDUAL')) 
+      ? (accountType !== null) 
       : false
     const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
     return isTypeValid && isExpirationValid

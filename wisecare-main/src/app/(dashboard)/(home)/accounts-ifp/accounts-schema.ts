@@ -9,7 +9,6 @@ const accountsSchema = z.object({
   hmo_provider_id: z.string().uuid().optional(),
   previous_hmo_provider_id: z.string().uuid().optional(),
   old_hmo_provider_id: z.string().uuid().optional(),
-  account_type_id: z.string().uuid().optional(),
   total_utilization: z.string().optional(),
   mbl: z.preprocess((val) => {
       if (val === null || val === '' || val === undefined) return null
@@ -59,7 +58,7 @@ const accountsSchema = z.object({
   additional_benefits_files: z.array(z.instanceof(File)).optional(),
   card_number: z.string().max(500).optional(),
   room_plan_id: z.string().uuid().optional(),
-  program_types_id: z.string().uuid().optional(),
+  program_types_id: z.string().min(1).uuid(),
   premium: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null
     const parsedVal = parseFloat((val as string).replace(/[₱,\s]/g, ''))

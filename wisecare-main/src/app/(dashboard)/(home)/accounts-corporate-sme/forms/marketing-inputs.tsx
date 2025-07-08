@@ -326,10 +326,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Account Type"
           name="account_type_id"
           options={accountTypes
-          ?.filter((accountType) => 
-            accountType.name === 'Corporate' || accountType.name === 'SME'
-          )
-          .map((accountType) => ({
+          ?.map((accountType) => ({
             label: accountType.name,
             value: accountType.id,
           }))}

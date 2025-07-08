@@ -106,7 +106,6 @@ const CompanyDeleteForm: FC<Props> = ({
           .from('pending_accounts')
           .select('id')
           .eq('account_id', accountId)
-          .eq('is_active', true)
           .eq('is_approved', false)
           .eq('created_by', user?.id)
           .limit(1)

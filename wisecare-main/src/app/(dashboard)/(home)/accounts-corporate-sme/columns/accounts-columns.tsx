@@ -21,13 +21,6 @@ export const formatPercentage = (value: number | null | undefined) => {
 }
 const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   {
-    accessorKey: 'is_account_active',
-    header: ({ column }) => <TableHeader column={column} title="Active" />,
-    cell: ({ row }) => (
-      <ActiveBadge isActive={row.original.is_account_active} />
-    ),
-  },
-  {
     accessorKey: 'status_type.name',
     accessorFn: (originalRow) => (originalRow as any)?.status_type?.name ?? '',
     header: ({ column }) => (
@@ -83,21 +76,21 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     accessorKey: 'hmo_provider.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.hmo_provider?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="HMO Provider" />
     ),
   },
   {
     accessorKey: 'previous_hmo_provider.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.previous_hmo_provider?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Previous HMO Provider" />
     ),
   },
   {
     accessorKey: 'old_hmo_provider.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.old_hmo_provider?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Old HMO Provider" />
     ),
@@ -136,14 +129,14 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
   },
   {
     accessorKey: 'principal_plan_type.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.principal_plan_type?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Principal Plan Type" />
     ),
   },
   {
     accessorKey: 'dependent_plan_type.name',
-    accessorFn: (originalRow) => (originalRow as any)?.name ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.dependent_plan_type?.name ?? '',
     header: ({ column }) => (
       <TableHeader column={column} title="Dependent Plan Type" />
     ),
@@ -344,18 +337,6 @@ const accountsColumns: ColumnDef<Tables<'accounts'>>[] = [
     ),
     cell: ({ getValue }) =>
       formatPercentage(getValue<number | null | undefined>()),
-  },
-  {
-    accessorKey: 'additional_benefits',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Additional Benefits" />
-    ),
-  },
-  {
-    accessorKey: 'special_benefits',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Special Benefits" />
-    ),
   },
   {
     accessorKey: 'name_of_signatory',

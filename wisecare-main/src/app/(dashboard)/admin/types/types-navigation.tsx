@@ -12,6 +12,7 @@ import {
   Mars,
   HeartHandshake,
   IdCardLanyard,
+  Building2,
 } from 'lucide-react'
 import { ComponentType, FC } from 'react'
 import { useTypesContext } from './type-card'
@@ -26,10 +27,10 @@ interface NavigationLink {
 
 const navigationLinks: NavigationLink[] = [
   {
-    name: 'Account Types',
-    description: 'Manage account types',
+    name: 'Business Types',
+    description: 'Manage business types',
     tab: 'account_types',
-    icon: UserCircle,
+    icon: Building2,
   },
   {
     name: 'HMO Providers',

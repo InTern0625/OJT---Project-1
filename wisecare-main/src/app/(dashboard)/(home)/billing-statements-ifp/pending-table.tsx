@@ -14,15 +14,13 @@ const PendingTable = () => {
   const filteredData = (data || [])
     .filter(
       (item: any) =>
-        item.accounts.account_type?.name?.toUpperCase().startsWith('PREPAID') ||
-        item.accounts.account_type?.name?.toUpperCase().startsWith('FAMILY') ||
-        item.accounts.account_type?.name?.toUpperCase().startsWith('INDIVIDUAL') ||
-        item.accounts.account_type?.name === null
+        item.accounts.program_type !== null
     )
     .map((item: any) => ({
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
+  console.log("BILLING", filteredData)
   return <DataTable columns={pendingColumns} data={filteredData || []} />
 }
 export default PendingTable

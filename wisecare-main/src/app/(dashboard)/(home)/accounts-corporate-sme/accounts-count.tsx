@@ -9,23 +9,21 @@ const AccountsCount = () => {
   const supabase = createBrowserClient()
   const { data: count, isLoading } = useQuery(getAccounts(supabase))
 
-  const activeCount = useMemo(
-    () => count?.filter(
+  const activeCount = useMemo(() => {
+    return (count || []).filter(
       (item: any) =>
-        item.account_type?.name?.toUpperCase().startsWith('SME') ||
-        item.account_type?.name?.toUpperCase().startsWith('CORPORATE') ||
-        item.account_type?.name === null
-    ).filter((account: any) => account.is_account_active).length,
-    [count],
-  )
-  const inactiveCount = useMemo(
-    () => count?.filter(
+        item.account_type !== null &&
+        item.status_id?.name?.toLowerCase() === 'active'
+    ).length;
+  }, [count]);
+
+  const inactiveCount = useMemo(() => {
+    return (count || []).filter(
       (item: any) =>
-        item.account_type?.name === 'SME' ||
-        item.account_type?.name === 'CORPORATE'
-    ).filter((account: any) => !account.is_account_active).length,
-    [count],
-  )
+        item.account_type !== null &&
+        item.status_id?.name?.toLowerCase() === 'inactive'
+    ).length;
+  }, [count]);
 
   return (
     <>

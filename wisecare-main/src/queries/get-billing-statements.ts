@@ -12,6 +12,9 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
         company_name,
         account_type:account_types (
           name
+        ),
+        program_type:program_types(
+          name
         )
       ),
     due_date,

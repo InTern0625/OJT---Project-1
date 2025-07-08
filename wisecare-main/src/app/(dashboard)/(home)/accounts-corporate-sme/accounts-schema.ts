@@ -9,7 +9,7 @@ const accountsSchema = z.object({
   hmo_provider_id: z.string().uuid().optional(),
   previous_hmo_provider_id: z.string().uuid().optional(),
   old_hmo_provider_id: z.string().uuid().optional(),
-  account_type_id: z.string().uuid().optional(),
+  account_type_id: z.string().min(1).uuid(),
   total_utilization: z.string().optional(),
   total_premium_paid: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null

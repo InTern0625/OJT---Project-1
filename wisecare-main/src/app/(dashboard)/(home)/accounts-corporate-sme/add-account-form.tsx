@@ -7,7 +7,7 @@ import { useUserServer } from '@/providers/UserProvider'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query'
+import { useInsertMutation, useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { Loader2 } from 'lucide-react'
 import { FormEventHandler, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
@@ -16,6 +16,7 @@ import accountsSchema from './accounts-schema'
 import MarketingInputs from './forms/marketing-inputs'
 import { useUpload } from '@supabase-cache-helpers/storage-react-query'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
+import getTypes from '@/queries/get-types'
 
 interface AddAccountFormProps {
   setIsOpen: (isOpen: boolean) => void
@@ -23,13 +24,17 @@ interface AddAccountFormProps {
 
 const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
+  const supabase = createBrowserClient()
 
   const { toast } = useToast()
   const { user } = useUserServer()
+  const { data: activeTypes } = useQuery(getTypes(supabase, 'status_types'))
+  const defaultStatusID = activeTypes?.[0]?.id ?? undefined
+
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
-      is_active: true,
+      status_id: defaultStatusID,
       agent_id: undefined,
       company_name: '',
       company_address: '',
@@ -70,7 +75,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
     },
   })
 
-  const supabase = createBrowserClient()
 
   const { mutateAsync, isPending, isSuccess } = useInsertMutation(
     // @ts-ignore
@@ -138,7 +142,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           data: { user },
         } = await supabase.auth.getUser()
         if (!user) return
-
+        console.log("DATA SUBMIT", data)
         // check if company_name already exists in pending_accounts
         const { data: existingAccount } = await supabase
           .from('pending_accounts')
@@ -193,8 +197,8 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
 
         await mutateAsync([
           {
+            status_id: data.status_id,
             company_name: data.company_name,
-            is_active: data.is_active,
             agent_id: data.agent_id,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,

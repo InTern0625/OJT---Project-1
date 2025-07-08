@@ -12,8 +12,6 @@ const RenewalList = () => {
     supabase
       .from('accounts')
       .select('company_name, expiration_date, initial_contract_value, id')
-      .eq('is_account_active', true)
-      .eq('is_active', true)
       .lte(
         'expiration_date',
         addMonths(new Date(), 3).toLocaleString('en-US', {

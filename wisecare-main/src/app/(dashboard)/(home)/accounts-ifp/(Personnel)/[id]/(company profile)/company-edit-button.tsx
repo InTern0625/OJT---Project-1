@@ -76,7 +76,6 @@ const CompanyEditButton: FC<Props> = ({ role, accountId }) => {
       .from('pending_accounts')
       .select('id')
       .eq('account_id', accountId)
-      .eq('is_active', true)
       .eq('is_approved', false)
       .limit(1)
       .maybeSingle()

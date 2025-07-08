@@ -64,6 +64,7 @@ interface Props<TData> {
   button?: ReactNode
   open: boolean
   setOpen: (value: boolean) => void
+  accountType?: string
 }
 
 const BillingStatementModal = <TData,>({
@@ -71,6 +72,7 @@ const BillingStatementModal = <TData,>({
   button,
   open,
   setOpen,
+  accountType
 }: Props<TData>) => {
   const { toast } = useToast()
   const [tableRerender, setTableRerender] = useState(0)
@@ -106,9 +108,20 @@ const BillingStatementModal = <TData,>({
   const { data: modeOfPayments } = useQuery(
     getTypes(supabase, 'mode_of_payments'),
   )
-
-  const { data: accounts } = useQuery(getAllAccounts(supabase))
-
+  
+  const { data: unFilteredAccounts } = useQuery(getAllAccounts(supabase))
+  let accounts = unFilteredAccounts
+  if (accountType == "Business"){
+    accounts = unFilteredAccounts?.filter(
+      (acc) => acc.account_type !== null
+    )
+  }else if(accountType == "IFP"){
+    accounts = unFilteredAccounts?.filter(
+      (acc) => acc.program_type !== null
+    )
+  }else{
+    accounts = unFilteredAccounts
+  }
   const { mutateAsync, isPending } = useUpsertMutation(
     // @ts-ignore
     supabase.from('billing_statements'),

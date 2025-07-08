@@ -14,9 +14,7 @@ const PendingTable = () => {
   const filteredData = (data || [])
     .filter(
       (item: any) =>
-        item.accounts.account_type?.name?.toUpperCase().startsWith('SME') ||
-        item.accounts.account_type?.name?.toUpperCase().startsWith('CORPORATE') ||
-        item.accounts.account_type?.name === null
+        item.accounts.account_type !== null
     )
     .map((item: any) => ({
       ...item,

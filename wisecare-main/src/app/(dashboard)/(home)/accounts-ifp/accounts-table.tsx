@@ -13,17 +13,14 @@ const AccountsTable = () => {
   const filteredData = (data || [])
     .filter(
       (item: any) =>
-        item.account_type?.name?.toUpperCase().startsWith('PREPAID') ||
-        item.account_type?.name?.toUpperCase().startsWith('FAMILY') ||
-        item.account_type?.name?.toUpperCase().startsWith('INDIVIDUAL') ||
-        item.program_type?.name?.toUpperCase().startsWith('PREPAID') ||
-        item.program_type?.name?.toUpperCase().startsWith('FAMILY') ||
-        item.program_type?.name?.toUpperCase().startsWith('INDIVIDUAL')
+        item.program_type !== null
     )
     .map((item: any) => ({
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
+    console.log(filteredData)
+
   return <DataTable columns={accountsColumns} data={filteredData || []} />
 }
 export default AccountsTable

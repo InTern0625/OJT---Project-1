@@ -13,7 +13,7 @@ const TypesTitle: FC<Props> = ({ page, handleClick }) => {
   const renderTitle = () => {
     switch (page) {
       case 'account_types':
-        return 'Account Types'
+        return 'Business Types'
       case 'hmo_providers':
         return 'HMO Providers'
       case 'mode_of_payments':

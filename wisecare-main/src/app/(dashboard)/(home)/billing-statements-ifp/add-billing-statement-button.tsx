@@ -18,6 +18,7 @@ const AddBillingStatementButton = () => {
           Add Billing Statement
         </Button>
       }
+      accountType='IFP'
     />
   )
 }
