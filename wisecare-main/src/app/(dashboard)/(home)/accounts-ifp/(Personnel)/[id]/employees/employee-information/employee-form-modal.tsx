@@ -40,12 +40,12 @@ const EmployeeFormModal: FC<AddEmployeeModalProps> = ({
       <DialogContent className="max-w-6xl">
         <DialogHeader>
           <DialogTitle>
-            {oldEmployeeData ? 'Edit Employee' : 'Add Employee'}
+            {oldEmployeeData ? 'Edit Family Member/s' : 'Add Family Member/s'}
           </DialogTitle>
           <DialogDescription>
             {oldEmployeeData
-              ? 'Edit the employee details'
-              : 'Add a new employee to the company'}
+              ? 'Edit family member details'
+              : 'Add a new family member to the company'}
           </DialogDescription>
         </DialogHeader>
 

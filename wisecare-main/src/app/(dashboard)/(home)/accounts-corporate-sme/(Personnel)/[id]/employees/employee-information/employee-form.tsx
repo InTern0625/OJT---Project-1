@@ -172,18 +172,18 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
         birth_date: oldEmployeeData.birth_date
           ? normalizeToUTC(new Date(oldEmployeeData.birth_date ?? ''))
           : undefined,
-        gender_types_id: oldEmployeeData.gender_type?.name
-          ? (oldEmployeeData.gender_type as any).name.toString()
+        gender_types_id: oldEmployeeData.gender_type?.id
+          ? (oldEmployeeData.gender_type as any).id.toString()
           : undefined,
-        civil_status_id: oldEmployeeData.civil_status_type?.name
-          ? (oldEmployeeData.civil_status_type as any).name.toString()
+        civil_status_id: oldEmployeeData.civil_status_type?.id
+          ? (oldEmployeeData.civil_status_type as any).id.toString()
           : undefined,
         card_number: oldEmployeeData.card_number ?? '',
         effective_date: oldEmployeeData.effective_date
           ? normalizeToUTC(new Date(oldEmployeeData.effective_date ?? ''))
           : undefined,
-        room_plan_id: oldEmployeeData.room_plan_type?.name
-          ? (oldEmployeeData.room_plan_type as any).name.toString()
+        room_plan_id: oldEmployeeData.room_plan_type?.id
+          ? (oldEmployeeData.room_plan_type as any).id.toString()
           : undefined,
         maximum_benefit_limit: oldEmployeeData.maximum_benefit_limit ?? '',
         member_type: oldEmployeeData.member_type ?? undefined,
@@ -482,7 +482,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
                   Maximum Benefit Limit
                 </FormLabel>
                 <FormControl className="col-span-3">
-                  <Input type="number" {...field} disabled={isPending} />
+                  <Input type="number" {...field} disabled={isPending} min={0}/>
                 </FormControl>
                 <FormMessage className="col-span-3 col-start-2" />
               </FormItem>

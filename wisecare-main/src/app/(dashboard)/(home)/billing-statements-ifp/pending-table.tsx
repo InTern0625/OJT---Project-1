@@ -20,7 +20,6 @@ const PendingTable = () => {
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
-  console.log("BILLING", filteredData)
   return <DataTable columns={pendingColumns} data={filteredData || []} />
 }
 export default PendingTable

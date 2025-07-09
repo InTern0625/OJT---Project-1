@@ -13,7 +13,7 @@ const AccountsCount = () => {
     return (count || []).filter(
       (item: any) =>
         item.account_type !== null &&
-        item.status_id?.name?.toLowerCase() === 'active'
+        item.status_type?.name?.toLowerCase() === 'active'
     ).length;
   }, [count]);
 
@@ -21,7 +21,16 @@ const AccountsCount = () => {
     return (count || []).filter(
       (item: any) =>
         item.account_type !== null &&
-        item.status_id?.name?.toLowerCase() === 'inactive'
+        item.status_type?.name?.toLowerCase() === 'inactive'
+    ).length;
+  }, [count]);
+
+  const otherCounts = useMemo(() => {
+    return (count || []).filter(
+      (item: any) =>
+        item.program_type !== null &&
+        item.status_type?.name?.toLowerCase() !== 'inactive' &&
+        item.status_type?.name?.toLowerCase() !== 'active'
     ).length;
   }, [count]);
 
@@ -31,7 +40,7 @@ const AccountsCount = () => {
         <Skeleton className="h-4 w-20" />
       ) : (
         <PageDescription>
-          {activeCount} Active Accounts | {inactiveCount} Inactive Accounts
+          {activeCount} Active Accounts | {inactiveCount} Inactive Accounts | {otherCounts} Others
         </PageDescription>
       )}
     </>

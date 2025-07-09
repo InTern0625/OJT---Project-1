@@ -18,13 +18,13 @@ import dynamic from 'next/dynamic'
 
 const ExportAccounts = dynamic(
   () =>
-    import('@/app/(dashboard)/(home)/accounts/export-requests/export-accounts'),
+    import('@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts'), //change this
   { ssr: false },
 )
 const ExportEmployees = dynamic(
   () =>
     import(
-      '@/app/(dashboard)/(home)/accounts/(Personnel)/[id]/employees/export-employees'
+      '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-employees'//change this
     ),
   { ssr: false },
 )

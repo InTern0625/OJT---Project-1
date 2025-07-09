@@ -14,7 +14,22 @@ import { useInsertMutation } from '@supabase-cache-helpers/postgrest-react-query
 import { Loader2 } from 'lucide-react'
 import { FC, ReactNode, useCallback, useState } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { Tables } from '@/types/database.types'
 
+interface ExtendedEmployeeData extends Tables<'company_employees'> {
+  gender_type?: {
+    id: string
+    name: string
+  } | null
+  civil_status_type?: {
+    id: string
+    name: string
+  } | null
+  room_plan?: {
+    id: string
+    name: string
+  } | null
+}
 interface EmployeeExportModalProps {
   exportData: Enums<'export_type'>
   button: ReactNode
@@ -85,10 +100,31 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
 
     const { data: oldEmployeesData } = await supabase
       .from('company_employees')
-      .select('*')
-      .eq('is_active', true)
-      .eq('account_id', accountId)
-
+      .select(`
+      id,
+      account_id,
+      first_name,
+      last_name,
+      birth_date,
+      card_number,
+      effective_date,
+      maximum_benefit_limit,
+      created_at,
+      updated_at,
+      created_by,
+      cancelation_date,
+      dependent_relation,
+      expiration_date,
+      member_type,
+      remarks,
+      middle_name,
+      suffix,
+      principal_member_name,
+      gender_type: gender_types_id(name, id),
+      civil_status_type: civil_status_id (name, id),
+      room_plan: room_plan_id (name, id)
+      `)
+      .eq('account_id', accountId) as unknown as { data: ExtendedEmployeeData[] }
     if (!oldEmployeesData || oldEmployeesData.length === 0) {
       toast({
         title: 'No employees data found',
@@ -102,21 +138,21 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
       const {
         id,
         account_id,
-        is_active,
         created_at,
         created_by,
         updated_at,
         ...rest
       } = employee
+
       return {
         'Full Name': `${employee.first_name || ''} ${employee.middle_name || ''} ${employee.last_name || ''} ${employee.suffix || ''}`,
         'Card Number': employee.card_number || '',
         'Effective Date': employee.effective_date || '',
-        'Room Plan': employee.room_plan_type.name || '',
+        'Room Plan': employee?.room_plan?.name || '',
         'Maximum Benefit Limit': employee.maximum_benefit_limit || '',
-        'Gender': employee.gender_type.name || '',
+        'Gender': employee?.gender_type?.name || '',
         'Date of Birth': employee.birth_date || '',
-        'Civil Status': employee.civil_status_type.name || '',
+        'Civil Status': employee?.civil_status_type?.name || '',
         'Dependent Relation': employee.dependent_relation || '',
         'Member Type': employee.member_type || '',
         'Expiration Date': employee.expiration_date || '',
@@ -125,7 +161,6 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
         'Principal Member Name': employee.principal_member_name || '',
       }
     })
-
     await mutateAsync([
       {
         export_type: exportData,

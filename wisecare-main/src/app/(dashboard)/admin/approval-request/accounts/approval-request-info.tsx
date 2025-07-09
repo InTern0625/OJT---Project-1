@@ -2,7 +2,7 @@
 import {
   formatCurrency,
   formatPercentage,
-} from '@/app/(dashboard)/(home)/accounts/columns/accounts-columns'
+} from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import ActionRequestButton from '@/app/(dashboard)/admin/approval-request/accounts/action-request-button'
 import { useApprovalRequestContext } from '@/app/(dashboard)/admin/approval-request/accounts/approval-request-provider'
 import ApprovalInformationItem from '@/app/(dashboard)/admin/approval-request/components/approval-information-item'

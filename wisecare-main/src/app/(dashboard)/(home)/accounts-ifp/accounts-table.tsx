@@ -1,6 +1,6 @@
 'use client'
 
-import accountsColumns from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
+import AccountsColumns from '@/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns'
 import getAccounts from '@/queries/get-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'
@@ -14,7 +14,10 @@ interface AccountsTableProps {
 const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps) => {
   const supabase = createBrowserClient()
   const { data, isLoading } = useQuery(getAccounts(supabase))
+  
   if (isLoading) return null
+  const columns = AccountsColumns()
+
   const filteredData = (data || [])
     .filter(
       (item: any) =>
@@ -25,7 +28,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       account_type_id: item.account_type?.id ?? null,
     }))
   return <DataTable 
-            columns={accountsColumns} 
+            columns={columns} 
             data={filteredData || []} 
             initialPageIndex={initialPageIndex}
             initialPageSize={initialPageSize}/>

@@ -29,7 +29,6 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
   const [pendingRequest, setIsPendingRequest] = useState('')
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
   const { data: oldAccountsData } = useQuery(getAccounts(supabase))
-
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore
     supabase.from('pending_export_requests'),
@@ -89,29 +88,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       })
       return
     }
-    const accountsData = oldAccountsData.filter((account) =>{
-      if (exportType == "renewals"){
-        const now = new Date()
-        const threeMonthsLater = new Date()
-        threeMonthsLater.setMonth(now.getMonth() + 3)
-        const accountType = account.account_type?.name?.toUpperCase()
-        const expiration = account.expiration_date ? new Date(account.expiration_date) : null
-
-        const isTypeValid = accountType
-          ? (accountType.startsWith('SME') ||
-          accountType.startsWith('CORPORATE')) 
-          : false
-        
-        const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-        return isTypeValid && isExpirationValid
-      }else if (exportType == "accounts"){
-        const type = account?.account_type?.name.toUpperCase()
-        return type === 'SME' || type === 'CORPORATE'
-      }else{
-        return account
-      }
-    }
-    ).map((account) => {
+    const accountsData = oldAccountsData.map((account) => {
       const { id, created_at, updated_at, is_account_active, is_editing, ...rest } = account
 
       return {
@@ -165,7 +142,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
         'Additional Benefits': account.additional_benefits || '',
         'Special Benefits': account.special_benefits || '',
         'Summary of Benefits': account.summary_of_benefits || '',
-        'Account Type': account.account_type ? `${account_type.name}`: '',
+        'Account Type': account.account_type ? `${account.account_type.name}`: '',
 
       }
     })

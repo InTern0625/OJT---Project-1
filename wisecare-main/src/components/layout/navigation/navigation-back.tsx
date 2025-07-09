@@ -14,7 +14,6 @@ export const ButtonBack = () => {
   const fromPage = searchParams.get('fromPage') ?? '0'
   const pageSize = searchParams.get('pageSize') ?? '10'
   
-  console.log(fromPath,fromPage,pageSize)
   return (
     <Button onClick={() => {
       router.push(`${fromPath}?fromPage=${fromPage}&pageSize=${pageSize}`)

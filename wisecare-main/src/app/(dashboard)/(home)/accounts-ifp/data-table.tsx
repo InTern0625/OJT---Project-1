@@ -34,7 +34,7 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import AccountsProvider from './accounts-provider'
 import AddAccountButton from './add-account-button'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
@@ -61,7 +61,7 @@ const DataTable = <TData extends IData, TValue>({
   const { user } = useUserServer()
   const supabase = createBrowserClient()
   const { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting } = useColumnStates()
-
+  const statusOrderRef = useRef<string[]>([]);
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
@@ -100,8 +100,9 @@ const DataTable = <TData extends IData, TValue>({
         pageIndex: initialPageIndex ?? 0,
         pageSize: initialPageSize ?? 10,
       },
-    }
+    },
   })
+
 
   useEffect(() => {
     if (!user?.id) return
@@ -116,7 +117,7 @@ const DataTable = <TData extends IData, TValue>({
 
   useEffect(() => {
     if (!user?.id) return
-
+    
     upsertAccIFPColumnSorting([
       {
         user_id: user.id,
@@ -124,7 +125,8 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
-  
+
+
   return (
     <AccountsProvider>
       <div className="flex flex-col">

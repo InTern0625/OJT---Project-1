@@ -142,7 +142,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           data: { user },
         } = await supabase.auth.getUser()
         if (!user) return
-        console.log("DATA SUBMIT", data)
         // check if company_name already exists in pending_accounts
         const { data: existingAccount } = await supabase
           .from('pending_accounts')

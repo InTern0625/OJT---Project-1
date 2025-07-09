@@ -123,8 +123,8 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
       <DialogTrigger asChild={true}>{button}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Employee Details</DialogTitle>
-          <DialogDescription>View the employee details</DialogDescription>
+          <DialogTitle>Family Details</DialogTitle>
+          <DialogDescription>View the family member/s details</DialogDescription>
         </DialogHeader>
 
         <h4 className="mt-5 text-center text-xl font-semibold">

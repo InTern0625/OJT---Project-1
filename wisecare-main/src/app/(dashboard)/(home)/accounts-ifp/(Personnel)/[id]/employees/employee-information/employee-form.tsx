@@ -1,5 +1,5 @@
-import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
-import employeeSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-schema'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
+import employeeSchema from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -120,6 +120,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
+      
       form.handleSubmit(async (data) => {
         const {
           data: { user },
@@ -157,10 +158,10 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
           },
         ])
       })(e)
+      
     },
     [accountId, form, mutateAsync, oldEmployeeData, supabase.auth, toast],
   )
-
   // If oldEmployeeData is provided, we are editing an existing employee
   useEffect(() => {
     if (oldEmployeeData) {
@@ -172,18 +173,18 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
         birth_date: oldEmployeeData.birth_date
           ? normalizeToUTC(new Date(oldEmployeeData.birth_date ?? ''))
           : undefined,
-        gender_types_id: oldEmployeeData.gender_type?.name
-          ? (oldEmployeeData.gender_type as any).name.toString()
+        gender_types_id: oldEmployeeData.gender_type?.id
+          ? (oldEmployeeData.gender_type as any).id.toString()
           : undefined,
-        civil_status_id: oldEmployeeData.civil_status_type?.name
-          ? (oldEmployeeData.civil_status_type as any).name.toString()
+        civil_status_id: oldEmployeeData.civil_status_type?.id
+          ? (oldEmployeeData.civil_status_type as any).id.toString()
           : undefined,
         card_number: oldEmployeeData.card_number ?? '',
         effective_date: oldEmployeeData.effective_date
           ? normalizeToUTC(new Date(oldEmployeeData.effective_date ?? ''))
           : undefined,
-        room_plan_id: oldEmployeeData.room_plan_type?.name
-          ? (oldEmployeeData.room_plan_type as any).name.toString()
+        room_plan_id: oldEmployeeData.room_plan_type?.id
+          ? (oldEmployeeData.room_plan_type as any).id.toString()
           : undefined,
         maximum_benefit_limit: oldEmployeeData.maximum_benefit_limit ?? '',
         member_type: oldEmployeeData.member_type ?? undefined,
