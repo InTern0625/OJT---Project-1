@@ -5,7 +5,8 @@ export const isPendAccExp = async (supabase: TypedSupabaseClient) => {
     .from('pending_export_requests')
     .select('id', { count: 'exact', head: true })
     .eq('export_type', 'accounts')
-    .or('and(is_approved.eq.false,is_active.eq.true),and(is_approved.eq.false,is_active.eq.false)')
+    .eq('is_approved',false)
+    .eq('is_active', true)
 
   if (error) {
     console.error('Exception Occurred:', error)
@@ -19,7 +20,8 @@ export const isPendAcc = async (supabase: TypedSupabaseClient) => {
   const { count, error } = await supabase
     .from('pending_accounts')
     .select('id', { count: 'exact', head: true })
-    .or('and(is_approved.eq.false,is_active.eq.true),and(is_approved.eq.false,is_active.eq.false)')
+    .eq('is_approved',false)
+    .eq('is_active', true)
 
   if (error) {
     console.error('Exception Occurred:', error)
@@ -33,7 +35,8 @@ export const isPendEmpExp = async (supabase: TypedSupabaseClient) => {
     .from('pending_export_requests')
     .select('id', { count: 'exact', head: true })
     .eq('export_type', 'employees')
-    .or('and(is_approved.eq.false,is_active.eq.true),and(is_approved.eq.false,is_active.eq.false)')
+    .eq('is_approved',false)
+    .eq('is_active', true)
 
   if (error) {
     console.error('Exception Occurred:', error)
