@@ -33,6 +33,12 @@ const navigationLinks: NavigationLink[] = [
     icon: Building2,
   },
   {
+    name: 'Program Types',
+    description: 'Manage program types',
+    tab: 'program_types',
+    icon: BookCopy,
+  },
+  {
     name: 'HMO Providers',
     description: 'Manage HMO Providers',
     tab: 'hmo_providers',
@@ -55,12 +61,6 @@ const navigationLinks: NavigationLink[] = [
     description: 'Manage room plan types',
     tab: 'room_plans',
     icon: X,
-  },
-  {
-    name: 'Program Types',
-    description: 'Manage program types',
-    tab: 'program_types',
-    icon: BookCopy,
   },
   {
     name: 'Gender',

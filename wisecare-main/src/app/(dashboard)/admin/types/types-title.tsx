@@ -14,6 +14,8 @@ const TypesTitle: FC<Props> = ({ page, handleClick }) => {
     switch (page) {
       case 'account_types':
         return 'Business Types'
+      case 'program_types':
+        return 'Program Types'
       case 'hmo_providers':
         return 'HMO Providers'
       case 'mode_of_payments':
@@ -22,8 +24,6 @@ const TypesTitle: FC<Props> = ({ page, handleClick }) => {
         return 'Plan Types'
       case 'room_plans':
         return 'Room Plan'
-      case 'program_types':
-        return 'Program Types'
       case 'gender_types':
         return 'Gender'
       case 'civil_status_types':

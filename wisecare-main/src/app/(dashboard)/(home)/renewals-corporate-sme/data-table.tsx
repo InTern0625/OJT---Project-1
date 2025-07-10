@@ -43,6 +43,7 @@ import { useUserServer } from '@/providers/UserProvider'
 import { useRouter } from 'next/navigation'
 import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-requests'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts-modal'
+import { isAfter, isBefore, addMonths } from 'date-fns'
 
 interface IData {
   id: string
@@ -116,9 +117,18 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertRenewalIFPColumnSorting, user?.id])
-
-  const totalCount = table.getFilteredRowModel().rows.length
-
+  
+  //Upcoming and overdue renewals
+  const dateToday = new Date()
+  const upcomingCount = data.filter((row) => 
+    (row as any).expiration_date &&
+    isAfter((row as any).expiration_date, dateToday) &&
+    isBefore((row as any).expiration_date, addMonths(dateToday, 3))
+  ).length
+  const overdueCount = data.filter((row) =>
+    (row as any).expiration_date &&
+    isBefore((row as any).expiration_date, dateToday)
+  ).length
   const { isEditModalOpen, setIsEditModalOpen, originalData } =
     useBillingContext()
 
@@ -128,7 +138,7 @@ const DataTable = <TData extends IData, TValue>({
         <div className="flex w-full flex-col gap-6 sm:flex-row sm:justify-between">
           <div>
             <PageTitle>Renewal Statements</PageTitle>
-              <PageDescription>{totalCount} Renewal Statements</PageDescription>
+              <PageDescription>{upcomingCount} Upcoming Statements | {overdueCount} Overdue Statements </PageDescription>
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} />

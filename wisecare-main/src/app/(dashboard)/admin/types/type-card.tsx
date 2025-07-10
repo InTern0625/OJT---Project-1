@@ -7,12 +7,12 @@ import TypesTitle from './types-title'
 
 export type TypeTabs =
   | 'account_types'
+  | 'gender_types'
   | 'hmo_providers'
   | 'mode_of_payments'
   | 'plan_types'
   | 'program_types'
   | 'room_plans'
-  | 'gender_types'
   | 'civil_status_types'
   | 'status_types'
 

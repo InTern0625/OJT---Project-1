@@ -4,33 +4,25 @@ import getAccounts from '@/queries/get-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { useMemo } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
+import getTypes from '@/queries/get-types'
 
 const AccountsCount = () => {
   const supabase = createBrowserClient()
   const { data: count, isLoading } = useQuery(getAccounts(supabase))
+  const { data: statusTypes } = useQuery(getTypes(supabase, 'status_types'))
 
-  const activeCount = useMemo(() => {
-    return (count || []).filter(
-      (item: any) =>
-        item.program_type !== null &&
-        item.status_type?.name?.toLowerCase() === 'active'
-    ).length;
-  }, [count]);
-  const inactiveCount = useMemo(() => {
-    return (count || []).filter(
-      (item: any) =>
-        item.program_type !== null &&
-        item.status_type?.name?.toLowerCase() === 'inactive'
-    ).length;
-  }, [count]);
-  const otherCounts = useMemo(() => {
-    return (count || []).filter(
-      (item: any) =>
-        item.program_type !== null &&
-        item.status_type?.name?.toLowerCase() !== 'inactive' &&
-        item.status_type?.name?.toLowerCase() !== 'active'
-    ).length;
-  }, [count]);
+  const countsByStatus = useMemo(() => {
+    const result: Record<string, number> = {}
+
+    ;(count || []).forEach((item: any) => {
+      if (item.program_type !== null) {
+        const key = item.status_type?.name?.toLowerCase() || 'unknown'
+        result[key] = (result[key] || 0) + 1
+      }
+    })
+
+    return result
+  }, [count])
 
   return (
     <>
@@ -38,11 +30,15 @@ const AccountsCount = () => {
         <Skeleton className="h-4 w-20" />
       ) : (
         <PageDescription>
-          {activeCount} Active Accounts | {inactiveCount} Inactive Accounts | {otherCounts} Others
+          {Object.entries(countsByStatus).map(([status, count], idx, arr) => (
+            <span key={status}>
+              {count} {status.charAt(0).toUpperCase() + status.slice(1)} Account{count !== 1 ? 's' : ''}
+              {idx < arr.length - 1 ? ' | ' : ''}
+            </span>
+          ))}
         </PageDescription>
       )}
     </>
   )
 }
-
 export default AccountsCount

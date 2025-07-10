@@ -23,12 +23,14 @@ export const metadata = async (): Promise<Metadata> => {
 }
 
 const AccountsPage = async ({
-  searchParams,
+  searchParams: searchParamsPromise,
   }: {
   searchParams: { [key: string]: string | string[] | undefined }
   }) => {
   const supabase = createServerClient(await cookies())
   const queryClient = new QueryClient()
+  const searchParams = await searchParamsPromise
+
   await prefetchQuery(queryClient, getAccounts(supabase))
   await prefetchQuery(
     queryClient,

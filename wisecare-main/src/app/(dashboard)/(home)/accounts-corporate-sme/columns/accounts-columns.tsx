@@ -309,6 +309,7 @@ export const AccountsColumns = () => {
     },
     {
       accessorKey: 'mode_of_payment.name',
+      accessorFn: (originalRow) => (originalRow as any)?.mode_of_payment?.name ?? '',
       header: ({ column }) => (
         <TableHeader column={column} title="Mode of Payment" />
       ),

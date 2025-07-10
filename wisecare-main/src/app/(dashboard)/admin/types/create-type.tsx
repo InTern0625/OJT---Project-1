@@ -28,14 +28,14 @@ const CreateType: FC<Props> = ({ page }) => {
     switch (page) {
       case 'account_types':
         return 'Account Types'
+      case 'program_types':
+        return 'Program Types'
       case 'hmo_providers':
         return 'HMO Providers'
       case 'mode_of_payments':
         return 'Mode of Payments'
       case 'plan_types':
         return 'Plan Types'
-      case 'program_types':
-        return 'Program Types'
       case 'room_plans':
         return 'Room Plans'
       case 'gender_types':
