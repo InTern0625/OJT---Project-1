@@ -32,7 +32,7 @@ const AccountRequest = () => {
         <Button
           variant="outline"
           size="sm"
-          className="flex h-8 w-full rounded-none"
+          className="flex h-8 rounded-none"
         >
           {count} Requests
         </Button>

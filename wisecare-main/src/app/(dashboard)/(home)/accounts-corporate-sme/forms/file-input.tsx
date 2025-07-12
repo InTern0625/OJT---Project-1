@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/form'
 import { Button } from '@/components/ui/button'
 import { X, UploadCloud } from 'lucide-react'
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 import accountsSchema from '../accounts-schema'
@@ -34,6 +34,7 @@ const FileInput = ({
   maxFileSize?: number 
 }) => {
   const [files, setFiles] = useState<File[]>([]);
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [dragActive, setDragActive] = useState(false);
 
   const validateFiles = useCallback((newFiles: File[]) => {
@@ -54,21 +55,8 @@ const FileInput = ({
     const selectedFiles = Array.from(e.target.files || []);
     
     if (!validateFiles(selectedFiles)) return;
-    
-    setFiles(prev => {
-      const updated = [...prev, ...selectedFiles];
-      if (maxFiles && updated.length > maxFiles) {
-        form.setError(name, {
-          type: 'max',
-          message: `Maximum ${maxFiles} files allowed`,
-        });
-        return prev;
-      }
-      form.clearErrors(name);
-      form.setValue(name, updated as any);
-      return updated;
-    });
-  }, [form, name, maxFiles, validateFiles]);
+    setPendingFiles(selectedFiles)
+  }, [validateFiles]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -79,21 +67,27 @@ const FileInput = ({
       
       if (!validateFiles(selectedFiles)) return;
       
-      setFiles(prev => {
-        const updated = [...prev, ...selectedFiles];
-        if (maxFiles && updated.length > maxFiles) {
-          form.setError(name, {
-            type: 'max',
-            message: `Maximum ${maxFiles} files allowed`,
-          });
-          return prev;
-        }
-        form.clearErrors(name);
-        form.setValue(name, updated as any);
-        return updated;
-      });
+      setPendingFiles(selectedFiles)
+
     }
-  }, [form, name, maxFiles, validateFiles]);
+  }, [validateFiles]);
+
+  useEffect(() => {
+    if (pendingFiles.length === 0) return;
+    const updated = [...files, ...pendingFiles];
+    if (maxFiles && updated.length > maxFiles) {
+      form.setError(name, {
+        type: 'max',
+        message: `Maximum ${maxFiles} files allowed`,
+      });
+      return;
+    }
+    form.clearErrors(name);
+    setFiles(updated)
+    form.setValue(name, updated as any);
+    setPendingFiles([])
+    
+  }, [pendingFiles, files, form, name, maxFiles]);
 
   const formatFileSize = (bytes: number) => {
     if (bytes < 1024) return `${bytes} bytes`;

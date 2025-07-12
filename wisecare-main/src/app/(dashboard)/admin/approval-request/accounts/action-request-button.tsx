@@ -6,6 +6,7 @@ import {
   useUpsertMutation,
 } from '@supabase-cache-helpers/postgrest-react-query'
 import { FC, ReactNode, useEffect } from 'react'
+import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 
 interface ActionRequestButtonProps {
   children: ReactNode
@@ -55,7 +56,8 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
 
   const handleClick = async () => {
     if (!selectedData) throw new Error('Selected data is required')
-
+    const { data: ActiveID } = await getTypesIDbyName(supabase, 'status_types', "Active")
+    const { data: InactiveID } = await getTypesIDbyName(supabase, 'status_types', "Inactive")
     // Only insert account if action is approve
     if (action === 'approve') {
       // if selectedData is insert, then check if the account already exists in accounts
@@ -73,13 +75,12 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
           return
         }
       }
-
       // Insert account
       await upsertAccount([
         {
           ...(selectedData.account_id && { id: selectedData.account_id }),
           company_name: selectedData.company_name,
-          is_active: selectedData.is_delete_account ? false : true, // if delete account is true, then is_active is false
+          status_id: selectedData.is_delete_account ? InactiveID?.id : ActiveID?.id, // if delete account is true, then is_active is false
           agent_id: (selectedData as any).agent?.user_id,
           company_address: selectedData.company_address,
           nature_of_business: selectedData.nature_of_business,
@@ -116,11 +117,29 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
           )
             ? selectedData.special_benefits_files
             : [],
+          contract_proposal_files: Array.isArray(
+            selectedData.contract_proposal_files,
+          )
+            ? selectedData.contract_proposal_files
+            : [],
+          additional_benefits_files: Array.isArray(
+            selectedData.additional_benefits_files,
+          )
+            ? selectedData.additional_benefits_files
+            : [],
           name_of_signatory: selectedData.name_of_signatory,
           designation_of_contact_person:
             selectedData.designation_of_contact_person,
           email_address_of_contact_person:
             selectedData.email_address_of_contact_person,
+          birthdate: selectedData.birthdate,
+          gender_types_id: (selectedData as any).gender_type?.id,
+          civil_status_id: (selectedData as any).civil_status?.id, 
+          card_number: selectedData.card_number,
+          room_plan_id: (selectedData as any).room_plan?.id,
+          mbl: selectedData.mbl,
+          premium: selectedData.premium,
+          program_types_id: (selectedData as any).program_type?.id,
         },
       ])
       if (isUpsertAccountError)
@@ -128,6 +147,7 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
     }
 
     // Update pending account
+
     await updatePendingAccount({
       id: selectedData.id,
       is_approved: action === 'approve',
