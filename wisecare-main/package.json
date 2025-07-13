@@ -28,7 +28,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "typegen": "pnpm dlx supabase gen types typescript --local > src/types/database.types.ts",
-    "postinstall": "if exist .git ( husky install ) || if not defined VERCEL ( husky install )"
+    "postinstall": "if [ -d .git ] || [ -z \"$VERCEL\" ]; then husky install; fi"
   },
   "dependencies": {
     "@chakra-ui/icon": "^3.2.0",
