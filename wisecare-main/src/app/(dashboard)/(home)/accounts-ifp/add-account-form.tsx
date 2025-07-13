@@ -194,7 +194,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
         const additionalBenefitsLink = uploadAdditionalBenefitsResult
           .map((result) => result.data?.path)
           .filter(Boolean)
-
         await mutateAsync([
           {
             status_id: data.status_id,

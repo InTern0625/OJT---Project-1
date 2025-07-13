@@ -98,18 +98,18 @@ interface CompanyHmoInformationProps {
         <CompanyInformationItem
             label="Effective Date"
             value={
-                account?.effective_date
-                  ? format(new Date(account.effective_date), 'PPP')
-                  : '-'
-              }
+              account?.effective_date
+                ? format(new Date(account.effective_date), 'PPP')
+                : '-'
+            }
           />
         <CompanyInformationItem
           label={'Expiration Date'}
           value={
-              account?.effective_date
-                ? format(new Date(account.expiration_date), 'PPP')
-                : '-'
-            }
+            account?.expiration_date
+              ? format(new Date(account.expiration_date), 'PPP')
+              : '-'
+          }
         />
           <CompanyInformationItem
             label={'HMO Provider'}
