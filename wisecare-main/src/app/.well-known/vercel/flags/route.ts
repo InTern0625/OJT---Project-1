@@ -10,4 +10,4 @@ export async function GET(request: NextRequest) {
   const providerData = getProviderData(flags)
   return NextResponse.json<ApiData>(providerData)
 }
-z
+
