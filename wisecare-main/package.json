@@ -2,7 +2,7 @@
   "name": "supa-next-starter",
   "description": "A production ready Next.js/Supabase starter. ",
   "version": "1.0.0",
-  "packageManager": "pnpm@8.15.4",
+  "packageManager": "pnpm@10.13.1",
   "private": true,
   "author": "Michael Troya <hi@michaeltroya.ca> (@michaeltroya)",
   "license": "MIT",
