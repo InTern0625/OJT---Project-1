@@ -13,7 +13,7 @@ module.exports = withBundleAnalyzer(nextConfig)
 module.exports = withVercelToolbar(nextConfig)
 
 // Injected content via Sentry wizard below
-
+/*
 const { withSentryConfig } = require('@sentry/nextjs')
 
 module.exports = withSentryConfig(module.exports, {
@@ -56,4 +56,4 @@ module.exports = withSentryConfig(module.exports, {
   // https://docs.sentry.io/product/crons/
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
-})
+})*/
