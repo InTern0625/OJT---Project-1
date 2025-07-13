@@ -7,6 +7,7 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
       `
       is_active,
       id,
+      agent:agent_id(first_name, last_name),
       company_name,
       company_address,
       nature_of_business,
@@ -23,7 +24,7 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
       delivery_date_of_membership_ids,
       orientation_date,
       initial_contract_value,
-      mode_of_payments (name),
+      mode_of_payment:mode_of_payment_id(name, id),
       wellness_lecture_date,
       annual_physical_examination_date,
       commision_rate,
@@ -47,7 +48,9 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
       room_plan: room_plans!room_plan_id(name),
       mbl,
       premium,
-      program_type: program_types!program_types_id(name)
+      program_type: program_types!program_types_id(name),
+      status_type: status_types!status_id(name),
+      contact_number
   `,
       {
         count: 'exact',

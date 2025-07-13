@@ -2,7 +2,7 @@
 
 import getRenewalStatements from '@/queries/get-renewal-statements'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
-import renewalStatementsColumns from './renewal-statements-columns'
+import RenewalStatementsColumns from './renewal-statements-columns'
 import DataTable from './data-table'
 import { createBrowserClient } from '@/utils/supabase-client'
 
@@ -13,6 +13,9 @@ const PendingTable = () => {
   const now = new Date()
   const threeMonthsLater = new Date()
   threeMonthsLater.setMonth(now.getMonth() + 3)
+  
+  const columns = RenewalStatementsColumns()
+  
   const filteredData = (data || [])
   .filter((item: any) => {
     const accountType = item.program_type?.name?.toUpperCase()
@@ -28,7 +31,6 @@ const PendingTable = () => {
     ...item,
     program_type_id: item.program_type?.id ?? null, 
   }))
-
-  return <DataTable columns={renewalStatementsColumns} data={filteredData || []} />
+  return <DataTable columns={columns} data={filteredData || []} />
 }
 export default PendingTable
