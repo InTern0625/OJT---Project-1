@@ -89,7 +89,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       return
     }
     const accountsData = oldAccountsData.map((account) => {
-      const { id, created_at, updated_at, is_account_active, is_editing, ...rest } = account
+      const { id, created_at, updated_at, is_account_active, ...rest } = account
 
       return {
         Agent: account.agent

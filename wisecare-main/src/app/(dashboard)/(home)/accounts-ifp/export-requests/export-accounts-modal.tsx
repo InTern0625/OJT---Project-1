@@ -96,7 +96,8 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
           const now = new Date()
           const threeMonthsLater = new Date()
           threeMonthsLater.setMonth(now.getMonth() + 3)
-          const accountType = account.program_type?.name?.toUpperCase()
+          const accountType = account.program_type?.[0]?.name?.toUpperCase()
+
           const expiration = account.expiration_date ? new Date(account.expiration_date) : null
 
           const isTypeValid = accountType
@@ -108,7 +109,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
           const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
           return isTypeValid && isExpirationValid
         }else if (exportType == "accounts"){
-          const type = account?.account_types?.name.toUpperCase()
+          const type = account?.account_type?.name.toUpperCase()
           return type === 'SME' || type === 'CORPORATE'
         }else{
           return account
@@ -126,8 +127,8 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       return {
         'Complete Name': account.company_name || '',
         'Age': age || '',
-        'Gender': account.gender
-          ? (account.gender as any).name || ''
+        'Gender': account.gender_type
+          ? (account.gender_type as any).name || ''
           : '',
         'Civil Status': account.civil_status
           ? (account.civil_status as any).name || ''

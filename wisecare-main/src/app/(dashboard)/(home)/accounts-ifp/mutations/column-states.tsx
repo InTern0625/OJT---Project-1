@@ -8,7 +8,7 @@ export const useColumnStates = () => {
   const supabase = createBrowserClient()
 
   const { mutateAsync: upsertAccIFPColumnVisibility } = useUpsertMutation(
-    supabase.from('accounts_column_visibility'),
+    supabase.from('accounts_column_visibility') as any,
     ['user_id'],
     'user_id, columns_ifp_accounts',
     {
@@ -23,7 +23,7 @@ export const useColumnStates = () => {
   )
 
   const { mutateAsync: upsertAccIFPColumnSorting } = useUpsertMutation(
-    supabase.from('accounts_column_sorting'),
+    supabase.from('accounts_column_sorting') as any,
     ['user_id'],
     'user_id, columns_ifp_accounts',
     {
@@ -37,7 +37,7 @@ export const useColumnStates = () => {
     },
   )
   const { mutateAsync: upsertRenewalIFPColumnVisibility } = useUpsertMutation(
-    supabase.from('accounts_column_visibility'),
+    supabase.from('accounts_column_visibility') as any,
     ['user_id'],
     'user_id, columns_ifp_renewals',
     {
@@ -52,7 +52,7 @@ export const useColumnStates = () => {
   )
 
   const { mutateAsync: upsertRenewalIFPColumnSorting } = useUpsertMutation(
-    supabase.from('accounts_column_sorting'),
+    supabase.from('accounts_column_sorting') as any,
     ['user_id'],
     'user_id, columns_ifp_renewals',
     {

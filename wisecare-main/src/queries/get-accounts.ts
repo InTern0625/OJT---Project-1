@@ -51,7 +51,7 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
   room_plan: room_plan_id(name, id),
   mbl,
   premium,
-  program_type: program_types_id(name, id),
+  program_type: program_types(name, id),
   gender_type: gender_types_id(name, id),
   civil_status: civil_status_id(name, id),
   status_type: status_id(name, id)

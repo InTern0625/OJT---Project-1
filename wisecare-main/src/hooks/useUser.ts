@@ -17,7 +17,7 @@ const useUser = (): UseQueryResult<UserProfileWithDepartment> => {
 
       const { data, error } = await supabase
         .from('user_profiles')
-        .select('user_id, first_name, last_name, email, departments (id, name)')
+        .select('*, departments (id, name)')
         .eq('user_id', user.user?.id)
         .single()
 

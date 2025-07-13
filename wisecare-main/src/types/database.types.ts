@@ -84,6 +84,27 @@ export type Database = {
         }
         Relationships: []
       }
+      program_types: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
       accounts: {
         Row: {
           account_type_id: string | null
@@ -138,6 +159,9 @@ export type Database = {
           gender_types_id: string | null
           civil_status_id: string | null
           status_id: string | null
+          is_editing: boolean | null
+          editing_user: string | null
+          editing_timestampz: string | null
         }
         Insert: {
           account_type_id?: string | null
@@ -192,6 +216,9 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           status_id?: string | null
+          is_editing?: boolean | null
+          editing_user?: string | null
+          editing_timestampz?: string | null
         }
         Update: {
           account_type_id?: string | null
@@ -246,6 +273,9 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           status_id?: string | null
+          is_editing?: boolean | null
+          editing_user?: string | null
+          editing_timestampz?: string | null
         }
         Relationships: [
           {
@@ -703,27 +733,6 @@ export type Database = {
         }
         Relationships: []
       }
-      program_types: {
-        Row: {
-          created_at: string | null
-          id: string
-          is_active: boolean
-          name: string
-        }
-        Insert: {
-          created_at?: string | null
-          id?: string
-          is_active?: boolean
-          name: string
-        }
-        Update: {
-          created_at?: string | null
-          id?: string
-          is_active?: boolean
-          name?: string
-        }
-        Relationships: []
-      }
       room_plans: {
         Row: {
           created_at: string | null
@@ -812,7 +821,9 @@ export type Database = {
           signatory_designation: string | null
           special_benefits: string | null
           special_benefits_files: string[] | null
+          contract_proposal: string | null
           contract_proposal_files: string[] | null
+          additional_benefits_text: string | null
           additional_benefits_files: string[] | null
           summary_of_benefits: string | null
           total_premium_paid: number | null
@@ -868,7 +879,9 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal?: string | null
           contract_proposal_files?: string[] | null
+          additional_benefits_text?: string | null
           additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null
@@ -924,7 +937,9 @@ export type Database = {
           signatory_designation?: string | null
           special_benefits?: string | null
           special_benefits_files?: string[] | null
+          contract_proposal?: string | null
           contract_proposal_files?: string[] | null
+          additional_benefits_text?: string | null
           additional_benefits_files?: string[] | null
           summary_of_benefits?: string | null
           total_premium_paid?: number | null

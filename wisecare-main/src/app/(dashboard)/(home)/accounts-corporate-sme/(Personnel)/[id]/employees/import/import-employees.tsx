@@ -50,10 +50,24 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
     if (!user) throw new Error('User not found')
     const employees = await Promise.all(
       data.validData.map(async (employee) => {
-        //ignore the 3 errors its only on vscode side
-        const { data: genderType } = await getTypesIDbyName(supabase, 'gender_types', employee['gender_type.name'])
-        const { data: civilStatusType } = await getTypesIDbyName(supabase, 'civil_status_types', employee['civil_status_type.name'])
-        const { data: roomPlanType } = await getTypesIDbyName(supabase, 'room_plans', employee['room_plan_type.name'])
+        const genderTypeName = employee['gender_type.name']
+        const civilStatusTypeName = employee['civil_status_type.name']
+        const roomPlanTypeName = employee['room_plan_type.name']
+        let genderType = null
+        let civilStatusType = null
+        let roomPlanType = null
+        if (typeof genderTypeName === 'string') {
+          const { data} = await getTypesIDbyName(supabase, 'gender_types', genderTypeName)
+          genderType = data
+        }
+        if (typeof civilStatusTypeName === 'string') {
+          const { data} = await getTypesIDbyName(supabase, 'gender_types', civilStatusTypeName)
+          civilStatusType = data
+        }
+        if (typeof roomPlanTypeName === 'string') {
+          const { data} = await getTypesIDbyName(supabase, 'gender_types', roomPlanTypeName)
+          roomPlanType = data
+        }
 
         return {
           account_id: accountId,

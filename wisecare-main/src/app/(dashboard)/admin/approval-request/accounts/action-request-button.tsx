@@ -26,7 +26,7 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
     mutateAsync: upsertAccount,
     isError: isUpsertAccountError,
     isPending: isUpsertingAccount,
-  } = useUpsertMutation(supabase.from('accounts'), ['id'], null, {
+  } = useUpsertMutation(supabase.from('accounts') as any, ['id'], null, {
     onError: () => {
       toast({
         title: 'Error',
@@ -38,7 +38,7 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
   const {
     mutateAsync: updatePendingAccount,
     isPending: isUpdatingPendingAccount,
-  } = useUpdateMutation(supabase.from('pending_accounts'), ['id'], null, {
+  } = useUpdateMutation(supabase.from('pending_accounts') as any, ['id'], null, {
     onSuccess: () => {
       toast({
         title: `Request ${action === 'approve' ? 'approved' : 'rejected'}`,
