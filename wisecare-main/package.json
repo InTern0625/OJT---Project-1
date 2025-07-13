@@ -21,14 +21,13 @@
     "format": "prettier --write .",
     "format-check": "prettier --check .",
     "type-check": "tsc --pretty --noEmit",
-    "prepare": "husky install",
+    "prepare": "if [ -d .git ]; then husky install; else echo 'Skipping husky install'; fi",
     "test": "jest",
     "test:ci": "jest --ci",
     "analyze": "ANALYZE=true pnpm build",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "typegen": "pnpm dlx supabase gen types typescript --local > src/types/database.types.ts",
-    "postinstall": ""
+    "typegen": "pnpm dlx supabase gen types typescript --local > src/types/database.types.ts" 
   },
   "dependencies": {
     "@chakra-ui/icon": "^3.2.0",
