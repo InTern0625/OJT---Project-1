@@ -29,7 +29,7 @@ const EditPendingRequest: FC<EditPendingRequestProps> = ({
   const { toast } = useToast()
 
   const { mutateAsync, isPending } = useUpdateMutation(
-    supabase.from('pending_accounts'),
+    supabase.from('pending_accounts') as any,
     ['id'],
     null,
     {

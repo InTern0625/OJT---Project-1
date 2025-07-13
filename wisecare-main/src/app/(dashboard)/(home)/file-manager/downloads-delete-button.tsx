@@ -22,7 +22,7 @@ const DownloadsDeleteButton = () => {
   const { file, setIsSheetOpen, setFile } = useDownloadsContext()
 
   const { mutateAsync, isPending } = useUpdateMutation(
-    supabase.from('pending_export_requests'),
+    supabase.from('pending_export_requests') as any,
     ['id'],
     null,
     {

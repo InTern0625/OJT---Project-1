@@ -41,7 +41,7 @@ const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
   }, [accountData, statusTypes])
 
   const { mutateAsync, isPending } = useUpdateMutation(
-    supabase.from('accounts'),
+    supabase.from('accounts') as any,
     ['id'],
     null,
     {
