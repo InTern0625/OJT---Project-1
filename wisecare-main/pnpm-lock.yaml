@@ -208,7 +208,7 @@ importers:
         specifier: ^7.5.2
         version: 7.5.2
       tailwind-merge:
-        specifier: ^2.3.0
+        specifier: ^2.6.0
         version: 2.6.0
       undici:
         specifier: ^5.28.4

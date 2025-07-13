@@ -3,6 +3,7 @@
   "description": "A production ready Next.js/Supabase starter. ",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@8.15.4",
   "author": "Michael Troya <hi@michaeltroya.ca> (@michaeltroya)",
   "license": "MIT",
   "keywords": [
