@@ -180,7 +180,7 @@ const DataTable = <TData extends IData, TValue>({
                       className={`hover:bg-muted/50 cursor-pointer transition-colors ${isAccountLoading ? 'cursor-wait' : ''}`}
                       onClick={() => {
                         setIsAccountLoading(true)
-                        router.push(`/accounts-ifp/${row.original.id}`)
+                        router.push(`/accounts-corporate-sme/${row.original.id}`)
                       }}
                     >
                       {row.getVisibleCells().map((cell) => (

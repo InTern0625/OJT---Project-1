@@ -56,7 +56,6 @@ const getRenewalStatements = (supabase: TypedSupabaseClient) => {
         count: 'exact',
       },
     )
-    .eq('is_account_active', true)
     .order('expiration_date', { ascending: false })
     .throwOnError()
 }
