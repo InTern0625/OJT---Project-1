@@ -7,6 +7,8 @@ import {
   formatPercentage,
 } from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import { formatDate, isAfter, isBefore, addMonths } from 'date-fns'
+import { useState } from 'react'
+import { useSortingOrder } from '@/utils/custom-sorting'
 
 const getStatusFromExpirationDate = (expirationDate: string | null) => {
   const today = new Date()
@@ -44,7 +46,28 @@ type AccountWithJoins = Tables<'accounts'> & {
   dependent_plan_type?: { name: string | null }
 }
 
-const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
+export const RenewalStatementsColumns = () => {
+  const statusOrder = useSortingOrder("status_types")
+  
+  const [activeSortStatus, setActiveSortStatus] = useState<string | null>(null);
+  const statusSorter = (a: string, b: string) => {
+    // If clicking "Active", bring Active to top
+    if (activeSortStatus) {
+      if (a === activeSortStatus) return -1;
+      if (b === activeSortStatus) return 1;
+    }
+
+    // Fall back to default order
+    const indexA = statusOrder.indexOf(a);
+    const indexB = statusOrder.indexOf(b);
+    
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    
+    return indexA - indexB;
+  };
+
+  const columns: ColumnDef<Tables<'accounts'>>[] = [
   {
     id: 'status',
     header: ({ column }) => (
@@ -68,8 +91,18 @@ const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
     accessorKey: 'status_type.name',
     accessorFn: (originalRow) => (originalRow as any)?.status_type?.name ?? '',
     header: ({ column }) => (
-      <TableHeader column={column} title="Account Status" />
+      <TableHeader 
+        column={column} 
+        title="Account Status" 
+        customSortOrder={statusOrder}
+        onStatusClick={setActiveSortStatus}
+      />
     ),
+    sortingFn: (rowA, rowB, columnId) => {
+      const statusA = rowA.getValue(columnId) as string;
+      const statusB = rowB.getValue(columnId) as string;
+      return statusSorter(statusA, statusB);
+    },
   },
   { accessorKey: 'company_name', header: ({ column }) => <TableHeader column={column} title="Company Name" /> },
   { accessorKey: 'company_address', header: ({ column }) => <TableHeader column={column} title="Address" /> },
@@ -77,12 +110,12 @@ const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
   {
     accessorKey: 'hmo_providers.name',
     header: ({ column }) => <TableHeader column={column} title="HMO Provider" />,
-    cell: ({ row }) => row.original.hmo_provider?.name ?? '-',
+    cell: ({ row }) => (row.original as any).hmo_provider?.name ?? '-',
   },
   {
     accessorKey: 'account_types.name',
     header: ({ column }) => <TableHeader column={column} title="Account Type" />,
-    cell: ({ row }) => row.original.account_types?.name ?? '-',
+    cell: ({ row }) => (row.original as any).account_types?.name ?? '-',
   },
   {
     accessorKey: 'total_utilization',
@@ -130,7 +163,7 @@ const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
   {
     accessorKey: 'mode_of_payments.name',
     header: ({ column }) => <TableHeader column={column} title="Payment Mode" />,
-    cell: ({ row }) => row.original.mode_of_payments?.name ?? '-',
+    cell: ({ row }) => (row.original as any).mode_of_payments?.name ?? '-',
   },
   {
     accessorKey: 'wellness_lecture_date',
@@ -185,13 +218,15 @@ const renewalStatementsColumns: ColumnDef<AccountWithJoins>[] = [
   {
     accessorKey: 'principal_plan_type.name',
     header: ({ column }) => <TableHeader column={column} title="Principal Plan" />,
-    cell: ({ row }) => row.original.principal_plan_type?.name ?? '-',
+    cell: ({ row }) => (row.original as any).principal_plan_type?.name ?? '-',
   },
   {
     accessorKey: 'dependent_plan_type.name',
     header: ({ column }) => <TableHeader column={column} title="Dependent Plan" />,
-    cell: ({ row }) => row.original.dependent_plan_type?.name ?? '-',
+    cell: ({ row }) => (row.original as any).dependent_plan_type?.name ?? '-',
   },
-]
+  ]
+  return columns
+}
 
-export default renewalStatementsColumns
+export default RenewalStatementsColumns
