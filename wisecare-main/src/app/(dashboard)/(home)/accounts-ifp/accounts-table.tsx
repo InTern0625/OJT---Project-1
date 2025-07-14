@@ -20,9 +20,12 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
 
   const filteredData = (data || [])
     .filter(
-      (item: any) =>
-        item.program_type !== null
-    )
+      (item: any) =>{
+        const isBusiness = item.account_type !== null;
+        const isIFP = item.program_type !== null;
+
+        return (!isBusiness && isIFP) || (!isBusiness && !isIFP);
+    })
     .map((item: any) => ({
       ...item,
       account_type_id: item.account_type?.id ?? null,

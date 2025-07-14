@@ -10,12 +10,8 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
       accounts (
         id,
         company_name,
-        account_type:account_types (
-          name
-        ),
-        program_type:program_types(
-          name
-        )
+        account_type: account_types!account_type_id(name),
+        program_type: program_types!program_types_id(name)
       ),
     due_date,
     or_number,
@@ -39,8 +35,6 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
         count: 'exact',
       },
     )
-    .eq('is_active', true)
-    .eq('account.is_active', true)
     .order('created_at', { ascending: false })
     .throwOnError()
 }

@@ -14,13 +14,17 @@ const AccountsCount = () => {
   const countsByStatus = useMemo(() => {
     const result: Record<string, number> = {}
 
-    ;(count || []).forEach((item: any) => {
-      if (item.account_type !== null) {
-        const key = item.status_type?.name?.toLowerCase() || 'unknown'
-        result[key] = (result[key] || 0) + 1
-      }
-    })
+    ;(count || []).filter((item: any) => {
+      const isBusiness = item.account_type !== null
+      const isIFP = item.program_type !== null
 
+      // Include if: IFP only, or neither (exclude if business account)
+      return (isBusiness && !isIFP) || (!isBusiness && !isIFP)
+    })
+    .forEach((item: any) => {
+      const key = item.status_type?.name?.toLowerCase() || 'unknown'
+      result[key] = (result[key] || 0) + 1
+    })
     return result
   }, [count])
 

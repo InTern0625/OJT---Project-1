@@ -13,9 +13,12 @@ const PendingTable = () => {
   if (isLoading) return null
   const filteredData = (data || [])
     .filter(
-      (item: any) =>
-        item.accounts.account_type !== null
-    )
+      (item: any) =>{
+        const isBusiness = item.accounts.account_type !== null;
+        const isIFP = item.accounts.program_type !== null;
+
+        return (isBusiness && !isIFP) || (!isBusiness && !isIFP);
+    })
     .map((item: any) => ({
       ...item,
       account_type_id: item.account_type?.id ?? null,

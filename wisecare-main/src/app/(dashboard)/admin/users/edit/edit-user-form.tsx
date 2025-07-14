@@ -85,7 +85,19 @@ const EditUserForm: FC<Props> = ({
       }),
     })
 
-    const data = await res.json()
+    let data
+    try {
+      data = await res.json()
+    } catch (err) {
+      // server returned no JSON
+      data = {}
+    }
+
+    if (!res.ok) {
+      setError(data?.error || 'Something went wrong')
+      setIsLoading(false)
+      return
+    }
 
     if (data.error) {
       setError(data.error)

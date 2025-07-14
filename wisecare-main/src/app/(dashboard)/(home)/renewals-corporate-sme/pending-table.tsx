@@ -17,12 +17,11 @@ const PendingTable = () => {
   .filter((item: any) => {
     const accountType = item.account_types?.name?.toUpperCase()
     const expiration = item.expiration_date ? new Date(item.expiration_date) : null
+    const isBusiness = item.account_types !== null
+    const isIFP = item.program_type !== null
 
-    const isTypeValid = accountType
-      ? (accountType !== null)
-      : false
     const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return isTypeValid && isExpirationValid
+    return ((isBusiness && !isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
   })
   .map((item: any) => ({
     ...item,
