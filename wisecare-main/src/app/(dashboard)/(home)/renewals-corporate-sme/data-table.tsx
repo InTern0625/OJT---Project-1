@@ -179,8 +179,11 @@ const DataTable = <TData extends IData, TValue>({
                       data-state={row.getIsSelected() && 'selected'}
                       className={`hover:bg-muted/50 cursor-pointer transition-colors ${isAccountLoading ? 'cursor-wait' : ''}`}
                       onClick={() => {
-                        setIsAccountLoading(true)
-                        router.push(`/accounts-corporate-sme/${row.original.id}`)
+                          setIsAccountLoading(true)
+                          const currentPage = table.getState().pagination.pageIndex
+                          const pageSize = table.getState().pagination.pageSize
+                          router.push(
+  `/renewals-corporate-sme/${row.original.id}?fromPage=${currentPage}&pageSize=${pageSize}&fromPath=/renewals-corporate-sme`)
                       }}
                     >
                       {row.getVisibleCells().map((cell) => (
