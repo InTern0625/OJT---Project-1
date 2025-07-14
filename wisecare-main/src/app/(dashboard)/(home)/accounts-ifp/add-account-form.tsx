@@ -32,6 +32,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
+      is_active: true,
       status_id: defaultStatusID,
       agent_id: undefined,
       company_name: '',
@@ -196,6 +197,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           .filter(Boolean)
         await mutateAsync([
           {
+            is_active: true,
             status_id: data.status_id,
             company_name: data.company_name,
             agent_id: data.agent_id,
