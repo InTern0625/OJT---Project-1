@@ -18,10 +18,12 @@ import DeletePendingExportRequests from '@/app/(dashboard)/(home)/accounts-corpo
 import getAccounts from '@/queries/get-accounts'
 import { createBrowserClient } from '@/utils/supabase-client'
 
+
 interface ExportAccountsModalProps {
   exportData: Enums<'export_type'>
   exportType?: string
 }
+
 
 const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -53,7 +55,6 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       },
     },
   )
-
   const handleApproval = useCallback(async () => {
     const {
       data: { user },
@@ -74,10 +75,12 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
     }
   }, [exportData, supabase])
 
+
   const handleConfirm = async () => {
     const {
       data: { user },
     } = await supabase.auth.getUser()
+
 
     if (!oldAccountsData || oldAccountsData.length === 0) {
       toast({
@@ -88,8 +91,41 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       })
       return
     }
-    const accountsData = oldAccountsData.map((account) => {
+    const accountsData = oldAccountsData
+    .filter((account) =>{
+      if (exportType == "renewals"){
+        const now = new Date()
+        const threeMonthsLater = new Date()
+        threeMonthsLater.setMonth(now.getMonth() + 3)
+        const isBusiness = account.account_type !== null;
+        const isIFP = account.program_type !== null;
+
+
+        const validAccount = (isBusiness && !isIFP) || (!isBusiness && !isIFP);
+
+
+        const expiration = account.expiration_date ? new Date(account.expiration_date) : null
+       
+        const isExpirationValid = expiration !== null && expiration <= threeMonthsLater
+
+
+        return validAccount && isExpirationValid
+
+
+      }else if (exportType == "accounts"){
+        const isBusiness = account.account_type !== null;
+        const isIFP = account.program_type !== null;
+
+
+        const validAccount = (isBusiness && !isIFP) || (!isBusiness && !isIFP);
+        return validAccount
+      }else{
+        return account
+      }
+    })
+    .map((account) => {
       const { id, created_at, updated_at, is_account_active, ...rest } = account
+
 
       return {
         Agent: account.agent
@@ -144,8 +180,10 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
         'Summary of Benefits': account.summary_of_benefits || '',
         'Account Type': account.account_type ? `${account.account_type.name}`: '',
 
+
       }
     })
+    
     await mutateAsync([
       {
         export_type: exportData,
@@ -154,6 +192,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
       },
     ])
   }
+
 
   return (
     <>
@@ -197,4 +236,8 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
   )
 }
 
+
 export default ExportAccountsModal
+
+
+

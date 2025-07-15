@@ -1,5 +1,6 @@
 'use client'
 
+
 import AccountsCount from '@/app/(dashboard)/(home)/accounts-ifp/accounts-count'
 import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-requests'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
@@ -39,9 +40,11 @@ import AccountsProvider from './accounts-provider'
 import AddAccountButton from './add-account-button'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 
+
 interface IData {
   id: string
 }
+
 
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -49,6 +52,7 @@ interface DataTableProps<TData extends IData, TValue> {
   initialPageIndex?: number
   initialPageSize?: number
 }
+
 
 const DataTable = <TData extends IData, TValue>({
   columns,
@@ -67,6 +71,7 @@ const DataTable = <TData extends IData, TValue>({
     getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
 
+
   // get column sorting
   const { data: columnSortingData } = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
@@ -79,6 +84,7 @@ const DataTable = <TData extends IData, TValue>({
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [isAccountLoading, setIsAccountLoading] = useState(false)
+
 
   const table = useReactTable({
     data,
@@ -104,8 +110,11 @@ const DataTable = <TData extends IData, TValue>({
   })
 
 
+
+
   useEffect(() => {
     if (!user?.id) return
+
 
     upsertAccIFPColumnVisibility([
       {
@@ -115,9 +124,10 @@ const DataTable = <TData extends IData, TValue>({
     ])
   }, [columnVisibility, supabase, toast, upsertAccIFPColumnVisibility, user?.id])
 
+
   useEffect(() => {
     if (!user?.id) return
-    
+   
     upsertAccIFPColumnSorting([
       {
         user_id: user.id,
@@ -125,6 +135,8 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
+
+
 
 
   return (
@@ -139,7 +151,7 @@ const DataTable = <TData extends IData, TValue>({
             <div className="flex flex-row gap-4">
               <TableSearch table={table} />
               <AddAccountButton />
-              <ExportAccountsModal exportData={'accounts'} />
+              <ExportAccountsModal exportData={'accounts'} exportType='accounts'/>
             </div>
           </div>
         </PageHeader>
@@ -217,4 +229,8 @@ const DataTable = <TData extends IData, TValue>({
   )
 }
 
+
 export default DataTable
+
+
+
