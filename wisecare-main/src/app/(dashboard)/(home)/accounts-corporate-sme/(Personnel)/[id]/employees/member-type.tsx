@@ -30,7 +30,6 @@ const MemberType = ({ companyId }: { companyId: string }) => {
       ),
     [data],
   )
-
   return (
     <div className="hidden grid-cols-2 gap-2 lg:grid">
       <div className="mb-4 w-24 rounded-lg p-3">

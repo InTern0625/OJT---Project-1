@@ -197,6 +197,10 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
 
         await mutateAsync([
           {
+            gender_types_id: null,
+            civil_status_id: null,
+            room_plan_id: null,
+            program_types_id: null,
             is_active: true,
             status_id: data.status_id,
             company_name: data.company_name,

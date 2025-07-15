@@ -165,16 +165,12 @@ const FileInput = ({
     updatedFiles.splice(index, 1)
     form.setValue(name, updatedFiles)
 
-    const { error } = await supabase.storage.from('accounts').remove([filePath])
-    if (error) {
-      console.error('Error deleting file:', error)
-      return
-    }
+
 
     const updatedUrls = [...existingFileUrls]
     updatedUrls.splice(index, 1)
     setExistingFileUrls(updatedUrls)
-  }, [form, name, existingFiles, existingFileUrls, supabase])
+  }, [form, name, existingFiles, existingFileUrls])
 
   const extractFileName = (url: string) => {
     const match = url.match(/-([^-\/?]+)(\?.*)?$/)

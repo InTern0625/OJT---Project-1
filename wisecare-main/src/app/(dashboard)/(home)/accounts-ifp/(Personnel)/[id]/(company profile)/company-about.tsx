@@ -52,6 +52,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
+      is_active: true,
       status_id: account?.status_type
         ? (account.status_type as any).id
         : defaultStatusID,
@@ -157,7 +158,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
-
         setIsSubmitting (true)
         const {
           data: { user },

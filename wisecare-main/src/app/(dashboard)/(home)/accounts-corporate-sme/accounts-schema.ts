@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 const accountsSchema = z.object({
-  is_active: z.union([z.boolean(), z.string()]),
+  is_active: z.union([z.boolean(), z.string()]).optional(),
   status_id: z.string().uuid().optional(),
   agent_id: z.string().uuid().optional(),
   company_name: z.string().min(1).max(255),
@@ -51,6 +51,6 @@ const accountsSchema = z.object({
   is_editing: z.string().max(1000).optional(),
   editing_user: z.string().uuid().optional(),
   editing_timestampz: z.date().optional(),
-})
+}).passthrough()
 
 export default accountsSchema

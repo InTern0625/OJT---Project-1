@@ -217,7 +217,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
-      
       form.handleSubmit(async (data) => {
         setIsSubmitting (true)
         const {
