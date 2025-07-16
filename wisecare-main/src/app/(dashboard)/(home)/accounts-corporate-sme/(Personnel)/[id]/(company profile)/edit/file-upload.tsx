@@ -161,16 +161,40 @@ const FileInput = ({
   }, [files, form, name, maxFiles])
 
   const handleRemoveExisting = useCallback(async (index: number, filePath: string) => {
-    const updatedFiles = [...existingFiles]
-    updatedFiles.splice(index, 1)
-    form.setValue(name, updatedFiles)
+    try {
+      // Remove from storage causing storage error
+      //const { error: deleteError } = await supabase.storage
+      //  .from('accounts')
+       // .remove([filePath]);
+      
+      //if (deleteError) throw deleteError;
 
+      // Update the database
+      const updatedFiles = [...existingFiles];
+      updatedFiles.splice(index, 1);
+      
+      const { error: updateError } = await supabase
+        .from('accounts')
+        .update({ [name]: updatedFiles })
+        .eq('id', id);
+      
+      if (updateError) throw updateError;
 
-
-    const updatedUrls = [...existingFileUrls]
-    updatedUrls.splice(index, 1)
-    setExistingFileUrls(updatedUrls)
-  }, [form, name, existingFiles, existingFileUrls])
+      // Update local state
+      const updatedUrls = [...existingFileUrls];
+      updatedUrls.splice(index, 1);
+      setExistingFileUrls(updatedUrls);
+      
+      // Update form value
+      form.setValue(name, updatedFiles);
+      
+      return true; 
+      
+    } catch (error) {
+      console.error('Error deleting file:', error);
+      return false; 
+    }
+  }, [existingFiles, existingFileUrls, form, name, supabase, id]);
 
   const extractFileName = (url: string) => {
     const match = url.match(/-([^-\/?]+)(\?.*)?$/)
