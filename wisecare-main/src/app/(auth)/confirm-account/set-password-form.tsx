@@ -97,7 +97,7 @@ const SetPasswordForm = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>New Password</FormLabel>
                 <FormControl>
                   <Input {...field} disabled={isLoading} type="password" />
                 </FormControl>

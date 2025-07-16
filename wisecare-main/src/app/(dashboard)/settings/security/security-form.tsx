@@ -26,11 +26,11 @@ const formFields: {
   name: keyof SecuritySchema
 }[] = [
   {
-    label: 'Password',
+    label: 'New Password',
     name: 'password',
   },
   {
-    label: 'Confirm Password',
+    label: 'Confirm New Password',
     name: 'confirmPassword',
   },
 ]
