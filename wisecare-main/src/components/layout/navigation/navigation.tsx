@@ -58,7 +58,7 @@ const Navigation = async () => {
             />
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin'].includes(role) && (
+              role && ['finance', 'admin', 'under-writing'].includes(role) && (
                 <NavigationItem
                   title="Billing Statements"
                   href="/billing-statements-corporate-sme"
@@ -68,7 +68,7 @@ const Navigation = async () => {
             }
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'after-sales', 'marketing'].includes(role) && (
+              role && ['admin', 'after-sales', 'marketing'].includes(role) && (
                 <NavigationItem
                   title="Pending Renewals"
                   href="/renewals-corporate-sme"
@@ -90,7 +90,7 @@ const Navigation = async () => {
             />
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin'].includes(role) && (
+              role && ['finance', 'admin', 'under-writing'].includes(role) && (
                 <NavigationItem
                   title="Billing Statements"
                   href="/billing-statements-ifp"
@@ -100,7 +100,7 @@ const Navigation = async () => {
             }
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'after-sales', 'marketing'].includes(role) && (
+              role && ['admin', 'after-sales', 'marketing'].includes(role) && (
                 <NavigationItem
                   title="Pending Renewals"
                   href="/renewals-ifp"
@@ -111,18 +111,23 @@ const Navigation = async () => {
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
-      <SidebarGroup>
-        <SidebarGroupLabel>File Manager</SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <NavigationItem
-              title="Download Files"
-              href="/file-manager"
-              icon={<LucideDownload className="h-6 w-6" />}
-            />
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
+      {
+        role && ['admin'].includes(role) && (
+          <SidebarGroup>
+            <SidebarGroupLabel>File Manager</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <NavigationItem
+                  title="Download Files"
+                  href="/file-manager"
+                  icon={<LucideDownload className="h-6 w-6" />}
+                />
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )
+      }
+      
     </>
   )
 }

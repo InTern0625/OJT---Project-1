@@ -150,7 +150,7 @@ const DataTable = <TData extends IData, TValue>({
             </div>
             <div className="flex flex-row gap-4">
               <TableSearch table={table} />
-              <AddAccountButton />
+              {['marketing', 'after-sales', 'admin'].includes(user?.user_metadata?.department) && <AddAccountButton />}
               <ExportAccountsModal exportData={'accounts'} exportType='accounts'/>
             </div>
           </div>

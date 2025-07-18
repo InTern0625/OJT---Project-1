@@ -30,7 +30,7 @@ const CompanyAboutPage = async (props: { params: Promise<{ id: string }> }) => {
           </div>
           <div className="flex flex-row gap-2 items-center">
           <SelectCompanyActive accountId={accountId} role={role} />
-          <CompanyEditButton role={role} accountId={accountId} />
+          {['marketing', 'after-sales', 'admin'].includes(role || '') && <CompanyEditButton role={role} accountId={accountId} />}
           </div>
         </div>
         <CompanyAbout companyId={accountId} />

@@ -1,6 +1,7 @@
 import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-ifp/billing-provider'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { ColumnDef, Table, flexRender } from '@tanstack/react-table'
+import { useUserServer } from '@/providers/UserProvider'
 
 interface TableRowProps<TData> {
   table: Table<TData>
@@ -14,7 +15,8 @@ const DataTableRow = <TData,>({ table, columns }: TableRowProps<TData>) => {
     setOriginalData(originalData)
     setIsEditModalOpen(true)
   }
-
+  const { user } = useUserServer()
+  const department = user?.user_metadata?.department
   return (
     <>
       {table.getRowModel().rows?.length ? (
@@ -22,7 +24,11 @@ const DataTableRow = <TData,>({ table, columns }: TableRowProps<TData>) => {
           <TableRow
             key={row.id}
             className="hover:bg-muted! cursor-pointer"
-            onClick={() => handleOnClick(row.original)}
+            onClick={() => {
+              if (department === 'admin' || department === 'under-writing') {
+                handleOnClick(row.original)
+              }
+            }}
           >
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id}>

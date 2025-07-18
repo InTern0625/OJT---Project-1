@@ -25,7 +25,7 @@ const RenewalStatementsPage = async () => {
   const queryClient = new QueryClient()
   await prefetchQuery(queryClient, getRenewalStatements(supabase))
 
-  await pageProtect(['finance', 'admin', 'after-sales', 'marketing'])
+  await pageProtect(['admin', 'after-sales', 'marketing'])
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
