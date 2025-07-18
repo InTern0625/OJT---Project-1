@@ -35,6 +35,7 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
         count: 'exact',
       },
     )
+    .eq('is_active', true)
     .order('created_at', { ascending: false })
     .throwOnError()
 }

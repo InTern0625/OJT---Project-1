@@ -68,7 +68,7 @@ const Navigation = async () => {
             }
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'after-sales'].includes(role) && (
+              role && ['finance', 'admin', 'after-sales', 'marketing'].includes(role) && (
                 <NavigationItem
                   title="Pending Renewals"
                   href="/renewals-corporate-sme"
@@ -100,7 +100,7 @@ const Navigation = async () => {
             }
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'after-sales'].includes(role) && (
+              role && ['finance', 'admin', 'after-sales', 'marketing'].includes(role) && (
                 <NavigationItem
                   title="Pending Renewals"
                   href="/renewals-ifp"
