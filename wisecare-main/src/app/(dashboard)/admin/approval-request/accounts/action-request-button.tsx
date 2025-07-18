@@ -80,6 +80,7 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
         {
           ...(selectedData.account_id && { id: selectedData.account_id }),
           company_name: selectedData.company_name,
+          is_account_active: !(selectedData.is_delete_account),
           status_id: selectedData.is_delete_account ? InactiveID?.id : ActiveID?.id, // if delete account is true, then is_active is false
           agent_id: (selectedData as any).agent?.user_id,
           company_address: selectedData.company_address,

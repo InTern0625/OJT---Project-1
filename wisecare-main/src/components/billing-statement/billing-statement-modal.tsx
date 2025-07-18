@@ -112,11 +112,21 @@ const BillingStatementModal = <TData,>({
   let accounts = unFilteredAccounts
   if (accountType == "Business"){
     accounts = unFilteredAccounts?.filter(
-      (acc) => acc.account_type !== null
+      (acc) => {
+        const isBusiness = acc.account_type !== null;
+        const isIFP = acc.program_type !== null;
+
+        return (isBusiness && !isIFP) || (!isBusiness && !isIFP);
+      }
     )
   }else if(accountType == "IFP"){
     accounts = unFilteredAccounts?.filter(
-      (acc) => acc.program_type !== null
+      (acc) => {
+        const isBusiness = acc.account_type !== null;
+        const isIFP = acc.program_type !== null;
+
+        return (!isBusiness && isIFP) || (!isBusiness && !isIFP);
+      }
     )
   }else{
     accounts = unFilteredAccounts
