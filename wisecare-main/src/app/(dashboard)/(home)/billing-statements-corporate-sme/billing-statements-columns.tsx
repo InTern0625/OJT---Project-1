@@ -32,7 +32,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
     },
 
     accessorFn: (originalRow) =>
-      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
+      originalRow.due_date ? new Date(originalRow.due_date) : null,
   },
   {
     accessorKey: 'due_date',
