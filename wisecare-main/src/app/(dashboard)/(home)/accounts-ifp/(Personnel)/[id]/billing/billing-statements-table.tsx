@@ -26,11 +26,12 @@ import {
 } from '@tanstack/react-table'
 import { useState } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { useRouter } from 'next/navigation'
 
 const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
   const supabase = createBrowserClient()
   const { data } = useQuery(getBillingStatementByCompanyId(supabase, companyId))
-
+  const router = useRouter()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState<any>('')
@@ -87,7 +88,13 @@ const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell, index) => (
-                    <TableCell key={cell.id}>
+                    <TableCell 
+                      key={cell.id}
+                      onClick={() => {
+                        if(index === 0) return
+                        router.push(`/accounts-ifp/${companyId}/billing/${row.original.id}`);
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),

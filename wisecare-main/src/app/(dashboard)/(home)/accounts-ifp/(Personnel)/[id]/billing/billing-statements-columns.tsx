@@ -37,12 +37,12 @@ const BillingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'or_number',
-    header: ({ column }) => <TableHeader column={column} title="OR Number" />,
+    accessorKey: 'billing_date',
+    header: ({ column }) => <TableHeader column={column} title="Billing Date" />,
     cell: ({ row }) => (
-      <span className="capitalize">{row.original.or_number}</span>
+      <span className="capitalize">{row.original.billing_date}</span>
     ),
-    accessorFn: (originalRow) => (originalRow as any)?.or_number ?? '',
+    accessorFn: (originalRow) => (originalRow as any)?.billing_date ?? '',
   },
   {
     accessorKey: 'sa_number',
@@ -65,6 +65,78 @@ const BillingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
     accessorFn: (originalRow) => (originalRow as any)?.amount_billed ?? '',
   },
   {
+    accessorKey: 'due_date',
+    header: ({ column }) => <TableHeader column={column} title="Due Date" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.due_date}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.due_date ?? '',
+  },
+  {
+    accessorKey: 'billing_start',
+    header: ({ column }) => <TableHeader column={column} title="Billing Start" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.billing_start}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.billing_start ?? '',
+  },
+  {
+    accessorKey: 'billing_end',
+    header: ({ column }) => <TableHeader column={column} title="Billing End" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.billing_end}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.billing_end ?? '',
+  },
+  {
+    accessorKey: 'mode_of_payments.name',
+    header: ({ column }) => <TableHeader column={column} title="Mode of Payments" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{(row as any).original.mode_of_payments?.name ?? ''}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.mode_of_payments?.name ?? '',
+  },
+  {
+    accessorKey: 'or_date',
+    header: ({ column }) => <TableHeader column={column} title="OR Date" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.or_date}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.or_date ?? '',
+  },
+  {
+    accessorKey: 'or_number',
+    header: ({ column }) => <TableHeader column={column} title="OR Number" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{row.original.or_number}</span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.or_number ?? '',
+  },  
+  {
+    accessorKey: 'amount_paid',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Amount Paid" />
+    ),
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {formatCurrency(row.original.amount_paid)}
+      </span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.amount_paid ?? '',
+  },
+  {
+    accessorKey: 'balance',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Balance" />
+    ),
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {formatCurrency(row.original.balance)}
+      </span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.balance ?? '',
+  },
+  {
     accessorKey: 'commission_earned',
     header: ({ column }) => (
       <TableHeader column={column} title="Commission Earned" />
@@ -75,6 +147,30 @@ const BillingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       </span>
     ),
     accessorFn: (originalRow) => (originalRow as any)?.commission_earned ?? '',
+  },
+  {
+    accessorKey: 'commission_rate',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Commission Rate" />
+    ),
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {row.original.commission_rate}
+      </span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.commission_rate ?? '',
+  },
+  {
+    accessorKey: 'total_contract_value',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Total Contract Value" />
+    ),
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {formatCurrency(row.original.total_contract_value)}
+      </span>
+    ),
+    accessorFn: (originalRow) => (originalRow as any)?.total_contract_value ?? '',
   },
   {
     id: 'actions',

@@ -8,9 +8,10 @@ const TotalSelected = ({ table }: { table: Table<any> }) => {
       return {
         amount: acc.amount + row.original.amount_billed,
         commission: acc.commission + row.original.commission_earned,
+        paid: acc.paid + row.original.amount_paid,
       }
     },
-    { amount: 0, commission: 0 },
+    { amount: 0, commission: 0, paid: 0 },
   )
 
   // if no rows are selected, return null
@@ -26,6 +27,13 @@ const TotalSelected = ({ table }: { table: Table<any> }) => {
             <h2 className="text-base font-semibold">Total Amount Billed</h2>
             <p className="mt-1 text-xl font-bold">
               {formatCurrency(totals.amount)}
+            </p>
+          </div>
+          <div className="bg-primary-foreground/20 h-px w-full sm:h-12 sm:w-px" />
+          <div className="flex flex-col items-center sm:items-start">
+            <h2 className="text-base font-semibold">Total Amount Paid</h2>
+            <p className="mt-1 text-xl font-bold">
+              {formatCurrency(totals.paid)}
             </p>
           </div>
           <div className="bg-primary-foreground/20 h-px w-full sm:h-12 sm:w-px" />

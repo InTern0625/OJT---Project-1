@@ -495,7 +495,8 @@ export type Database = {
           or_number: string | null
           sa_number: string | null
           total_contract_value: number | null
-          updated_at: string
+          updated_at: string | null
+          billing_date: string | null
         }
         Insert: {
           account_id?: string | null
@@ -516,7 +517,8 @@ export type Database = {
           or_number?: string | null
           sa_number?: string | null
           total_contract_value?: number | null
-          updated_at?: string
+          updated_at?: string | null
+          billing_date: string | null
         }
         Update: {
           account_id?: string | null
@@ -537,7 +539,8 @@ export type Database = {
           or_number?: string | null
           sa_number?: string | null
           total_contract_value?: number | null
-          updated_at?: string
+          updated_at?: string | null
+          billing_date?: string | null
         }
         Relationships: [
           {
