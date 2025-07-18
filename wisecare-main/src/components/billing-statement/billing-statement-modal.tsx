@@ -9,6 +9,17 @@ import percentageOptions from '@/components/maskito/percentage-options'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/ui/command"
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -52,11 +63,12 @@ import {
   useUpsertMutation,
 } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
-import { CalendarIcon, Loader2 } from 'lucide-react'
+import { CalendarIcon, Loader2, ChevronsUpDown, Check} from 'lucide-react'
 import { FormEventHandler, ReactNode, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface Props<TData> {
   originalData?: TData & Tables<'billing_statements'>
@@ -119,7 +131,7 @@ const BillingStatementModal = <TData,>({
       (acc) => acc.program_type !== null
     )
   }else{
-    accounts = unFilteredAccounts
+    accounts = unFilteredAccounts 
   }
   const { mutateAsync, isPending } = useUpsertMutation(
     // @ts-ignore
@@ -201,6 +213,7 @@ const BillingStatementModal = <TData,>({
   //     })
   //   }
   // }, [CompanyContext, form])
+  const [openCommand, setOpenCommand] = useState(false)
 
   const maskedTotalContractValueRef = useMaskito({ options: currencyOptions })
   const maskedBalanceRef = useMaskito({ options: currencyOptions })
@@ -226,36 +239,58 @@ const BillingStatementModal = <TData,>({
         <Form {...form}>
           <form onSubmit={onSubmitHandler} key={tableRerender}>
             <div className="grid grid-cols-2 gap-4 py-4">
-              <FormField
-                control={form.control}
-                name="account_id"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-                    <FormLabel className="text-right">Account</FormLabel>
-                    <FormControl className="col-span-3">
-                      <Select
-                        {...field}
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                        disabled={isPending}
-                      >
-                        <SelectTrigger className="col-span-3">
-                          <SelectValue placeholder="Select Account" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {accounts &&
-                            accounts?.map((item) => (
-                              <SelectItem key={item.id} value={item.id}>
-                                {item.company_name}
-                              </SelectItem>
-                            ))}
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage className="col-span-3 col-start-2" />
-                  </FormItem>
-                )}
-              />
+              {accounts ? (
+                <FormField
+                  control={form.control}
+                  name="account_id"
+                  render={({ field }) => (
+                    <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+                      <FormLabel className="text-right">Account</FormLabel>
+                      <FormControl className="col-span-3">
+                        <Popover open={openCommand} onOpenChange={setOpenCommand}>
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={openCommand}
+                              className="col-span-3 rounded-sm justify-between"
+                            >
+                              {accounts.find((item) => item.id === field.value)?.company_name ??
+                                "Select Company..."}
+                              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-[500px] p-0">
+                            <Command>
+                              <CommandInput placeholder="Search Company..." />
+                              <CommandList>
+                                <CommandEmpty>No Companies.</CommandEmpty>
+                                <CommandGroup>
+                                  {accounts.map((item) => (
+                                    <CommandItem
+                                      key={item.id}
+                                      value={item.company_name}
+                                      onSelect={() => {
+                                        field.onChange(item.id) 
+                                        setOpenCommand(false)
+                                      }}
+                                    >
+                                      {item.company_name}
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormMessage className="col-span-3 col-start-2" />
+                    </FormItem>
+                  )}
+                />
+              ) : (
+                <Skeleton className="h-10 w-[200px] col-span-3 col-start-2" />
+              )}
               <FormField
                 control={form.control}
                 name="mode_of_payment_id"
