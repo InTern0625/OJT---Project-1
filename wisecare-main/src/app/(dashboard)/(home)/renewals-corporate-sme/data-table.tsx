@@ -28,13 +28,14 @@ import {
 import { Suspense, useState, useEffect } from 'react'
 import TableViewOptions from '@/components/table-view-options'
 import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
-import TableSearch from '@/components/table-search'
+import TableSearch from '@/components/table-search-accounts'
 import { Skeleton } from '@/components/ui/skeleton'
 import getRenewalStatements from '@/queries/get-renewal-statements'
 import { Tables } from '@/types/database.types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTableRow from './data-table-row'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { fuzzyStartsWith } from '@/utils/filter-agent-company'
 import getAccountsColumnVisibilityByUserId from '@/queries/get-accounts-column-visibility-by-user-id'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-corporate-sme/mutations/column-states'
@@ -51,12 +52,15 @@ interface IData {
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  searchMode: 'Company' | 'Agent'
+  setSearchMode: (mode: 'Company' | 'Agent') => void
 }
 
 const DataTable = <TData extends IData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) => {
+  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const supabase = createBrowserClient()
   const router = useRouter()
   const { toast } = useToast()
@@ -90,6 +94,7 @@ const DataTable = <TData extends IData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
       sorting,
       columnVisibility,
@@ -141,7 +146,7 @@ const DataTable = <TData extends IData, TValue>({
               <PageDescription>{upcomingCount} Upcoming Statements | {overdueCount} Overdue Statements </PageDescription>
           </div>
           <div className="flex flex-row gap-4">
-            <TableSearch table={table} />
+            <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
             <ExportAccountsModal exportData={'accounts'} exportType ='renewals'/>
           </div>
         </div>

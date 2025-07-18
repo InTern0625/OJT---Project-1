@@ -35,6 +35,8 @@ import { Tables } from '@/types/database.types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTableRow from './data-table-row'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { useUserServer } from '@/providers/UserProvider'
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -70,6 +72,8 @@ const DataTable = <TData, TValue>({
   const { isEditModalOpen, setIsEditModalOpen, originalData } =
     useBillingContext()
   const totalCount = table.getFilteredRowModel().rows.length
+
+  const { user } = useUserServer()
   return (
     <div className="flex flex-col">
       <PageHeader>
@@ -84,7 +88,7 @@ const DataTable = <TData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} />
-            <AddBillingStatementButton />
+            {['admin', 'under-writing'].includes(user?.user_metadata?.department) && <AddBillingStatementButton />}
           </div>
         </div>
       </PageHeader>

@@ -17,17 +17,34 @@ import {
   useQuery,
   useUpdateMutation,
 } from '@supabase-cache-helpers/postgrest-react-query'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getTypes from '@/queries/get-types'
+import accountsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema'
+import { useFormContext, useForm, FormProvider } from 'react-hook-form'
+import { z } from 'zod'
+import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-provider'
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Form } from '@/components/ui/form'
 
-const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
+const SelectCompanyActive = ({ accountId, role }: { accountId: string, role?: string | null }) => {
   const supabase = createBrowserClient()
   const { toast } = useToast()
+  const { editMode, setEditMode, statusId, setStatusId } = useCompanyEditContext()
+
+  const form = useForm<z.infer<typeof accountsSchema>>({
+    defaultValues: { status_id: undefined },
+  })
 
   const { data: statusTypes } = useQuery(getTypes(supabase, 'status_types'))
   const [getStatusTypes, setStatusTypes] = useState<string>('')
-
+  
   const { data: accountData } = useQuery(
     supabase.from('accounts').select('status_id').eq('id', accountId)
   )
@@ -40,7 +57,7 @@ const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
     }
   }, [accountData, statusTypes])
 
-  const { mutateAsync, isPending } = useUpdateMutation(
+  const { mutateAsync: updateAccountStatus, isPending } = useUpdateMutation(
     supabase.from('accounts') as any,
     ['id'],
     null,
@@ -49,7 +66,7 @@ const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
         toast({
           variant: 'default',
           title: 'Account status updated!',
-          description: 'Successfully updated account  status',
+          description: 'Successfully updated account status',
         })
       },
       onError: (err: any) => {
@@ -61,34 +78,67 @@ const SelectCompanyActive = ({ accountId }: { accountId: string }) => {
       },
     }
   )
+  const handleStatusChange = useCallback(
+    async (newStatusId: string) => {
+      setStatusTypes(newStatusId)
+      if (role === 'admin') {
+        if (newStatusId !== ""){
+          await updateAccountStatus({ id: accountId, status_id: newStatusId ?? undefined })
+        }
+      } else {
+        setStatusId(newStatusId)
+      }
+    },
+    [role, accountId, updateAccountStatus, setStatusId] 
+  )
+
 
   return (
-    <Tooltip>
-      <TooltipTrigger asChild>
-        <div className="w-48">
-          <Select
-            value={getStatusTypes}
-            onValueChange={async (newStatusId) => {
-              setStatusTypes(newStatusId)
-              await mutateAsync({ id: accountId, status_id: newStatusId })
-            }}
-            disabled={isPending}
-          >
-            <SelectTrigger className="w-full bg-white/60 rounded-full focus:outline-none focus:ring-0 shadow-none">
-              <SelectValue placeholder="Select status" />
-            </SelectTrigger>
-            <SelectContent>
-              {statusTypes?.map((type: { id: string; name: string }) => (
-                <SelectItem key={type.id} value={type.id}>
-                  {type.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-      </TooltipTrigger>
-      <TooltipContent>Select account status</TooltipContent>
-    </Tooltip>
+    <>
+      {(role === 'admin' || editMode) && (
+        <Form {...form}>
+        <form>
+        <FormField
+          control={form.control}
+          name="status_id"
+          render={({ field }) => (
+            <FormItem>
+              <div className="w-48">
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Select
+                        value={getStatusTypes}            
+                        onValueChange={handleStatusChange}
+                        disabled={isPending}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="w-full bg-white/60 rounded-full focus:outline-none focus:ring-0 shadow-none">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                        </FormControl>
+
+                        <SelectContent>
+                          {statusTypes?.map((type: { id: string; name: string }) => (
+                            <SelectItem key={type.id} value={type.id}>
+                              {type.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </TooltipTrigger>
+
+                    <TooltipContent>Select account status</TooltipContent>
+                  </Tooltip>
+              </div>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        </form>
+        </Form>
+      )}
+    </>
   )
 }
 

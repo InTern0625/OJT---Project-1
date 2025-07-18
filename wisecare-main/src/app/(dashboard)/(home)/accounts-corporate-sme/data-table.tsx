@@ -7,7 +7,7 @@ import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-corporate-sme
 import AccountRequest from '@/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request'
 import { PageHeader, PageTitle } from '@/components/page-header'
 import TablePagination from '@/components/table-pagination'
-import TableSearch from '@/components/table-search'
+import TableSearch from '@/components/table-search-accounts'
 import TableViewOptions from '@/components/table-view-options'
 import {
   Table,
@@ -33,22 +33,28 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
+import { fuzzyStartsWith } from '@/utils/filter-agent-company'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import AccountsProvider from './accounts-provider'
 import AddAccountButton from './add-account-button'
+import { Row } from '@tanstack/react-table'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 
 interface IData {
   id: string
 }
 
+
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   initialPageIndex?: number
   initialPageSize?: number
+  searchMode: 'Company' | 'Agent'
+  setSearchMode: (mode: 'Company' | 'Agent') => void
 }
+
 
 const DataTable = <TData extends IData, TValue>({
   columns,
@@ -56,6 +62,7 @@ const DataTable = <TData extends IData, TValue>({
   initialPageIndex = 0,
   initialPageSize = 10,
 }: DataTableProps<TData, TValue>) => {
+  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
@@ -91,6 +98,7 @@ const DataTable = <TData extends IData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
       sorting,
       columnVisibility,
@@ -125,7 +133,6 @@ const DataTable = <TData extends IData, TValue>({
       },
     ])
   }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
-
   return (
     <AccountsProvider>
       <div className="flex flex-col">
@@ -136,8 +143,8 @@ const DataTable = <TData extends IData, TValue>({
               <AccountsCount />
             </div>
             <div className="flex flex-row gap-4">
-              <TableSearch table={table} />
-              <AddAccountButton />
+              <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
+              {['marketing', 'after-sales', 'admin'].includes(user?.user_metadata?.department) && <AddAccountButton />}
               <ExportAccountsModal exportData={'accounts'} exportType ='accounts'/>
             </div>
           </div>
