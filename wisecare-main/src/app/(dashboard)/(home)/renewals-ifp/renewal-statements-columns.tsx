@@ -193,8 +193,7 @@ export const RenewalStatementsColumns = () => {
       },
       accessorFn: (originalRow) =>
         (originalRow as any)?.effective_date
-          ? format((originalRow as any).effective_date, 'MMMM dd, yyyy')
-          : '',
+          ? new Date((originalRow as any).effective_date) : null,
     },
     {
       accessorKey: 'expiration_date',
@@ -213,8 +212,7 @@ export const RenewalStatementsColumns = () => {
       },
       accessorFn: (originalRow) =>
         (originalRow as any)?.expiration_date
-          ? format((originalRow as any).expiration_date, 'MMMM dd, yyyy')
-          : '',
+          ? new Date((originalRow as any).expiration_date) : null,
     },
     {
       accessorKey: 'mode_of_payment.name',

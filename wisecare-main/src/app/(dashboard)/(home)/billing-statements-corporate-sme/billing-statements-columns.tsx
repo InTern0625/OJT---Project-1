@@ -33,6 +33,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
 
     accessorFn: (originalRow) =>
       originalRow.due_date ? new Date(originalRow.due_date) : null,
+      sortingFn: 'datetime',
   },
   {
     accessorKey: 'due_date',
@@ -44,7 +45,8 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
+      originalRow.due_date ? new Date(originalRow.due_date) : null,
+      sortingFn: 'datetime',
   },
   {
     accessorKey: 'or_number',
@@ -60,7 +62,8 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{orDate ? format(orDate, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.or_date ? format(originalRow.or_date, 'MMMM dd, yyyy') : '',
+      originalRow.or_date ? new Date(originalRow.or_date) : null,
+      sortingFn: 'datetime',
   },
   {
     accessorKey: 'sa_number',
@@ -98,7 +101,8 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{billStart ? format(billStart, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.billing_start ? format(originalRow.billing_start, 'MMMM dd, yyyy') : '',
+      originalRow.billing_start ? new Date(originalRow.billing_start) : null,
+      sortingFn: 'datetime',
   },
   {
     accessorKey: 'billing_end',
@@ -110,7 +114,8 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{billEnd ? format(billEnd, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.billing_end ? format(originalRow.billing_end, 'MMMM dd, yyyy') : '',
+      originalRow.billing_end ? new Date(originalRow.billing_end) : null,
+      sortingFn: 'datetime',
   },
   {
     accessorKey: 'amount_paid',
