@@ -29,7 +29,7 @@ const CompanyAboutPage = async (props: { params: Promise<{ id: string }> }) => {
             <ButtonBack />
           </div>
           <div className="flex flex-row gap-2 items-center">
-          {role === 'admin' && <SelectCompanyActive accountId={accountId} />}
+          <SelectCompanyActive accountId={accountId} role={role} />
           <CompanyEditButton role={role} accountId={accountId} />
           </div>
         </div>

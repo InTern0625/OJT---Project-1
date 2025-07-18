@@ -3,6 +3,7 @@ import { z } from 'zod'
 const companyEditsSchema = z.object({
   //marketing
   is_active: z.union([z.boolean(), z.string()]),
+  status_id: z.string().optional(),
   agent_id: z.string().optional(),
   company_name: z.string().optional(),
   company_address: z.string().optional(),

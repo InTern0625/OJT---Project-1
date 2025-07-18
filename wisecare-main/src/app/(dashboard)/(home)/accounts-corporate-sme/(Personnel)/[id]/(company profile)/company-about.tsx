@@ -37,7 +37,7 @@ interface Props {
 }
 
 const CompanyAbout: FC<Props> = ({ companyId }) => {
-  const { editMode, setEditMode } = useCompanyEditContext()
+  const { editMode, setEditMode, statusId } = useCompanyEditContext()
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, companyId))
   const { user } = useUserServer()
@@ -160,7 +160,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         account?.email_address_of_contact_person ?? '',
     },
   })
-
+  
   const { mutateAsync } = useUpsertMutation(
     //@ts-ignore
     supabase.from(
@@ -306,9 +306,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             additionalBenefitsLink = [...new Set([...existingAdditionalFiles, ...uploadAdditionalBenefitsLink].filter(x => x))]
           }
         }
-
+        
         await mutateAsync([
           {
+            status_id: statusId ?? data.status_id,
             company_name: data.company_name,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
@@ -402,7 +403,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       uploadAdditionalBenefits,
       existingContractFiles,
       existingSpecialBenefitsFiles,
-      existingAdditionalFiles
+      existingAdditionalFiles,
+      statusId
     ],
   )
   useEffect(() => {

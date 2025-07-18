@@ -37,7 +37,7 @@ interface Props {
 }
 
 const CompanyAbout: FC<Props> = ({ companyId }) => {
-  const { editMode, setEditMode } = useCompanyEditContext()
+  const { editMode, setEditMode, statusId } = useCompanyEditContext()
   const supabase = createBrowserClient()
   const { data: account, refetch: refetchAccount } = useQuery(getAccountById(supabase, companyId));
   const { user } = useUserServer()
@@ -207,6 +207,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
 
         await mutateAsync([
           {
+            status_id: statusId ?? data.status_id,
             company_name: data.company_name,
             company_address: data.company_address,
             birthdate: data?.birthdate
@@ -259,7 +260,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       mutateAsync,
       supabase,
       uploadContractProposal,
-      existingContractFiles
+      existingContractFiles,
+      statusId
     ],
   )
   useEffect(() => {
