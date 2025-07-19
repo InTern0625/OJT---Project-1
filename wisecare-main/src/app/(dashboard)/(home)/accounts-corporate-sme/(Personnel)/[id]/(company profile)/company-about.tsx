@@ -7,6 +7,8 @@ import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corpora
 import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-HMO-information'
 import CompanyInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information'
 import accountsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema'
+import CompanyAffiliatesInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-affiliates-information'
+import AffiliatesInformationFields from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/affiliates-information-fields'
 import currencyOptions from '@/components/maskito/currency-options'
 import numberOptions from '@/components/maskito/number-options'
 import percentageOptions from '@/components/maskito/percentage-options'
@@ -36,6 +38,25 @@ interface Props {
   companyId: string
 }
 
+const onSubmit = async (data: z.infer<typeof companyEditsSchema>) => {
+  const supabase = createBrowserClient()
+
+  const { affiliate_entries } = data
+
+  const { error } = await supabase
+    .from('accounts') // 👈 or your actual table
+    .update({
+      affiliate_entries: affiliate_entries, // this should be a JSONB or separate linked table
+    })
+    .eq('id', accountId) // make sure you're updating the correct row
+
+  if (error) {
+    toast.error('Failed to save affiliates.')
+    console.error(error)
+  } else {
+    toast.success('Affiliates saved successfully!')
+  }
+}
 const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { editMode, setEditMode, statusId } = useCompanyEditContext()
   const supabase = createBrowserClient()
@@ -158,6 +179,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         account?.designation_of_contact_person ?? '',
       email_address_of_contact_person:
         account?.email_address_of_contact_person ?? '',
+      affiliate_entries: [],
+      affiliate_name: '',
+      affiliate_address: '',
     },
   })
   
@@ -235,11 +259,33 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         await supabase
         .from('accounts')
         .update({
-          is_editing: false, 
+          is_editing: false,
           editing_user: null,
-          editing_timestampz: null
+          editing_timestampz: null,
         })
         .eq('id', companyId)
+
+        // Save affiliates to `company_affiliates` table
+        const { affiliate_entries } = data
+
+        if (Array.isArray(affiliate_entries)) {
+          for (const entry of affiliate_entries) {
+            const { error } = await supabase.from('company_affiliates').insert({
+              parent_company_id: companyId,
+              created_by: user.id,
+              is_active: true,
+              ...entry, // should contain affiliate_name and affiliate_address
+            })
+
+            if (error) {
+              console.error('❌ Error saving affiliate:', error)
+            } else {
+              console.log('✅ Saved affiliate to company_affiliates:', entry)
+            }
+          }
+        } else {
+          console.warn('⚠️ No affiliate entries found or not in array format:', affiliate_entries)
+        }
 
         // Handle file input
         const specialBenefitsFiles = data.special_benefits_files
@@ -436,6 +482,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
               <span className="text-xl font-semibold">HMO Information</span>
               <CompanyHMOInformation id={companyId} />
+            </div>
+            <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
+              <span className="text-xl font-semibold">Affiliates Information</span>
+              <CompanyAffiliatesInformation id={companyId} />
             </div>
           </div>
         </div>

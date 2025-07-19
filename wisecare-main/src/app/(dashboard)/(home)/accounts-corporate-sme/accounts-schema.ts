@@ -28,6 +28,16 @@ const accountsSchema = z.object({
   coc_issue_date: z.date().optional(),
   expiration_date: z.date().optional(),
   delivery_date_of_membership_ids: z.date().optional(),
+  affiliate_entries: z
+      .array(
+        z.object({
+          affiliate_name: z.string(),
+          affiliate_address: z.string(),
+        })
+      )
+      .optional(),
+    new_affiliate_name: z.string().optional(),
+    new_affiliate_address: z.string().optional(),
   orientation_date: z.date().optional(),
   initial_contract_value: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null
