@@ -45,6 +45,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { data: activeTypes } = useQuery(getTypes(supabase, 'status_types'))
   const defaultStatusID = activeTypes?.[0]?.id ?? undefined
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
+  
   const existingContractFiles = useMemo(
     () => account?.contract_proposal_files ?? [],
     [account?.contract_proposal_files]
