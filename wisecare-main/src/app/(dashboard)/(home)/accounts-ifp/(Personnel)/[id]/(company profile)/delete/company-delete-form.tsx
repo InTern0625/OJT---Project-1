@@ -54,7 +54,7 @@ const CompanyDeleteForm: FC<Props> = ({
 
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, accountId))
-
+  const programID = (account?.program_type as any)?.id
   const { mutateAsync, isPending } = useInsertMutation(
     // @ts-ignore
     supabase.from('pending_accounts'),
@@ -106,6 +106,7 @@ const CompanyDeleteForm: FC<Props> = ({
           .from('pending_accounts')
           .select('id')
           .eq('account_id', accountId)
+          .eq('is_active', false)
           .eq('is_approved', false)
           .eq('created_by', user?.id)
           .limit(1)
@@ -116,10 +117,10 @@ const CompanyDeleteForm: FC<Props> = ({
           setPendingRequestId(pendingRequest.id)
           return Error('Request already exists')
         }
-
         await mutateAsync([
           {
             account_id: accountId,
+            program_types_id: programID,
             is_delete_account: true,
             company_name: data.companyName,
             created_by: user?.id,
@@ -130,6 +131,7 @@ const CompanyDeleteForm: FC<Props> = ({
     },
     [
       account?.company_name,
+      programID,
       accountId,
       form,
       mutateAsync,
