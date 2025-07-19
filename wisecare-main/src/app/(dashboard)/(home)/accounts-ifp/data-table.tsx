@@ -66,11 +66,11 @@ const DataTable = <TData extends IData, TValue>({
   const supabase = createBrowserClient()
   const { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting } = useColumnStates()
   const statusOrderRef = useRef<string[]>([]);
+
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
-
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
