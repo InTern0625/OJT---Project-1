@@ -2,7 +2,6 @@
 
 import AccountsColumns from '@/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns'
 import getAccounts from '@/queries/get-accounts'
-import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'
 import { createBrowserClient } from '@/utils/supabase-client'
