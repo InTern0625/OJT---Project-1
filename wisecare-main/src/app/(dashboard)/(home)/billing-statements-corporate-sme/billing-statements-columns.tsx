@@ -25,14 +25,14 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       <TableHeader column={column} title="Billing Date" />
     ),
     cell: ({ row }) => {
-      const dueDate = row.original.due_date
-        ? normalizeToUTC(new Date(row.original.due_date))
+      const billingDate = row.original.billing_date
+        ? normalizeToUTC(new Date(row.original.billing_date))
         : null
-      return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div> //placeholder
+      return <div>{billingDate ? format(billingDate, 'MMMM dd, yyyy') : ''}</div> //placeholder
     },
 
     accessorFn: (originalRow) =>
-      originalRow.due_date ? new Date(originalRow.due_date) : null,
+      originalRow.billing_date ? new Date(originalRow.billing_date) : null,
       sortingFn: 'datetime',
   },
   {

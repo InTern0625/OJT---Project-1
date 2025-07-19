@@ -103,6 +103,7 @@ const BillingStatementModal = <TData,>({
       billing_period: undefined,
       billing_start: undefined,
       billing_end: undefined,
+      billing_date:undefined,
       amount_billed: undefined,
       amount_paid: undefined,
       commission_rate: undefined,
@@ -203,7 +204,10 @@ const BillingStatementModal = <TData,>({
               : undefined,
             billing_end: data.billing_end
               ? normalizeToUTC(new Date(data.billing_end))
-              : undefined,    
+              : undefined,   
+            billing_date: data.billing_date
+              ? normalizeToUTC(new Date(data.billing_date))
+              : undefined,
             //assign weeks to billing period
           },
         ])
@@ -263,15 +267,15 @@ const BillingStatementModal = <TData,>({
                               variant="outline"
                               role="combobox"
                               aria-expanded={openCommand}
-                              className="col-span-3 rounded-sm justify-between"
+                              className="col-span-3 rounded-sm justify-between overflow-hidden"
                             >
                               {accounts.find((item) => item.id === field.value)?.company_name ??
                                 "Select Company..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
-                          <PopoverContent className="w-[500px] p-0">
-                            <Command>
+                          <PopoverContent className="w-[500px] p-0 overflow-hidden">
+                            <Command className="overflow-hidden">
                               <CommandInput placeholder="Search Company..." />
                               <CommandList>
                                 <CommandEmpty>No Companies.</CommandEmpty>
@@ -335,12 +339,52 @@ const BillingStatementModal = <TData,>({
               />
               <FormField
                 control={form.control}
-                name="sa_number"
+                name="billing_date"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-                    <FormLabel className="text-right">SA Number</FormLabel>
+                    <FormLabel className="text-right">Billing Date</FormLabel>
                     <FormControl className="col-span-3">
-                      <Input {...field} disabled={isPending} />
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant={'outline'}
+                              className={cn(
+                                'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring col-span-3 flex h-12 w-full rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
+                                !field.value && 'text-muted-foreground',
+                                'text-left font-normal',
+                              )}
+                              disabled={isPending}
+                            >
+                              {field.value ? (
+                                format(field.value, 'PPP')
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={field.value}
+                            onSelect={field.onChange}
+                            initialFocus
+                            captionLayout="dropdown"
+                            toYear={new Date().getFullYear() + 20}
+                            fromYear={1900}
+                            classNames={{
+                              day_hidden: 'invisible',
+                              dropdown:
+                                'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
+                              caption_dropdowns: 'flex gap-3',
+                              vhidden: 'hidden',
+                              caption_label: 'hidden',
+                            }}
+                          />
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
@@ -401,12 +445,63 @@ const BillingStatementModal = <TData,>({
               />
               <FormField
                 control={form.control}
+                name="sa_number"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+                    <FormLabel className="text-right">SA Number</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input {...field} disabled={isPending} />
+                    </FormControl>
+                    <FormMessage className="col-span-3 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name="or_number"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
                     <FormLabel className="text-right">OR Number</FormLabel>
                     <FormControl className="col-span-3">
                       <Input {...field} disabled={isPending} />
+                    </FormControl>
+                    <FormMessage className="col-span-3 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount_billed"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+                    <FormLabel className="text-right">Amount Billed</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        ref={maskedAmountBilledRef}
+                        onInput={field.onChange}
+                        value={field.value ?? ''}
+                      />
+                    </FormControl>
+                    <FormMessage className="col-span-3 col-start-2" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="amount_paid"
+                render={({ field }) => (
+                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+                    <FormLabel className="text-right">Amount Paid</FormLabel>
+                    <FormControl className="col-span-3">
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        ref={maskedAmountPaidRef}
+                        onInput={field.onChange}
+                        value={field.value ?? ''}
+                      />
                     </FormControl>
                     <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
@@ -460,27 +555,6 @@ const BillingStatementModal = <TData,>({
                           />
                         </PopoverContent>
                       </Popover>
-                    </FormControl>
-                    <FormMessage className="col-span-3 col-start-2" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="total_contract_value"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-                    <FormLabel className="text-right">
-                      Total Contract Value
-                    </FormLabel>
-                    <FormControl className="col-span-3">
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        ref={maskedTotalContractValueRef}
-                        onInput={field.onChange}
-                        value={field.value ?? ''}
-                      />
                     </FormControl>
                     <FormMessage className="col-span-3 col-start-2" />
                   </FormItem>
@@ -613,37 +687,20 @@ const BillingStatementModal = <TData,>({
                     )}
                   />
                 </div>
-              </FormItem> 
+              </FormItem>
               <FormField
                 control={form.control}
-                name="amount_billed"
+                name="total_contract_value"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-                    <FormLabel className="text-right">Amount Billed</FormLabel>
+                    <FormLabel className="text-right">
+                      Total Contract Value
+                    </FormLabel>
                     <FormControl className="col-span-3">
                       <Input
                         {...field}
                         disabled={isPending}
-                        ref={maskedAmountBilledRef}
-                        onInput={field.onChange}
-                        value={field.value ?? ''}
-                      />
-                    </FormControl>
-                    <FormMessage className="col-span-3 col-start-2" />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="amount_paid"
-                render={({ field }) => (
-                  <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-                    <FormLabel className="text-right">Amount Paid</FormLabel>
-                    <FormControl className="col-span-3">
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        ref={maskedAmountPaidRef}
+                        ref={maskedTotalContractValueRef}
                         onInput={field.onChange}
                         value={field.value ?? ''}
                       />
