@@ -3,6 +3,7 @@ import { z } from 'zod'
 const BillingStatementSchema = z
   .object({
     mode_of_payment_id: z.string().uuid().optional(),
+    billing_date: z.date().optional(),
     due_date: z.date().optional(),
     or_number: z.string().optional(),
     or_date: z.date().optional(),
