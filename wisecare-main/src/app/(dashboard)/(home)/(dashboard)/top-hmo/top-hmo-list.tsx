@@ -23,6 +23,8 @@ const TopHmoList = () => {
     supabase
       .from('accounts')
       .select('hmo_provider:hmo_provider_id(name), company_name')
+      .eq('is_active', true)
+      .eq('is_account_active', true)
       .throwOnError(),
   )
 
