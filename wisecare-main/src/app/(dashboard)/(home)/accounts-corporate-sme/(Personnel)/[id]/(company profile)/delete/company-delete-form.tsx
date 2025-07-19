@@ -106,6 +106,7 @@ const CompanyDeleteForm: FC<Props> = ({
           .from('pending_accounts')
           .select('id')
           .eq('account_id', accountId)
+          .eq('is_active', true)
           .eq('is_approved', false)
           .eq('created_by', user?.id)
           .limit(1)
@@ -116,11 +117,11 @@ const CompanyDeleteForm: FC<Props> = ({
           setPendingRequestId(pendingRequest.id)
           return Error('Request already exists')
         }
-
         await mutateAsync([
           {
             account_id: accountId,
             is_delete_account: true,
+            account_type_id: account?.account_type?.id,
             company_name: data.companyName,
             created_by: user?.id,
             operation_type: 'delete',
@@ -130,6 +131,7 @@ const CompanyDeleteForm: FC<Props> = ({
     },
     [
       account?.company_name,
+      account?.account_type?.id,
       accountId,
       form,
       mutateAsync,
