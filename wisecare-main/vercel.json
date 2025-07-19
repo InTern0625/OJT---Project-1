@@ -8,5 +8,11 @@
         "installCommand": "pnpm install --no-frozen-lockfile"
       }
     }
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "*": false
+    }
+  }
 }
