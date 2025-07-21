@@ -70,7 +70,7 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
 
   const accountQuery = useMemo(() => {
     return getRenewalStatements(supabase, { 
-      accountType: 'Business',
+      accountType: 'IFP',
       range: { start: from, end: to },
       sortOrder: {
         col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
@@ -120,7 +120,6 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     ...item,
     program_type_id: item.program_type?.id ?? null, 
   }))*/
-
   const displayData = isLoading ? previousData : accountData
 
   return <DataTable 
@@ -136,6 +135,7 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     setSearchMode={setSearchMode}
     searchTerm={searchTerm}
     setSearchTerm={setSearchTerm}
+    customSortID={customSortID}
   />
 }
 export default PendingTable

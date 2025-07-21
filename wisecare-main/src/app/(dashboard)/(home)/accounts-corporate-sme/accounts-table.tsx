@@ -128,6 +128,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
             setSearchMode={setSearchMode}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            customSortID={customSortID}
           />
 }
 export default AccountsTable

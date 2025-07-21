@@ -73,7 +73,6 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   
   
   // Sort Filters
-  //console.log(filters)
   if (filters.customSort?.key && filters.customSort?.value && filters.customSort.value !== "") {
     if (filters.customSort.key === "account_type_name") {
       query = query.eq("account_type_id", filters.customSort.value)

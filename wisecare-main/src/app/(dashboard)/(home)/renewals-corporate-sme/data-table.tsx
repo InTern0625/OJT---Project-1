@@ -25,7 +25,7 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { useEffect, useState, SetStateAction, Dispatch } from 'react'
+import { useEffect, useState, SetStateAction, Dispatch, useMemo } from 'react'
 import TableViewOptions from '@/components/table-view-options'
 import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
 import TableSearch from '@/components/table-search-accounts'
@@ -45,6 +45,7 @@ import { useRouter } from 'next/navigation'
 import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-requests'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts-modal'
 import { isAfter, isBefore, addMonths } from 'date-fns'
+import getRenewalStatementsCount from '@/queries/get-renewal-counts'
 
 interface IData {
   id: string
@@ -62,6 +63,7 @@ interface DataTableProps<TData extends IData, TValue> {
   setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
   searchTerm: string
   setSearchTerm: Dispatch<SetStateAction<string>>
+  customSortID: string | null
 }
 
 const DataTable = <TData extends IData, TValue>({
@@ -77,6 +79,7 @@ const DataTable = <TData extends IData, TValue>({
   setSearchMode,
   searchTerm,
   setSearchTerm,
+  customSortID,
 }: DataTableProps<TData, TValue>) => {
   const supabase = createBrowserClient()
   const router = useRouter()
@@ -158,12 +161,18 @@ const DataTable = <TData extends IData, TValue>({
   
   //Upcoming and overdue renewals
   const dateToday = new Date()
-  const upcomingCount = data.filter((row) => 
+  const renewalCountQuery = useMemo(() => {
+    return getRenewalStatementsCount(supabase, { 
+      accountType: 'Business'
+    })
+  }, [supabase])
+  const { data: renewalCount, count, isLoading } = useQuery(renewalCountQuery)
+  const upcomingCount = (renewalCount ?? []).filter((row) => 
     (row as any).expiration_date &&
     isAfter((row as any).expiration_date, dateToday) &&
     isBefore((row as any).expiration_date, addMonths(dateToday, 3))
   ).length
-  const overdueCount = data.filter((row) =>
+  const overdueCount = (renewalCount ?? []).filter((row) =>
     (row as any).expiration_date &&
     isBefore((row as any).expiration_date, dateToday)
   ).length
@@ -179,7 +188,12 @@ const DataTable = <TData extends IData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
-            <ExportAccountsModal exportData={'accounts'} exportType ='renewals'/>
+            <ExportAccountsModal 
+              exportData={'accounts'} 
+              exportType ='renewals'
+              columnSortingID={(columnSortingData?.columns_sme_renewals?.[0] as any)?.id}
+              customSortID={customSortID}
+            />
           </div>
         </div>
       </PageHeader>
