@@ -8,7 +8,7 @@ import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-ifp/mutations
 import AccountRequest from '@/app/(dashboard)/(home)/accounts-ifp/request/account-request'
 import { PageHeader, PageTitle } from '@/components/page-header'
 import TablePagination from '@/components/table-pagination'
-import TableSearch from '@/components/table-search'
+import TableSearch from '@/components/table-search-accounts'
 import TableViewOptions from '@/components/table-view-options'
 import {
   Table,
@@ -22,6 +22,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { useUserServer } from '@/providers/UserProvider'
 import getAccountsColumnVisibilityByUserId from '@/queries/get-accounts-column-visibility-by-user-id'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { fuzzyStartsWith } from '@/utils/filter-agent-company'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import {
   ColumnDef,
@@ -51,6 +52,8 @@ interface DataTableProps<TData extends IData, TValue> {
   data: TData[]
   initialPageIndex?: number
   initialPageSize?: number
+  searchMode: 'Company' | 'Agent'
+  setSearchMode: (mode: 'Company' | 'Agent') => void
 }
 
 
@@ -60,6 +63,7 @@ const DataTable = <TData extends IData, TValue>({
   initialPageIndex = 0,
   initialPageSize = 10,
 }: DataTableProps<TData, TValue>) => {
+  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
@@ -96,6 +100,7 @@ const DataTable = <TData extends IData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
     onGlobalFilterChange: setGlobalFilter,
+    globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
       sorting,
       columnVisibility,
@@ -149,7 +154,7 @@ const DataTable = <TData extends IData, TValue>({
               <AccountsCount />
             </div>
             <div className="flex flex-row gap-4">
-              <TableSearch table={table} />
+              <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode} />
               {['marketing', 'after-sales', 'admin'].includes(user?.user_metadata?.department) && <AddAccountButton />}
               <ExportAccountsModal exportData={'accounts'} exportType='accounts'/>
             </div>
