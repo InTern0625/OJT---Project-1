@@ -7,7 +7,7 @@ import TextInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/tex
 import getAgents from '@/queries/get-agents'
 import getTypes from '@/queries/get-types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
-import { FC } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 import { z } from 'zod'
 import accountsSchema from '../accounts-schema'
@@ -20,11 +20,11 @@ interface Props {
 }
 
 const MarketingInputs: FC<Props> = ({ isLoading }) => {
-  const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
 
+  const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
+  const [search] = useState("")
   const form = useFormContext<z.infer<typeof accountsSchema>>()
   const supabase = createBrowserClient()
-
   const { data: agents } = useQuery(getAgents(supabase))
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: accountTypes } = useQuery(getTypes(supabase, 'account_types'))
@@ -32,6 +32,22 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const { data: modeOfPayments } = useQuery(
     getTypes(supabase, 'mode_of_payments'),
   )
+
+  //Filter Search Agent field by input
+  let agent = agents
+  const filteredAgents = useMemo(() => {
+    if (!search) return agent ?? []
+    const lowerSearch = search.toLowerCase()
+
+    return (agent ?? []).filter((item) => {
+      const firstName = item.first_name?.toLowerCase() ?? ''
+      const lastName = item.last_name?.toLowerCase() ?? ''
+      return (
+        firstName.startsWith(lowerSearch) ||
+        lastName.startsWith(lowerSearch)
+      )
+    })
+  }, [search, agent])
 
   return (
     <div className="grid gap-4 py-4">
@@ -78,7 +94,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="agent_id"
           label="Agent"
           placeholder="Select Agent"
-          options={agents?.map((agent) => ({
+          options={filteredAgents?.map((agent) => ({
             label: `${agent.first_name} ${agent.last_name}`,
             value: agent.user_id,
           }))}

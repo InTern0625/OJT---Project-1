@@ -32,20 +32,29 @@ import { Skeleton } from '@/components/ui/skeleton'
 const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
   const supabase = createBrowserClient()
   const { data, isLoading } = useQuery(getBillingStatementByCompanyId(supabase, companyId))
-  if (isLoading) {
-     return <div className="flex flex-col space-y-3">
-              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
-              <div className="space-y-2">
-              <Skeleton className="h-4 w-[250px]" />
-              <Skeleton className="h-4 w-[200px]" />
-              </div>
-            </div>
-  }
+  
   const router = useRouter()
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [rowSelection, setRowSelection] = useState({})
+
+  //placeholder for loading page
+  if (isLoading) {
+     return (
+      <div className="flex flex-col w-full h-[90vh] justify-center space-y-10">
+        <Skeleton className="h-50 w-full rounded-md" />
+        {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex space-x-4 w-full">
+          <Skeleton className="h-20 w-[20%] rounded" />
+          <Skeleton className="h-20 w-[30%] rounded" />
+          <Skeleton className="h-20 w-[25%] rounded" />
+          <Skeleton className="h-20 w-[25%] rounded" />
+        </div>
+      ))}
+    </div>
+     )
+  }
 
   const table = useReactTable({
     data: (data as any) || [],
