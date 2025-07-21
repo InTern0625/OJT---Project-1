@@ -27,10 +27,20 @@ import {
 import { useState } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useRouter } from 'next/navigation'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
   const supabase = createBrowserClient()
-  const { data } = useQuery(getBillingStatementByCompanyId(supabase, companyId))
+  const { data, isLoading } = useQuery(getBillingStatementByCompanyId(supabase, companyId))
+  if (isLoading) {
+     return <div className="flex flex-col space-y-3">
+              <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+              <div className="space-y-2">
+              <Skeleton className="h-4 w-[250px]" />
+              <Skeleton className="h-4 w-[200px]" />
+              </div>
+            </div>
+  }
   const router = useRouter()
 
   const [sorting, setSorting] = useState<SortingState>([])
