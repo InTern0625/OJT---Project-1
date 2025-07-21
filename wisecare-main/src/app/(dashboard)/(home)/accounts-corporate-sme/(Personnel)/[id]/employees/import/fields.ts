@@ -264,6 +264,24 @@ export const useImportFields = () => {
       },
       example: '1/25/2024',
     },
+    {
+      label: 'Cancellation Date',
+      key: 'cancellation_date',
+      alternateMatches: ['cancellation date', 'cancellation', 'cancellation_date'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '1/25/2024',
+    },
+    {
+      label: 'Remarks',
+      key: 'remarks',
+      alternateMatches: ['remarks', 'Remarks', 'remark', 'Remark', 'REMARKS', 'REMARKS'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
   ], [genderTypes, civilStatusTypes])
   return importFields
 }

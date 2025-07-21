@@ -47,8 +47,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       let tableName: TypeTabs | null = null
       if (sortKey === 'status_type_name') {
         tableName = 'status_types'
-      } else if (sortKey === 'account_type_name') {
-        tableName = 'account_types'
+      } else if (sortKey === 'program_type_name') {
+        tableName = 'program_types'
+      } else if (sortKey === 'room_plan_name'){
+        tableName = 'room_plans'
       } else {
         return
       }
@@ -108,23 +110,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     customSortStatus,
     setCustomSortStatus,
   })
-  
-  //placeholder for loading page
-  if (isLoading) {
-     return (
-      <div className="flex flex-col w-full h-[90vh] justify-center space-y-10">
-        <Skeleton className="h-50 w-full rounded-md" />
-        {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="flex space-x-4 w-full">
-          <Skeleton className="h-20 w-[20%] rounded" />
-          <Skeleton className="h-20 w-[30%] rounded" />
-          <Skeleton className="h-20 w-[25%] rounded" />
-          <Skeleton className="h-20 w-[25%] rounded" />
-        </div>
-      ))}
-    </div>
-     )
-  }
+
 
   const displayData = isLoading ? previousData : accountData
   
@@ -141,6 +127,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
             setSearchMode={setSearchMode}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            customSortID={customSortID}
           />
 }
 export default AccountsTable

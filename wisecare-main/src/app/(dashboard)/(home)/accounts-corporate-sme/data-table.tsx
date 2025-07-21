@@ -59,6 +59,7 @@ interface DataTableProps<TData extends IData, TValue> {
   setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
   searchTerm: string
   setSearchTerm: Dispatch<SetStateAction<string>>
+  customSortID: string | null
 }
 
 
@@ -75,6 +76,7 @@ const DataTable = <TData extends IData, TValue>({
   setSearchMode,
   searchTerm,
   setSearchTerm,
+  customSortID,
 }: DataTableProps<TData, TValue>) => {
   const router = useRouter()
   const { toast } = useToast()
@@ -105,6 +107,7 @@ const DataTable = <TData extends IData, TValue>({
     data,
     columns,
     manualPagination: true, 
+    manualFiltering: true,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: (updater) => {
@@ -155,7 +158,6 @@ const DataTable = <TData extends IData, TValue>({
       }
     ])
   }, [sorting, supabase, toast, upsertAccSMEColumnSorting, user?.id, customSortStatus])
-
   
   return (
     <AccountsProvider>
@@ -169,7 +171,12 @@ const DataTable = <TData extends IData, TValue>({
             <div className="flex flex-row gap-4">
               <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
               {['marketing', 'after-sales', 'admin'].includes(user?.user_metadata?.department) && <AddAccountButton />}
-              <ExportAccountsModal exportData={'accounts'} exportType ='accounts'/>
+              <ExportAccountsModal 
+                exportData={'accounts'} 
+                exportType ='accounts' 
+                columnSortingID={(columnSortingData?.columns_sme_accounts?.[0] as any)?.id}
+                customSortID={customSortID}
+              />
             </div>
           </div>
         </PageHeader>
