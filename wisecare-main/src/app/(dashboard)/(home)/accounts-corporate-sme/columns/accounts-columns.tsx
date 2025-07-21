@@ -21,20 +21,26 @@ export const formatPercentage = (value: number | null | undefined) => {
   }
   return `${value.toFixed(2)}%`
 }
-export const AccountsColumns = () => {
+
+export const AccountsColumns = ({
+  customSortStatus,
+  setCustomSortStatus,
+}: {
+  customSortStatus: string | null;
+  setCustomSortStatus: (status: string | null) => void;
+}) => {
   const statusOrder = useSortingOrder("status_types")
-  
-  const [activeSortStatus, setActiveSortStatus] = useState<string | null>(null);
-  const statusSorter = (a: string, b: string) => {
-    // If clicking "Active", bring Active to top
-    if (activeSortStatus) {
-      if (a === activeSortStatus) return -1;
-      if (b === activeSortStatus) return 1;
+  const accountOrder = useSortingOrder("account_types")
+  const orderSorter = (a: string, b: string, sortOrder: string[]) => {
+    // Bring Sort selection to top
+    if (customSortStatus) {
+      if (a === customSortStatus) return -1;
+      if (b === customSortStatus) return 1;
     }
 
     // Fall back to default order
-    const indexA = statusOrder.indexOf(a);
-    const indexB = statusOrder.indexOf(b);
+    const indexA = sortOrder.indexOf(a);
+    const indexB = sortOrder.indexOf(b);
     
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
@@ -51,13 +57,13 @@ export const AccountsColumns = () => {
           column={column} 
           title="Account Status" 
           customSortOrder={statusOrder}
-          onStatusClick={setActiveSortStatus}
+          onStatusClick={setCustomSortStatus}
         />
       ),
       sortingFn: (rowA, rowB, columnId) => {
         const statusA = rowA.getValue(columnId) as string;
         const statusB = rowB.getValue(columnId) as string;
-        return statusSorter(statusA, statusB);
+        return orderSorter(statusA, statusB, statusOrder);
       },
     },
     {
@@ -69,8 +75,18 @@ export const AccountsColumns = () => {
     {
       accessorKey: 'account_type.name',
       header: ({ column }) => (
-        <TableHeader column={column} title="Account Type" />
+        <TableHeader 
+          column={column} 
+          title="Account Type"
+          customSortOrder={accountOrder}
+          onStatusClick={setCustomSortStatus}
+        />
       ),
+      sortingFn: (rowA, rowB, columnId) => {
+        const typeA = rowA.getValue(columnId) as string;
+        const typeB = rowB.getValue(columnId) as string;
+        return orderSorter(typeA, typeB, accountOrder);
+      },
     },
     {
       accessorKey: 'agent',
@@ -194,9 +210,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.effective_date
-          ? format((originalRow as any).effective_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.effective_date ? new Date(originalRow.effective_date) : null,
     },
     {
       accessorKey: 'original_effective_date',
@@ -216,9 +230,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.original_effective_daƒte
-          ? format((originalRow as any).original_effective_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.original_effective_date ? new Date(originalRow.original_effective_date) : null,
     },
     {
       accessorKey: 'coc_issue_date',
@@ -234,9 +246,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.coc_issue_date
-          ? format((originalRow as any).coc_issue_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.coc_issue_date ? new Date(originalRow.coc_issue_date) : null,
     },
     {
       accessorKey: 'expiration_date',
@@ -254,9 +264,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.expiration_date
-          ? format((originalRow as any).expiration_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.expiration_date ? new Date(originalRow.expiration_date) : null,
     },
     {
       accessorKey: 'delivery_date_of_membership_ids',
@@ -272,12 +280,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.delivery_date_of_membership_ids
-          ? format(
-              (originalRow as any).delivery_date_of_membership_ids,
-              'MMMM dd, yyyy',
-            )
-          : '',
+        originalRow?.delivery_date_of_membership_ids ? new Date(originalRow.delivery_date_of_membership_ids) : null,
     },
     {
       accessorKey: 'orientation_date',
@@ -295,9 +298,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.orientation_date
-          ? format((originalRow as any).orientation_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.orientation_date ? new Date(originalRow.orientation_date) : null,
     },
     {
       accessorKey: 'initial_contract_value',
@@ -332,9 +333,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.wellness_lecture_date
-          ? format((originalRow as any).wellness_lecture_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.wellness_lecture_date ? new Date(originalRow.wellness_lecture_date) : null,
     },
     {
       accessorKey: 'annual_physical_examination_date',
@@ -357,12 +356,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.annual_physical_examination_date
-          ? format(
-              (originalRow as any).annual_physical_examination_date,
-              'MMMM dd, yyyy',
-            )
-          : '',
+        originalRow?.annual_physical_examination_date ? new Date(originalRow.annual_physical_examination_date) : null,
     },
     {
       accessorKey: 'commision_rate',
