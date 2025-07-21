@@ -95,20 +95,22 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
     query = query.or('and(account_type.is.null,program_type.not.is.null),and(account_type.is.null,program_type.is.null)');
   }
 
-  // Pagination
-  if (filters.range) {
-    const { start, end } = filters.range
-    query = query.range(start, end)
-  }
+
 
   //Search filter
   const searchValue = filters.search?.value ?? ''
   if (searchValue && filters.search) {
     if (filters.search.key === 'company') {
-      query = query.ilike('company_name', `%${searchValue}%`)
+      query = query.ilike('company_name', `${searchValue}%`)
     } else if (filters.search.key === 'agent') {
-      query = query.ilike('agent_id.first_name', `%${searchValue}%`) 
+      query = query.ilike('agent_id.first_name', `${searchValue}%`) 
     }
+  }
+
+  // Pagination
+  if (filters.range) {
+    const { start, end } = filters.range
+    query = query.range(start, end)
   }
   return query
 }

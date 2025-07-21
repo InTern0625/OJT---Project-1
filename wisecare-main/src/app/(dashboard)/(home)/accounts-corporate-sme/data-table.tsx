@@ -107,6 +107,7 @@ const DataTable = <TData extends IData, TValue>({
     data,
     columns,
     manualPagination: true, 
+    manualFiltering: true,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: (updater) => {
