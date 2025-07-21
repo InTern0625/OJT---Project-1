@@ -150,7 +150,7 @@ const DataTable = <TData extends IData, TValue>({
     if (!user?.id) return
 
     const sortedId = sorting[0]?.id
-    const allowed = ["status_type_name", "account_type_name"]
+    const allowed = ["status_type_name", "program_type_name", "room_plan_name"]
     const effectiveCustomSort = sortedId && allowed.includes(sortedId) ? customSortStatus : null
 
     upsertAccIFPColumnSorting([

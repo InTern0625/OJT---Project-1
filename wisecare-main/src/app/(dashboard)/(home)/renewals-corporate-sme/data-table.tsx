@@ -25,7 +25,7 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { Suspense, useState, useEffect } from 'react'
+import { useEffect, useState, SetStateAction, Dispatch } from 'react'
 import TableViewOptions from '@/components/table-view-options'
 import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
 import TableSearch from '@/components/table-search-accounts'
@@ -51,77 +51,110 @@ interface IData {
 }
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
+  customSortStatus?: string | null
   data: TData[]
-  searchMode: 'Company' | 'Agent'
-  setSearchMode: (mode: 'Company' | 'Agent') => void
+  pageCount: number
+  pageIndex: number
+  pageSize: number
+  onPageChange: (index: number) => void
+  onPageSizeChange: (size: number) => void
+  searchMode: 'company' | 'agent'          
+  setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
+  searchTerm: string
+  setSearchTerm: Dispatch<SetStateAction<string>>
 }
 
 const DataTable = <TData extends IData, TValue>({
   columns,
+  customSortStatus,
   data,
+  pageCount,
+  pageIndex,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  searchMode,
+  setSearchMode,
+  searchTerm,
+  setSearchTerm,
 }: DataTableProps<TData, TValue>) => {
-  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const supabase = createBrowserClient()
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
-  const { upsertRenewalIFPColumnVisibility, upsertRenewalIFPColumnSorting } = useColumnStates()
+  const { upsertRenewalSMEColumnVisibility, upsertRenewalSMEColumnSorting } = useColumnStates()
   const [isAccountLoading, setIsAccountLoading] = useState(false)
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
-    getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_renewals"),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_sme_renewals"),
   )
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase, "columns_ifp_renewals"),
+    getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
   const [sorting, setSorting] = useState<SortingState>(
-    (columnSortingData?.columns_ifp_renewals as unknown as SortingState) ?? [],
+    (columnSortingData?.columns_sme_renewals as unknown as SortingState) ?? [],
   )
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    (columnVisibilityData?.columns_ifp_renewals as VisibilityState) ?? {},
+    (columnVisibilityData?.columns_sme_renewals as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
 
   const table = useReactTable({
     data,
     columns,
+    manualPagination: true, 
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: (updater) => {
+      const newState = typeof updater === 'function' ? updater({ pageIndex, pageSize }) : updater
+      onPageChange(newState.pageIndex)
+      onPageSizeChange(newState.pageSize)
+    },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setSearchTerm,
     globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
       sorting,
       columnVisibility,
-      globalFilter,
-    },
+      globalFilter: searchTerm,
+    }
   })
   
   useEffect(() => {
       if (!user?.id) return
   
-      upsertRenewalIFPColumnVisibility([
+      upsertRenewalSMEColumnVisibility([
         {
           user_id: user.id,
-          columns_ifp_renewals: columnVisibility,
+          columns_sme_renewals: columnVisibility,
         },
       ])
-    }, [columnVisibility, supabase, toast, upsertRenewalIFPColumnVisibility, user?.id])
+    }, [columnVisibility, supabase, toast, upsertRenewalSMEColumnVisibility, user?.id])
+  
   useEffect(() => {
     if (!user?.id) return
 
-    upsertRenewalIFPColumnSorting([
+    const sortedId = sorting[0]?.id
+    const allowed = ["status_type_name", "account_type_name"]
+    const effectiveCustomSort = sortedId && allowed.includes(sortedId) ? customSortStatus : null
+
+    upsertRenewalSMEColumnSorting([
       {
         user_id: user.id,
-        columns_ifp_renewals: sorting,
-      },
+        columns_sme_renewals: sorting,
+        custom__sort_sme_renewals: effectiveCustomSort ?? null
+      }
     ])
-  }, [sorting, supabase, toast, upsertRenewalIFPColumnSorting, user?.id])
+  }, [sorting, supabase, toast, upsertRenewalSMEColumnSorting, user?.id, customSortStatus])
   
   //Upcoming and overdue renewals
   const dateToday = new Date()
@@ -134,8 +167,7 @@ const DataTable = <TData extends IData, TValue>({
     (row as any).expiration_date &&
     isBefore((row as any).expiration_date, dateToday)
   ).length
-  const { isEditModalOpen, setIsEditModalOpen, originalData } =
-    useBillingContext()
+
 
   return (
     <div className="flex flex-col">

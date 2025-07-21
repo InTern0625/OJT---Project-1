@@ -46,8 +46,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       let tableName: TypeTabs | null = null
       if (sortKey === 'status_type_name') {
         tableName = 'status_types'
-      } else if (sortKey === 'account_type_name') {
-        tableName = 'account_types'
+      } else if (sortKey === 'program_type_name') {
+        tableName = 'program_types'
+      } else if (sortKey === 'room_plan_name'){
+        tableName = 'room_plans'
       } else {
         return
       }

@@ -47,20 +47,26 @@ type AccountWithJoins = Tables<'accounts'> & {
   dependent_plan_type?: { name: string | null }
 }
 
-export const RenewalStatementsColumns = () => {
+export const RenewalStatementsColumns = ({
+  customSortStatus,
+  setCustomSortStatus,
+}: {
+  customSortStatus: string | null;
+  setCustomSortStatus: (status: string | null) => void;
+}) => {  
   const statusOrder = useSortingOrder("status_types")
-  
-  const [activeSortStatus, setActiveSortStatus] = useState<string | null>(null);
-  const statusSorter = (a: string, b: string) => {
-    // If clicking "Active", bring Active to top
-    if (activeSortStatus) {
-      if (a === activeSortStatus) return -1;
-      if (b === activeSortStatus) return 1;
+  const accountOrder = useSortingOrder("account_types")
+
+  const orderSorter = (a: string, b: string, sortOrder: string[]) => {
+    // Bring Sort selection to top
+    if (customSortStatus) {
+      if (a === customSortStatus) return -1;
+      if (b === customSortStatus) return 1;
     }
 
     // Fall back to default order
-    const indexA = statusOrder.indexOf(a);
-    const indexB = statusOrder.indexOf(b);
+    const indexA = sortOrder.indexOf(a);
+    const indexB = sortOrder.indexOf(b);
     
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
@@ -96,13 +102,13 @@ export const RenewalStatementsColumns = () => {
         column={column} 
         title="Account Status" 
         customSortOrder={statusOrder}
-        onStatusClick={setActiveSortStatus}
+        onStatusClick={setCustomSortStatus}
       />
     ),
     sortingFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId) as string;
       const statusB = rowB.getValue(columnId) as string;
-      return statusSorter(statusA, statusB);
+      return orderSorter(statusA, statusB, statusOrder);
     },
   },
   { accessorKey: 'company_name', header: ({ column }) => <TableHeader column={column} title="Company Name" /> },
@@ -115,8 +121,19 @@ export const RenewalStatementsColumns = () => {
   },
   {
     accessorKey: 'account_types.name',
-    header: ({ column }) => <TableHeader column={column} title="Account Type" />,
+    header: ({ column }) => 
+      <TableHeader 
+        column={column} 
+        title="Account Type"
+        customSortOrder={statusOrder}
+        onStatusClick={setCustomSortStatus}
+      />,
     cell: ({ row }) => (row.original as any).account_types?.name ?? '-',
+    sortingFn: (rowA, rowB, columnId) => {
+      const statusA = rowA.getValue(columnId) as string;
+      const statusB = rowB.getValue(columnId) as string;
+      return orderSorter(statusA, statusB, accountOrder);
+    },
   },
   {
     accessorKey: 'total_utilization',
@@ -147,8 +164,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.effective_date
-        ? new Date((originalRow as any).effective_date) : null,
+        originalRow?.effective_date ? new Date(originalRow.effective_date) : null,
   },
   {
     accessorKey: 'coc_issue_date',
@@ -166,8 +182,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.coc_issue_date
-        ? new Date((originalRow as any).coc_issue_date) : null,
+        originalRow?.coc_issue_date ? new Date(originalRow.coc_issue_date) : null,
   },
   {
     accessorKey: 'expiration_date',
@@ -185,8 +200,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.expiration_date
-        ? new Date((originalRow as any).expiration_date) : null,
+        originalRow?.expiration_date ? new Date(originalRow.expiration_date) : null,
   },
   {
     accessorKey: 'delivery_date_of_membership_ids',
@@ -204,8 +218,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.delivery_date_of_membership_ids
-        ? new Date((originalRow as any).delivery_date_of_membership_ids) : null,
+        originalRow?.delivery_date_of_membership_ids ? new Date(originalRow.delivery_date_of_membership_ids) : null,
   },
   {
     accessorKey: 'orientation_date',
@@ -223,8 +236,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.orientation_date
-        ? new Date((originalRow as any).orientation_date) : null,
+        originalRow?.orientation_date ? new Date(originalRow.orientation_date) : null,
   },
   {
     accessorKey: 'initial_contract_value',
@@ -252,8 +264,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.wellness_lecture_date
-        ? new Date((originalRow as any).wellness_lecture_date) : null,
+        originalRow?.wellness_lecture_date ? new Date(originalRow.wellness_lecture_date) : null,
   },
   {
     accessorKey: 'annual_physical_examination_date',
@@ -271,8 +282,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.annual_physical_examination_date
-        ? new Date((originalRow as any).annual_physical_examination_date) : null,
+        originalRow?.annual_physical_examination_date ? new Date(originalRow.annual_physical_examination_date) : null,
   },
   {
     accessorKey: 'commision_rate',
@@ -315,8 +325,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.updated_at
-        ? new Date((originalRow as any).updated_at) : null,
+        originalRow?.updated_at ? new Date(originalRow.updated_at) : null,
   },
   { accessorKey: 'name_of_signatory', header: ({ column }) => <TableHeader column={column} title="Signatory Name" /> },
   { accessorKey: 'designation_of_contact_person', header: ({ column }) => <TableHeader column={column} title="Contact Designation" /> },
@@ -338,8 +347,7 @@ export const RenewalStatementsColumns = () => {
       )
     },
     accessorFn: (originalRow) =>
-      (originalRow as any)?.original_effective_date
-        ? new Date((originalRow as any).original_effective_date) : null,
+        originalRow?.original_effective_date ? new Date(originalRow.original_effective_date) : null,
   },
   {
     accessorKey: 'special_benefits_files',
