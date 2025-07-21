@@ -10,7 +10,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertAccIFPColumnVisibility } = useUpsertMutation(
     supabase.from('accounts_column_visibility') as any,
     ['user_id'],
-    'user_id, columns_ifp_accounts',
+    'user_id, columns_ifp_accounts, custom__sort_ifp_accounts',
     {
       onError: () => {
         toast({
@@ -54,7 +54,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertRenewalIFPColumnSorting } = useUpsertMutation(
     supabase.from('accounts_column_sorting') as any,
     ['user_id'],
-    'user_id, columns_ifp_renewals',
+    'user_id, columns_ifp_renewals, custom__sort_ifp_renewals',
     {
       onError: () => {
         toast({

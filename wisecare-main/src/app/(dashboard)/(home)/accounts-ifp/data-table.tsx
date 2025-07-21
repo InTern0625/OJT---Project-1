@@ -36,7 +36,7 @@ import {
   VisibilityState,
 } from '@tanstack/react-table'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, SetStateAction, Dispatch } from 'react'
 import AccountsProvider from './accounts-provider'
 import AddAccountButton from './add-account-button'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
@@ -48,33 +48,45 @@ interface IData {
 
 
 interface DataTableProps<TData extends IData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
+  columns: ColumnDef<TData, TValue>[],
+  customSortStatus?: string | null
   data: TData[]
-  initialPageIndex?: number
-  initialPageSize?: number
-  searchMode: 'Company' | 'Agent'
-  setSearchMode: (mode: 'Company' | 'Agent') => void
+  pageCount: number
+  pageIndex: number
+  pageSize: number
+  onPageChange: (index: number) => void
+  onPageSizeChange: (size: number) => void
+  searchMode: 'company' | 'agent'          
+  setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
+  searchTerm: string
+  setSearchTerm: Dispatch<SetStateAction<string>>
 }
 
 
 const DataTable = <TData extends IData, TValue>({
   columns,
+  customSortStatus,
   data,
-  initialPageIndex = 0,
-  initialPageSize = 10,
+  pageCount,
+  pageIndex,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  searchMode,
+  setSearchMode,
+  searchTerm,
+  setSearchTerm,
 }: DataTableProps<TData, TValue>) => {
-  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
   const supabase = createBrowserClient()
   const { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting } = useColumnStates()
-  const statusOrderRef = useRef<string[]>([]);
+
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
-
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
@@ -93,25 +105,35 @@ const DataTable = <TData extends IData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    manualPagination: true, 
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: (updater) => {
+      const newState = typeof updater === 'function' ? updater({ pageIndex, pageSize }) : updater
+
+      if (newState.pageIndex !== pageIndex) {
+        onPageChange(newState.pageIndex)
+      }
+
+      if (newState.pageSize !== pageSize) {
+        onPageSizeChange(newState.pageSize)
+      }
+    },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setSearchTerm,
     globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
       sorting,
       columnVisibility,
-      globalFilter,
-    },
-    initialState: {
-      pagination: {
-        pageIndex: initialPageIndex ?? 0,
-        pageSize: initialPageSize ?? 10,
-      },
-    },
+      globalFilter: searchTerm,
+    }
   })
 
 
@@ -132,14 +154,19 @@ const DataTable = <TData extends IData, TValue>({
 
   useEffect(() => {
     if (!user?.id) return
-   
+
+    const sortedId = sorting[0]?.id
+    const allowed = ["status_type_name", "account_type_name"]
+    const effectiveCustomSort = sortedId && allowed.includes(sortedId) ? customSortStatus : null
+
     upsertAccIFPColumnSorting([
       {
         user_id: user.id,
         columns_ifp_accounts: sorting,
-      },
+        custom__sort_ifp_accounts: effectiveCustomSort ?? null
+      }
     ])
-  }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
+  }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id, customSortStatus])
 
 
 

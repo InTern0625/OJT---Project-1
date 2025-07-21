@@ -22,20 +22,26 @@ export const formatPercentage = (value: number | null | undefined) => {
   }
   return `${value.toFixed(2)}%`
 }
-export const AccountsColumns = () => {
+export const AccountsColumns = ({
+  customSortStatus,
+  setCustomSortStatus,
+}: {
+  customSortStatus: string | null;
+  setCustomSortStatus: (status: string | null) => void;
+}) => {
   const statusOrder = useSortingOrder("status_types")
-  
-  const [activeSortStatus, setActiveSortStatus] = useState<string | null>(null);
-  const statusSorter = (a: string, b: string) => {
-    // If clicking "Active", bring Active to top
-    if (activeSortStatus) {
-      if (a === activeSortStatus) return -1;
-      if (b === activeSortStatus) return 1;
+  const programOrder = useSortingOrder("program_types")
+  const roomOrder = useSortingOrder("room_plans")
+  const orderSorter = (a: string, b: string, sortOrder: string[]) => {
+    // Bring Sort selection to top
+    if (customSortStatus) {
+      if (a === customSortStatus) return -1;
+      if (b === customSortStatus) return 1;
     }
 
     // Fall back to default order
-    const indexA = statusOrder.indexOf(a);
-    const indexB = statusOrder.indexOf(b);
+    const indexA = sortOrder.indexOf(a);
+    const indexB = sortOrder.indexOf(b);
     
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
@@ -52,13 +58,13 @@ export const AccountsColumns = () => {
           column={column} 
           title="Account Status" 
           customSortOrder={statusOrder}
-          onStatusClick={setActiveSortStatus}
+          onStatusClick={setCustomSortStatus}
         />
       ),
       sortingFn: (rowA, rowB, columnId) => {
         const statusA = rowA.getValue(columnId) as string;
         const statusB = rowB.getValue(columnId) as string;
-        return statusSorter(statusA, statusB);
+        return orderSorter(statusA, statusB, statusOrder);
       },
     },
     {
@@ -72,6 +78,8 @@ export const AccountsColumns = () => {
       header: ({ column }) => (
         <TableHeader column={column} title="Birthdate" />
       ),
+      accessorFn: (originalRow) =>
+        originalRow?.birthdate ? new Date(originalRow.birthdate) : null,
     },
     {
       id: 'age',
@@ -148,9 +156,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.effective_date
-          ? format((originalRow as any).effective_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.effective_date ? new Date(originalRow.effective_date) : null,
     },
     {
       accessorKey: 'expiration_date',
@@ -168,9 +174,7 @@ export const AccountsColumns = () => {
         )
       },
       accessorFn: (originalRow) =>
-        (originalRow as any)?.expiration_date
-          ? format((originalRow as any).expiration_date, 'MMMM dd, yyyy')
-          : '',
+        originalRow?.expiration_date ? new Date(originalRow.expiration_date) : null,
     },
     {
       accessorKey: 'mode_of_payment.name',
@@ -190,8 +194,18 @@ export const AccountsColumns = () => {
       accessorKey: 'room_plan.name',
       accessorFn: (originalRow) => (originalRow as any)?.room_plan?.name ?? '',
       header: ({ column }) => (
-        <TableHeader column={column} title="Room Plans" />
+        <TableHeader 
+          column={column} 
+          title="Room Plans" 
+          customSortOrder={roomOrder}
+          onStatusClick={setCustomSortStatus}
+        />
       ),
+      sortingFn: (rowA, rowB, columnId) => {
+        const typeA = rowA.getValue(columnId) as string;
+        const typeB = rowB.getValue(columnId) as string;
+        return orderSorter(typeA, typeB, roomOrder);
+      },
     },
     {
       accessorKey: 'mbl',
@@ -203,8 +217,18 @@ export const AccountsColumns = () => {
       accessorKey: 'program_type.name',
       accessorFn: (originalRow) => (originalRow as any)?.program_type?.name ?? '',
       header: ({ column }) => (
-        <TableHeader column={column} title="Program Types" />
+        <TableHeader 
+          column={column}
+          title="Program Types" 
+          customSortOrder={programOrder}
+          onStatusClick={setCustomSortStatus}
+        />
       ),
+      sortingFn: (rowA, rowB, columnId) => {
+        const typeA = rowA.getValue(columnId) as string;
+        const typeB = rowB.getValue(columnId) as string;
+        return orderSorter(typeA, typeB, programOrder);
+      },
     },
     {
       accessorKey: 'premium',
