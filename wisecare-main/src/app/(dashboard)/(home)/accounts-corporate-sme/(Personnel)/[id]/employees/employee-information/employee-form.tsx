@@ -23,6 +23,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuItem,
+} from '@/components/ui/dropdown-menu'
 import { useToast } from '@/components/ui/use-toast'
 import { Tables } from '@/types/database.types'
 import normalizeToUTC from '@/utils/normalize-to-utc'
@@ -65,6 +73,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
 
   // form updater
   const [isDone, setIsDone] = useState(false)
+  const [affiliates, setAffiliates] = useState<any[]>([])
 
   const form = useForm<z.infer<typeof employeeSchema>>({
     resolver: zodResolver(employeeSchema),
@@ -86,6 +95,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
       expiration_date: undefined,
       cancelation_date: undefined,
       remarks: '',
+      company_affiliate: undefined,
     },
   })
   const supabase = createBrowserClient()
@@ -161,6 +171,26 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
     [accountId, form, mutateAsync, oldEmployeeData, supabase.auth, toast],
   )
 
+  const fetchCompanyAffiliates = async () => {
+    console.log('Fetching affiliates for accountId:', accountId)
+    const { data, error } = await supabase
+      .from('company_affiliates')
+      .select('id, affiliate_name, affiliate_address') // ✅ include id
+      .eq('parent_company_id', accountId)
+      .eq('is_active', true)
+
+    if (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Failed to load affiliates',
+        description: error.message,
+      })
+      return
+    }
+
+    setAffiliates(data ?? [])
+  }
+
   // If oldEmployeeData is provided, we are editing an existing employee
   useEffect(() => {
     if (oldEmployeeData) {
@@ -205,7 +235,10 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
   const { data: roomPlanTypes } = useQuery(getTypes(supabase, 'room_plans'))
-  
+  useEffect(() => {
+  fetchCompanyAffiliates()
+}, [accountId])
+
   return (
     <Form {...form}>
       {/* key is used to trigger a re-render */}
@@ -685,6 +718,41 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
               </FormItem>
             )}
           />
+          
+        <FormField
+          control={form.control}
+          name="company_affiliate"
+          render={({ field }) => (
+            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+              <FormLabel className="text-right">Company Affiliate</FormLabel>
+              <FormControl className="col-span-3">
+                <Select
+                  onValueChange={field.onChange}
+                  value={field.value}
+                  disabled={affiliates.length === 0 || isPending}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select Affiliate" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {affiliates.map((a) => (
+                      <SelectItem key={a.id} value={a.id}>
+                        <div className="flex flex-col text-left">
+                          <span className="text-sm font-medium">{a.affiliate_name}</span>
+                          <span className="text-xs text-muted-foreground">
+                            {a.affiliate_address}
+                          </span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </FormControl>
+              <FormMessage className="col-span-3 col-start-2" />
+            </FormItem>
+          )}
+        />
+
 
           <div className="col-span-2 flex justify-end gap-2 pt-2">
             <Button

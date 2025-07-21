@@ -1,5 +1,6 @@
 'use client'
 
+import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema'
 import CompanyAccountInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-account-information'
 import CompanyCancelButton from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-cancel-button'
 import CompanyContractInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-contract-information'
@@ -68,16 +69,38 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
   const existingContractFiles = useMemo(
     () => account?.contract_proposal_files ?? [],
-    [account?.contract_proposal_files]
+    [account?.contract_proposal_files],
   )
   const existingSpecialBenefitsFiles = useMemo(
     () => account?.special_benefits_files ?? [],
-    [account?.special_benefits_files]
+    [account?.special_benefits_files],
   )
   const existingAdditionalFiles = useMemo(
     () => account?.additional_benefits_files ?? [],
-    [account?.additional_benefits_files]
+    [account?.additional_benefits_files],
   )
+  const [initialAffiliates, setInitialAffiliates] = useState<
+    { id: string; affiliate_name: string; affiliate_address: string }[]
+  >([])
+
+  useEffect(() => {
+    const fetchAffiliates = async () => {
+      const { data, error } = await supabase
+        .from('company_affiliates')
+        .select('id, affiliate_name, affiliate_address')
+        .eq('parent_company_id', companyId)
+        .eq('is_active', true)
+
+      if (error) {
+        console.error('Error fetching affiliates:', error)
+      } else {
+        setInitialAffiliates(data || [])
+      }
+    }
+
+    fetchAffiliates()
+  }, [companyId])
+
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
@@ -179,12 +202,11 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         account?.designation_of_contact_person ?? '',
       email_address_of_contact_person:
         account?.email_address_of_contact_person ?? '',
-      affiliate_entries: [],
-      affiliate_name: '',
-      affiliate_address: '',
+      affiliate_entries: initialAffiliates, // ✅ fetched affiliates here
+      deleted_affiliate_ids: [], // ✅ track for soft delete
     },
   })
-  
+
   const { mutateAsync } = useUpsertMutation(
     //@ts-ignore
     supabase.from(
@@ -220,29 +242,38 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
     },
   )
 
-  const { mutateAsync: uploadSpecialBenefits } = useUpload(supabase.storage.from('accounts'), {
-    buildFileName: ({ fileName }) => {
-      const randomId = Math.random().toString(36).substring(2, 15)
-      return `benefits/${randomId}-${fileName}`
+  const { mutateAsync: uploadSpecialBenefits } = useUpload(
+    supabase.storage.from('accounts'),
+    {
+      buildFileName: ({ fileName }) => {
+        const randomId = Math.random().toString(36).substring(2, 15)
+        return `benefits/${randomId}-${fileName}`
+      },
     },
-  })
-  const { mutateAsync: uploadContractProposal } = useUpload(supabase.storage.from('accounts'), {
-    buildFileName: ({ fileName }) => {
-      const randomId = Math.random().toString(36).substring(2, 15)
-      return `contract_proposal/${randomId}-${fileName}`
+  )
+  const { mutateAsync: uploadContractProposal } = useUpload(
+    supabase.storage.from('accounts'),
+    {
+      buildFileName: ({ fileName }) => {
+        const randomId = Math.random().toString(36).substring(2, 15)
+        return `contract_proposal/${randomId}-${fileName}`
+      },
     },
-  })
-  const { mutateAsync: uploadAdditionalBenefits } = useUpload(supabase.storage.from('accounts'), {
-    buildFileName: ({ fileName }) => {
-      const randomId = Math.random().toString(36).substring(2, 15)
-      return `additional_benefits/${randomId}-${fileName}`
+  )
+  const { mutateAsync: uploadAdditionalBenefits } = useUpload(
+    supabase.storage.from('accounts'),
+    {
+      buildFileName: ({ fileName }) => {
+        const randomId = Math.random().toString(36).substring(2, 15)
+        return `additional_benefits/${randomId}-${fileName}`
+      },
     },
-  })
+  )
 
   const onSubmitHandler = useCallback<FormEventHandler<HTMLFormElement>>(
     (e) => {
       form.handleSubmit(async (data) => {
-        setIsSubmitting (true)
+        setIsSubmitting(true)
         const {
           data: { user },
         } = await supabase.auth.getUser()
@@ -257,34 +288,78 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         }
 
         await supabase
-        .from('accounts')
-        .update({
-          is_editing: false,
-          editing_user: null,
-          editing_timestampz: null,
-        })
-        .eq('id', companyId)
+          .from('accounts')
+          .update({
+            is_editing: false,
+            editing_user: null,
+            editing_timestampz: null,
+          })
+          .eq('id', companyId)
 
         // Save affiliates to `company_affiliates` table
-        const { affiliate_entries } = data
+        const { affiliate_entries, deleted_affiliate_ids } = data
 
         if (Array.isArray(affiliate_entries)) {
           for (const entry of affiliate_entries) {
-            const { error } = await supabase.from('company_affiliates').insert({
-              parent_company_id: companyId,
-              created_by: user.id,
-              is_active: true,
-              ...entry, // should contain affiliate_name and affiliate_address
-            })
+            if (entry.id) {
+              // Update existing
+              const { error } = await supabase
+                .from('company_affiliates')
+                .update({
+                  affiliate_name: entry.affiliate_name,
+                  affiliate_address: entry.affiliate_address,
+                })
+                .eq('id', entry.id)
 
-            if (error) {
-              console.error('❌ Error saving affiliate:', error)
+              if (error) {
+                console.error('❌ Error updating affiliate:', error)
+              }
             } else {
-              console.log('✅ Saved affiliate to company_affiliates:', entry)
+              // Insert new
+              const { error } = await supabase
+                .from('company_affiliates')
+                .insert({
+                  parent_company_id: companyId,
+                  created_by: user.id,
+                  is_active: true,
+                  affiliate_name: entry.affiliate_name,
+                  affiliate_address: entry.affiliate_address,
+                })
+
+              if (error) {
+                console.error('❌ Error inserting affiliate:', error)
+              }
             }
           }
+        }
+
+        // Soft delete removed affiliates
+        if (Array.isArray(deleted_affiliate_ids)) {
+          for (const id of deleted_affiliate_ids) {
+            const { error } = await supabase
+              .from('company_affiliates')
+              .update({ is_active: false })
+              .eq('id', id)
+
+            if (error) {
+              console.error('❌ Error deleting affiliate:', error)
+            } else {
+              console.log('🗑️ Soft-deleted affiliate ID:', id)
+            }
+          }
+        }
+
+        // ✅ Re-fetch updated active affiliates
+        const { data: updatedAffiliates, error: fetchError } = await supabase
+          .from('company_affiliates')
+          .select('id, affiliate_name, affiliate_address')
+          .eq('parent_company_id', companyId)
+          .eq('is_active', true)
+
+        if (fetchError) {
+          console.error('❌ Error refetching updated affiliates:', fetchError)
         } else {
-          console.warn('⚠️ No affiliate entries found or not in array format:', affiliate_entries)
+          setInitialAffiliates(updatedAffiliates || [])
         }
 
         // Handle file input
@@ -297,7 +372,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         const additionalBenefitsFiles = data.additional_benefits_files
           ? Array.from(data.additional_benefits_files)
           : []
-          
+
         // Upload special benefits files only if the feature is enabled and there are files
         let specialBenefitsLink: string[] = []
         if (
@@ -313,7 +388,14 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             const uploadSpecialBenefitsLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
-            specialBenefitsLink = [...new Set([...existingSpecialBenefitsFiles, ...uploadSpecialBenefitsLink].filter(x => x))]
+            specialBenefitsLink = [
+              ...new Set(
+                [
+                  ...existingSpecialBenefitsFiles,
+                  ...uploadSpecialBenefitsLink,
+                ].filter((x) => x),
+              ),
+            ]
           }
         }
 
@@ -331,7 +413,14 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             const uploadContractProposalLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
-            contractProposalLink = [...new Set([...existingContractFiles, ...uploadContractProposalLink].filter(x => x))]
+            contractProposalLink = [
+              ...new Set(
+                [
+                  ...existingContractFiles,
+                  ...uploadContractProposalLink,
+                ].filter((x) => x),
+              ),
+            ]
           }
         }
 
@@ -349,10 +438,17 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             const uploadAdditionalBenefitsLink = uploadResult
               .map((result) => result.data?.path)
               .filter((path): path is string => typeof path === 'string')
-            additionalBenefitsLink = [...new Set([...existingAdditionalFiles, ...uploadAdditionalBenefitsLink].filter(x => x))]
+            additionalBenefitsLink = [
+              ...new Set(
+                [
+                  ...existingAdditionalFiles,
+                  ...uploadAdditionalBenefitsLink,
+                ].filter((x) => x),
+              ),
+            ]
           }
         }
-        
+
         await mutateAsync([
           {
             status_id: statusId ?? data.status_id,
@@ -450,7 +546,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       existingContractFiles,
       existingSpecialBenefitsFiles,
       existingAdditionalFiles,
-      statusId
+      statusId,
     ],
   )
   useEffect(() => {
@@ -484,7 +580,9 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               <CompanyHMOInformation id={companyId} />
             </div>
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
-              <span className="text-xl font-semibold">Affiliates Information</span>
+              <span className="text-xl font-semibold">
+                Affiliates Information
+              </span>
               <CompanyAffiliatesInformation id={companyId} />
             </div>
           </div>
@@ -492,7 +590,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         <div className="mt-4 flex flex-row items-center justify-between gap-2 lg:ml-auto lg:justify-end">
           {editMode && (
             <>
-              <CompanyCancelButton companyID={companyId}/>
+              <CompanyCancelButton companyID={companyId} />
               <Button
                 type="submit"
                 variant="default"

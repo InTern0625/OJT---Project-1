@@ -1,7 +1,6 @@
 import { z } from 'zod'
-
 const companyEditsSchema = z.object({
-  //marketing
+  // marketing
   is_active: z.union([z.boolean(), z.string()]).optional(),
   status_id: z.string().optional(),
   agent_id: z.string().optional(),
@@ -11,16 +10,22 @@ const companyEditsSchema = z.object({
   hmo_provider_id: z.string().optional(),
   previous_hmo_provider_id: z.string().optional(),
   old_hmo_provider_id: z.string().optional(),
+
   affiliate_entries: z
     .array(
       z.object({
+        id: z.string().optional(), // ✅ Include this
         affiliate_name: z.string(),
         affiliate_address: z.string(),
-      })
+      }),
     )
     .optional(),
+
+  deleted_affiliate_ids: z.array(z.string()).optional(), // ✅ <-- ADD THIS
+
   new_affiliate_name: z.string().optional(),
   new_affiliate_address: z.string().optional(),
+
   account_type_id: z.string().optional(),
   total_utilization: z.preprocess(
     (val) => (val === null ? null : parseFloat(val as string)),

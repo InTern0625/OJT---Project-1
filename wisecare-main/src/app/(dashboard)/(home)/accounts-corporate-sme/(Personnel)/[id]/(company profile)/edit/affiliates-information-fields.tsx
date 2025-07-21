@@ -11,89 +11,88 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Plus, Trash2 } from 'lucide-react'
 import { useFormContext, useFieldArray } from 'react-hook-form'
-import { useEffect } from 'react'
 import { z } from 'zod'
+import { useState } from 'react'
+import { createBrowserClient } from '@/utils/supabase-client'
 
-const AffiliatesInformationFields = () => {
+const AffiliatesInformationFields = ({ companyId }: { companyId: string }) => {
   const form = useFormContext<z.infer<typeof companyEditsSchema>>()
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'affiliate_entries',
   })
 
-  // Optional: Watch full form state for debugging
-  useEffect(() => {
-    const subscription = form.watch((value) => {
-      console.log('🧪 Live form watch:', value)
-    })
-    return () => subscription.unsubscribe()
-  }, [form])
+  const [newAffiliateName, setNewAffiliateName] = useState('')
+  const [newAffiliateAddress, setNewAffiliateAddress] = useState('')
+  const supabase = createBrowserClient()
 
-  // Optional: Console log triggered manually to simulate database save
-  const onSaveToDB = () => {
-    const dataToSave = form.getValues('affiliate_entries')
-    console.log('🗃️ Attempting to save to database → affiliate_entries:', dataToSave)
-    // here you would use supabase.from('accounts').update(...).eq(...)
+  const handleAddAffiliate = () => {
+    const trimmedName = newAffiliateName.trim()
+    const trimmedAddress = newAffiliateAddress.trim()
+    if (!trimmedName || !trimmedAddress) return
+
+    append({
+      affiliate_name: trimmedName,
+      affiliate_address: trimmedAddress,
+    })
+
+    setNewAffiliateName('')
+    setNewAffiliateAddress('')
+  }
+
+  const handleRemoveAffiliate = (index: number) => {
+    const currentEntries = form.getValues('affiliate_entries') || []
+
+    const entry = currentEntries[index]
+
+    if (entry?.id) {
+      const deletedIds = form.getValues('deleted_affiliate_ids') || []
+      if (!deletedIds.includes(entry.id)) {
+        form.setValue('deleted_affiliate_ids', [...deletedIds, entry.id])
+      }
+    }
+
+    remove(index)
   }
 
   return (
     <div className="space-y-4">
-      {/* Add button + input row */}
+      <h3 className="text-lg font-semibold">Affiliates Information</h3>
+
+      {/* Add Affiliate Form */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <Input
           className="w-full sm:max-w-xs"
           placeholder="Affiliate Name"
-          value={form.watch('new_affiliate_name') || ''}
-          onChange={(e) => form.setValue('new_affiliate_name', e.target.value)}
+          value={newAffiliateName}
+          onChange={(e) => setNewAffiliateName(e.target.value)}
         />
         <Input
           className="w-full sm:max-w-xs"
           placeholder="Affiliate Address"
-          value={form.watch('new_affiliate_address') || ''}
-          onChange={(e) => form.setValue('new_affiliate_address', e.target.value)}
+          value={newAffiliateAddress}
+          onChange={(e) => setNewAffiliateAddress(e.target.value)}
         />
         <Button
           type="button"
           variant="ghost"
           className="border border-gray-300 hover:bg-gray-100"
-          onClick={() => {
-            const name = form.watch('new_affiliate_name')?.trim()
-            const address = form.watch('new_affiliate_address')?.trim()
-
-            if (name && address) {
-              append({
-                affiliate_name: name,
-                affiliate_address: address,
-              })
-              console.log('✅ Appended affiliate:', {
-                affiliate_name: name,
-                affiliate_address: address,
-              })
-              console.log('📦 Current affiliate_entries:', form.getValues('affiliate_entries'))
-
-              // Clear inputs
-              form.setValue('new_affiliate_name', '')
-              form.setValue('new_affiliate_address', '')
-
-              // Trigger DB save simulation (optional)
-              onSaveToDB()
-            } else {
-              console.warn('⚠️ Missing name or address — not appended.')
-            }
-          }}
+          onClick={handleAddAffiliate}
+          disabled={!newAffiliateName.trim() || !newAffiliateAddress.trim()}
         >
           <Plus size={18} />
         </Button>
       </div>
 
-      {/* List of existing affiliates */}
+      {/* Existing Affiliates */}
       <div className="space-y-2">
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-md bg-gray-50 p-4 border"
+            className="flex flex-col items-start justify-between rounded-md border bg-gray-50 p-4 sm:flex-row sm:items-center"
           >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full">
+            <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center">
               <div className="flex-1">
                 <FormField
                   control={form.control}
@@ -101,7 +100,11 @@ const AffiliatesInformationFields = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="Affiliate Name" className="w-full" />
+                        <Input
+                          {...field}
+                          placeholder="Affiliate Name"
+                          className="w-full"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -115,7 +118,11 @@ const AffiliatesInformationFields = () => {
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
-                        <Input {...field} placeholder="Affiliate Address" className="w-full" />
+                        <Input
+                          {...field}
+                          placeholder="Affiliate Address"
+                          className="w-full"
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -128,10 +135,7 @@ const AffiliatesInformationFields = () => {
                 variant="destructive"
                 size="icon"
                 type="button"
-                onClick={() => {
-                  remove(index)
-                  console.log(`🗑️ Removed affiliate at index ${index}`)
-                }}
+                onClick={() => handleRemoveAffiliate(index)}
               >
                 <Trash2 size={16} />
               </Button>

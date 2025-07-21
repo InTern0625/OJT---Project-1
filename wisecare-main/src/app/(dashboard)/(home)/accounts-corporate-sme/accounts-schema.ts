@@ -28,16 +28,25 @@ const accountsSchema = z.object({
   coc_issue_date: z.date().optional(),
   expiration_date: z.date().optional(),
   delivery_date_of_membership_ids: z.date().optional(),
+
+  // ✅ Updated with `id`
   affiliate_entries: z
-      .array(
-        z.object({
-          affiliate_name: z.string(),
-          affiliate_address: z.string(),
-        })
-      )
-      .optional(),
-    new_affiliate_name: z.string().optional(),
-    new_affiliate_address: z.string().optional(),
+    .array(
+      z.object({
+        id: z.string().optional(), // this allows updates
+        affiliate_name: z.string(),
+        affiliate_address: z.string(),
+      }),
+    )
+    .optional(),
+
+  // ✅ Optional new values for add-only use
+  new_affiliate_name: z.string().optional(),
+  new_affiliate_address: z.string().optional(),
+
+  // ✅ For soft-delete tracking
+  deleted_affiliate_ids: z.array(z.string()).optional(),
+
   orientation_date: z.date().optional(),
   initial_contract_value: z.preprocess((val) => {
     if (val === null || val === '' || val === undefined) return null
@@ -60,7 +69,7 @@ const accountsSchema = z.object({
   additional_benefits_files: z.array(z.instanceof(File)).optional(),
   is_editing: z.string().max(1000).optional(),
   editing_user: z.string().uuid().optional(),
-  editing_timestampz: z.date().optional()
+  editing_timestampz: z.date().optional(),
 })
 
 export default accountsSchema
