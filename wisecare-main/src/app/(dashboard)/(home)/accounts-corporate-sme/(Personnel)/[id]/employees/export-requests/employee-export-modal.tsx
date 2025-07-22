@@ -161,7 +161,7 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
         'Principal Member Name': employee.principal_member_name || '',
       }
     })
-    /*
+    
     await mutateAsync([
       {
         export_type: exportData,
@@ -169,7 +169,7 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
         account_id: accountId,
         data: employeesData,
       },
-    ])*/
+    ])
   }
 
   return (

@@ -58,6 +58,8 @@ const AffiliatesInformationFields = ({ companyId }: { companyId: string }) => {
 
   return (
     <div className="space-y-4">
+      <h3 className="text-lg font-semibold">Affiliates Information</h3>
+
       {/* Add Affiliate Form */}
       <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
         <Input

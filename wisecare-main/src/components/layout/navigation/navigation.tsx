@@ -58,7 +58,7 @@ const Navigation = async () => {
             />
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'under-writing'].includes(role) && (
+              role && ['finance', 'admin', 'under-writing', 'finance'].includes(role) && (
                 <NavigationItem
                   title="Billing Statements"
                   href="/billing-statements-corporate-sme"
@@ -90,7 +90,7 @@ const Navigation = async () => {
             />
             {
               // only show pending tab if role is finance
-              role && ['finance', 'admin', 'under-writing'].includes(role) && (
+              role && ['finance', 'admin', 'under-writing', 'finance'].includes(role) && (
                 <NavigationItem
                   title="Billing Statements"
                   href="/billing-statements-ifp"
