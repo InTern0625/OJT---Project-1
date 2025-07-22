@@ -149,6 +149,8 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           .select('company_name')
           .eq('company_name', data.company_name)
           .maybeSingle()
+          .eq('is_active', true)
+          .eq('is_approved', false)
 
         if (existingAccount) {
           form.setError('company_name', {
@@ -163,6 +165,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           .select('company_name')
           .eq('company_name', data.company_name)
           .maybeSingle()
+          .eq('is_active', true)
 
         if (existingAccountInAccounts) {
           form.setError('company_name', {
@@ -277,7 +280,37 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
               operation_type: 'insert',
             }),
           },
-        ])
+        ]).then(async (insertedAccounts) => {
+          const insertedAccount = insertedAccounts?.[0]
+          const parentCompanyId = insertedAccount?.id
+
+          //Insert affiliate entries if present
+          if (
+            parentCompanyId &&
+            Array.isArray(data.affiliate_entries) &&
+            data.affiliate_entries.length > 0
+          ) {
+            const affiliatePayload = data.affiliate_entries.map((entry) => ({
+              parent_company_id: parentCompanyId,
+              affiliate_name: entry.affiliate_name,
+              affiliate_address: entry.affiliate_address,
+              is_active: entry.is_active ?? true,
+              created_by: user.id,
+            }))
+
+            const { error: affiliateError } = await supabase
+              .from('company_affiliates')
+              .insert(affiliatePayload)
+
+            if (affiliateError) {
+              toast({
+                title: 'Affiliate insert error',
+                description: affiliateError.message,
+                variant: 'destructive',
+              })
+            }
+          }
+        })
       })(e)
     },
     [form, isSpecialBenefitsFilesEnabled, mutateAsync, supabase, uploadSpecialBenefits, uploadContractProposal, uploadAdditionalBenefits],

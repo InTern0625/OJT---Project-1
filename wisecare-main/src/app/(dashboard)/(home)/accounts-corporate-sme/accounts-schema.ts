@@ -36,6 +36,7 @@ const accountsSchema = z.object({
         id: z.string().optional(), // this allows updates
         affiliate_name: z.string(),
         affiliate_address: z.string(),
+        is_active: z.boolean().optional(),
       }),
     )
     .optional(),
