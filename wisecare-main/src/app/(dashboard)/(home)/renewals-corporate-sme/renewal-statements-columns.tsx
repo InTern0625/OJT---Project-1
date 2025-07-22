@@ -125,7 +125,7 @@ export const RenewalStatementsColumns = ({
       <TableHeader 
         column={column} 
         title="Account Type"
-        customSortOrder={statusOrder}
+        customSortOrder={accountOrder}
         onStatusClick={setCustomSortStatus}
       />,
     cell: ({ row }) => (row.original as any).account_types?.name ?? '-',

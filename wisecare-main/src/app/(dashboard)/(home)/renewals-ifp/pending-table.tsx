@@ -23,7 +23,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   
 const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
+    getAccountsColumnSortingByUserId(supabase, "columns_ifp_renewals"),
   )
   const [customSortID, setCustomSortID] = useState<string | null>(null)
   const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
@@ -36,13 +36,12 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
   const from = pageIndex * pageSize
   
   const to = from + pageSize - 1
-  //console.log("PAGE", pageIndex, pageSize, from, to)
-  //const { data, count, isLoading } = useQuery(getAccounts(supabase))
+
   //Get ID of custom sort
   useEffect(() => {
     const fetchSortID = async () => {
-      const sortKey = (columnSortingData?.columns_sme_renewals?.[0] as any)?.id
-      const storedRaw = columnSortingData?.custom__sort_sme_renewals ?? null
+      const sortKey = (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id
+      const storedRaw = columnSortingData?.custom__sort_ifp_renewals ?? null
       setCustomSortStatus(storedRaw)
 
       if (!customSortStatus || !sortKey) return
@@ -73,11 +72,11 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
       accountType: 'IFP',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
-        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc
+        col: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id, 
+        desc: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.desc
       },
       customSort: {
-        key: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id,
+        key: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id,
         value: customSortID
       },
       search: {
@@ -103,23 +102,7 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     customSortStatus,
     setCustomSortStatus,
   })
-  /*
-  //const { data: test } = useQuery(getRenewalStatements(supabase))
-  
-  const filteredData = (data || [])
-  .filter((item: any) => {
-    const accountType = item.account_types?.name?.toUpperCase()
-    const expiration = item.expiration_date ? new Date(item.expiration_date) : null
-    const isBusiness = item.account_types !== null
-    const isIFP = item.program_type !== null
 
-    const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return ((!isBusiness && isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
-  })
-  .map((item: any) => ({
-    ...item,
-    program_type_id: item.program_type?.id ?? null, 
-  }))*/
   const displayData = isLoading ? previousData : accountData
 
   return <DataTable 

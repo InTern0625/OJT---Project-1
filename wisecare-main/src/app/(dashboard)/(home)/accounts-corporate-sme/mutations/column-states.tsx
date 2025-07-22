@@ -10,7 +10,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertAccSMEColumnVisibility } = useUpsertMutation(
     supabase.from('accounts_column_visibility') as any,
     ['user_id'],
-    'user_id, columns_ifp_accounts',
+    'user_id, columns_sme_accounts',
     {
       onError: () => {
         toast({
@@ -25,7 +25,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertAccSMEColumnSorting } = useUpsertMutation(
     supabase.from('accounts_column_sorting') as any,
     ['user_id'],
-    'user_id, columns_ifp_accounts, custom__sort_sme_accounts',
+    'user_id, columns_sme_accounts, custom__sort_sme_accounts',
     {
       onError: () => {
         toast({
@@ -39,7 +39,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertRenewalSMEColumnVisibility } = useUpsertMutation(
     supabase.from('accounts_column_visibility') as any,
     ['user_id'],
-    'user_id, columns_ifp_renewals',
+    'user_id, columns_sme_renewals',
     {
       onError: () => {
         toast({
@@ -54,7 +54,7 @@ export const useColumnStates = () => {
   const { mutateAsync: upsertRenewalSMEColumnSorting } = useUpsertMutation(
     supabase.from('accounts_column_sorting') as any,
     ['user_id'],
-    'user_id, columns_ifp_renewals, custom__sort_sme_renewals',
+    'user_id, columns_sme_renewals, custom__sort_sme_renewals',
     {
       onError: () => {
         toast({

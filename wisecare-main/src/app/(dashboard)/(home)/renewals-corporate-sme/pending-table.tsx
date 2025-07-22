@@ -100,23 +100,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     customSortStatus,
     setCustomSortStatus,
   })
-  /*
-  //const { data: test } = useQuery(getRenewalStatements(supabase))
-  
-  const filteredData = (test || [])
-  .filter((item: any) => {
-    const accountType = item.account_types?.name?.toUpperCase()
-    const expiration = item.expiration_date ? new Date(item.expiration_date) : null
-    const isBusiness = item.account_types !== null
-    const isIFP = item.program_type !== null
 
-    const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return ((isBusiness && !isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
-  })
-  .map((item: any) => ({
-    ...item,
-    account_type_id: item.account_types?.id ?? null, 
-  }))*/
   const displayData = isLoading ? previousData : accountData
   
   return <DataTable 
