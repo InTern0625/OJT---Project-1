@@ -98,10 +98,10 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
           )}
           {canSeeEmployee &&(
             <Link
-              href={`/accounts-ifp/${id}/employees`}
+              href={`/accounts-corporate-sme/${id}/employees`}
               className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
             >
-              Members
+              Employees
           </Link>
           )}
         </div>

@@ -113,8 +113,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           .from('pending_accounts')
           .select('company_name')
           .eq('company_name', data.company_name)
-          .eq('is_active', true)
-          .eq('is_approved', false)
           .maybeSingle()
         if (existingInPending.data) {
           form.setError('company_name', { message: 'Account already exists' })
@@ -125,7 +123,6 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
           .from('accounts')
           .select('company_name')
           .eq('company_name', data.company_name)
-          .eq('is_active', true)
           .maybeSingle()
         if (existingInAccounts.data) {
           form.setError('company_name', { message: 'Account already exists' })

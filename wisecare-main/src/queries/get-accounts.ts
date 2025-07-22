@@ -1,15 +1,7 @@
 import { TypedSupabaseClient } from '@/types/typedSupabaseClient'
-import { emitKeypressEvents } from 'readline'
-interface AccountFilters {
-  accountType?: string
-  customSort?: {key: string | null, value: string | null}
-  sortOrder?: {col: string | null, desc: boolean }
-  search?: {key: string | null, value: string | null}
-  range?: { start: number; end: number }
-}
 
-const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}) => {
-  let query = supabase
+const getAccounts = (supabase: TypedSupabaseClient) => {
+  return supabase
     .from('accounts')
     .select(
       `
@@ -69,54 +61,8 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
         head: false,
       },
     )
-    .eq('is_active', true)
-  
-  
-  // Sort Filters
-  if (filters.customSort?.key && filters.customSort?.value && filters.customSort.value !== "") {
-    if (filters.customSort.key === "account_type_name") {
-      query = query.eq("account_type_id", filters.customSort.value)
-    } else if (filters.customSort.key === "status_type_name") {
-      query = query.eq("status_id", filters.customSort.value)
-    }
-  } else if (filters.sortOrder?.col && !(filters.sortOrder.col == "account_type_name" || filters.sortOrder.col == "status_type_name")) {
-    //Normal sorting only run if custom key or value is undefined
-    query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
-  } else {
-    //if none
-    query = query.order('created_at', { ascending: false })
-  }
-
-  //Account type filter
-  if (filters.accountType === "Business") {
-    query = query.or(
-      'and(account_type_id.not.is.null,program_types_id.is.null),and(account_type_id.is.null,program_types_id.is.null)'
-    );
-  } else if (filters.accountType === "IFP") {
-    query = query.or(
-      'and(account_type_id.is.null,program_types_id.not.is.null),and(account_type_id.is.null,program_types_id.is.null)'
-    );
-  }
-
-
-
-
-  //Search filter
-  const searchValue = filters.search?.value ?? ''
-  if (searchValue && filters.search) {
-    if (filters.search.key === 'company') {
-      query = query.ilike('company_name', `${searchValue}%`)
-    } else if (filters.search.key === 'agent') {
-      query = query.ilike('agent_id.first_name', `${searchValue}%`) 
-    }
-  }
-
-  // Pagination
-  if (filters.range) {
-    const { start, end } = filters.range
-    query = query.range(start, end)
-  }
-  return query
+    .eq('is_account_active', true)
+    .order('created_at', { ascending: false })
 }
 
 export default getAccounts
