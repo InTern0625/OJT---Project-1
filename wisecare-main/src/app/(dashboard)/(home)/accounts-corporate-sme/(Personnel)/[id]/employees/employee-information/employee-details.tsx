@@ -22,6 +22,11 @@ import {
   Users,
 } from 'lucide-react'
 import { FC, ReactNode } from 'react'
+import getCompanyAffiliates from '@/queries/get-company-affiliates'
+import { createBrowserClient } from '@/utils/supabase-client'
+import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
+
+const supabase = createBrowserClient()
 
 const EmployeeDetailsItem = (item: {
   label: string
@@ -66,6 +71,7 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
   button,
   employeeData,
 }) => {
+
   const data = [
     {
       label: 'Birth Date',
@@ -116,6 +122,9 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
       icon: CalendarDays,
     },
     { label: 'Remarks', value: employeeData.remarks, icon: MessageCircle },
+    { label: 'Affiliations', 
+      value: 'placeholder', 
+      icon: User},
   ]
 
   return (

@@ -10,7 +10,7 @@ export const ButtonBack = () => {
   const searchParams = useSearchParams()
   
 
-  const fromPath = searchParams.get('fromPath') ?? '/accounts'
+  const fromPath = searchParams.get('fromPath') ?? '/'
   const fromPage = searchParams.get('fromPage') ?? '0'
   const pageSize = searchParams.get('pageSize') ?? '10'
   

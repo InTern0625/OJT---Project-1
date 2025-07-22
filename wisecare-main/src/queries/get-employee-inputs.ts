@@ -16,7 +16,8 @@ const getEmployeeInputs = (supabase: TypedSupabaseClient, id: string) => {
       card_number,
       effective_date,
       room_plan_id,
-      maximum_benefit_limit
+      maximum_benefit_limit,
+      company_affiliates
       `,
     )
     .eq('account_id', id)

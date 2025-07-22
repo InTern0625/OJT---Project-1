@@ -7,7 +7,6 @@ import { useApprovalRequestContext } from '@/app/(dashboard)/admin/approval-requ
 import ApprovalInformationItem from '@/app/(dashboard)/admin/approval-request/components/approval-information-item'
 import { Button } from '@/components/ui/button'
 import getAccountById from '@/queries/get-account-by-id'
-import getCompanyAffiliates from '@/queries/get-company-affiliates'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -26,11 +25,6 @@ const ApprovalFormIFP = () => {
     const { data: oldData } = useQuery(
         getAccountById(supabase, selectedData?.account_id ?? ''),
     )
-
-    const { data: affiliatesRaw = []} = useQuery(
-        getCompanyAffiliates(supabase, selectedData?.account_id ?? ''), 
-    )
-    const affiliates = affiliatesRaw || []
 
     const computeAge = (birthdate: string | null | undefined): string => {
         if (!birthdate) return '-';
@@ -241,28 +235,6 @@ const ApprovalFormIFP = () => {
                                 : '-'
                             }
                         />
-                    </div>
-                    {/* Affiliates if any*/ }
-                    <div className="grid grid-cols-1 gap-y-2">    
-                        <Collapsible>
-                            <CollapsibleTrigger className="font-medium underline underline-offset-2">
-                            Company Affiliates ({affiliates.length})
-                            </CollapsibleTrigger>
-                            <CollapsibleContent>
-                            <div className="mt-2 max-h-[200px] overflow-y-auto border border-gray-200 rounded-md p-2 bg-white shadow-sm">
-                                <div className="grid grid-cols-1 gap-y-2">
-                                {affiliates.map((affiliate, index) => (
-                                    <ApprovalInformationItem
-                                    key={index}
-                                    label={`Affiliate #${index + 1}`}
-                                    value={`Name: ${affiliate.affiliate_name} \n
-                                    Address: ${affiliate.affiliate_address}`}
-                                    />
-                                ))}
-                                </div>
-                            </div>
-                            </CollapsibleContent>
-                        </Collapsible>
                     </div>
                 </div>
             </div>

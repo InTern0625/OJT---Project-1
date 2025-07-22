@@ -6,8 +6,13 @@ const getCompanyAffiliates = (
 ) => {
   return supabase
     .from('company_affiliates')
-    .select('id, parent_company_id, affiliate_name, affiliate_address')
-    .eq('parent_company_id', parentCompanyId)
+    .select(`
+  id,
+  affiliate_name,
+  affiliate_address,
+  parent_company_id (company_name:string)
+  `)
+    .eq('id', parentCompanyId)
 }
 
 export default getCompanyAffiliates

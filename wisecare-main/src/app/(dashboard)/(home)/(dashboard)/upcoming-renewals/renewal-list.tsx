@@ -11,7 +11,7 @@ const RenewalList = () => {
   const { data } = useQuery(
     supabase
       .from('accounts')
-      .select('company_name, expiration_date, initial_contract_value, id')
+      .select('company_name, expiration_date, initial_contract_value, id, program_types_id')
       .eq('is_account_active', true)
       .eq('is_active', true)
       .lte(
