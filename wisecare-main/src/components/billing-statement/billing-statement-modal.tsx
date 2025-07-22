@@ -64,7 +64,7 @@ import {
 } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Loader2, ChevronsUpDown, Check} from 'lucide-react'
-import { FormEventHandler, ReactNode, useCallback, useState, useMemo } from 'react'
+import { FormEventHandler, ReactNode, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createBrowserClient } from '@/utils/supabase-client'
@@ -228,15 +228,6 @@ const BillingStatementModal = <TData,>({
   //   }
   // }, [CompanyContext, form])
   const [openCommand, setOpenCommand] = useState(false)
-  const [search, setSearch] = useState("")
-  
-  //filter accounts by search letters
-  const filteredAccounts = useMemo(() => {
-  if (!search) return accounts ?? []
-    return (accounts ?? []).filter((item) =>
-    item.company_name.toLowerCase().startsWith(search.toLowerCase())
-  )
-  }, [search, accounts])
 
   const maskedTotalContractValueRef = useMaskito({ options: currencyOptions })
   const maskedBalanceRef = useMaskito({ options: currencyOptions })
@@ -278,18 +269,18 @@ const BillingStatementModal = <TData,>({
                               aria-expanded={openCommand}
                               className="col-span-3 rounded-sm justify-between overflow-hidden"
                             >
-                              {accounts.find((item) => item.id === field.value)?.company_name ??
+                              {accounts?.find((item) => item.id === field.value)?.company_name ??
                                 "Select Company..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-[500px] p-0 overflow-hidden">
                             <Command className="overflow-hidden">
-                              <CommandInput placeholder="Search Company..." onValueChange={setSearch}/>
+                              <CommandInput placeholder="Search Company..." />
                               <CommandList>
                                 <CommandEmpty>No Companies.</CommandEmpty>
                                 <CommandGroup>
-                                  {filteredAccounts.map((item) => (
+                                  {accounts?.map((item) => (
                                     <CommandItem
                                       key={item.id}
                                       value={item.company_name}

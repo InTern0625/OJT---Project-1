@@ -1232,35 +1232,6 @@ export type Database = {
           },
         ]
       }
-      company_affiliates: {
-        Row: {
-          id: string;
-          created_at: string; // or Date if you're transforming
-          is_active: boolean | null;
-          parent_company_id: string | null;
-          created_by: string | null;
-          affiliate_name: string | null;
-          affiliate_address: string | null;
-        };
-        Insert: {
-          id?: string;
-          created_at?: string;
-          is_active?: boolean | null;
-          parent_company_id?: string | null;
-          created_by?: string | null;
-          affiliate_name?: string | null;
-          affiliate_address?: string | null;
-        };
-        Update: {
-          id?: string;
-          created_at?: string;
-          is_active?: boolean | null;
-          parent_company_id?: string | null;
-          created_by?: string | null;
-          affiliate_name?: string | null;
-          affiliate_address?: string | null;
-        };
-      };
     }
     Views: {
       [_ in never]: never

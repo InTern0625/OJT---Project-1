@@ -5,7 +5,7 @@ import { Tables } from '@/types/database.types'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { maskitoTransform } from '@maskito/core'
 import { z } from 'zod'
-//
+
 const formatOriginalData = (originalData: Tables<'billing_statements'>) => {
   return {
     ...Object.fromEntries(
