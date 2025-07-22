@@ -16,9 +16,6 @@ const formatOriginalData = (originalData: Tables<'billing_statements'>) => {
     ),
     account_id: (originalData as any).account?.id,
     mode_of_payment_id: (originalData as any).mode_of_payment?.id,
-    billing_date: originalData.billing_date
-      ? normalizeToUTC(new Date(originalData.billing_date))
-      : undefined,
     due_date: originalData.due_date
       ? normalizeToUTC(new Date(originalData.due_date))
       : undefined,

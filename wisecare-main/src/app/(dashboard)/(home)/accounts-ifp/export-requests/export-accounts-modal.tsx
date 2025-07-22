@@ -22,26 +22,15 @@ import { createBrowserClient } from '@/utils/supabase-client'
 interface ExportAccountsModalProps {
   exportData: Enums<'export_type'>
   exportType?: string
-  columnSortingID?: string
-  customSortID?: string | null
 }
 
 
-const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportType, columnSortingID, customSortID }) => {
+const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportType }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const supabase = createBrowserClient()
   const [pendingRequest, setIsPendingRequest] = useState('')
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-  const filters = customSortID && columnSortingID
-    ? {
-        customSort: {
-          key: columnSortingID,
-          value: customSortID,
-        },
-      }
-    : {}
-
-  const { data: oldAccountsData } = useQuery(getAccounts(supabase, filters))
+  const { data: oldAccountsData } = useQuery(getAccounts(supabase))
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore
     supabase.from('pending_export_requests'),

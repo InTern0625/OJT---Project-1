@@ -25,15 +25,14 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       <TableHeader column={column} title="Billing Date" />
     ),
     cell: ({ row }) => {
-      const billingDate = row.original.billing_date
-        ? normalizeToUTC(new Date(row.original.billing_date))
+      const dueDate = row.original.due_date
+        ? normalizeToUTC(new Date(row.original.due_date))
         : null
-      return <div>{billingDate ? format(billingDate, 'MMMM dd, yyyy') : ''}</div> //placeholder
+      return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div> //placeholder
     },
 
     accessorFn: (originalRow) =>
-      originalRow.billing_date ? new Date(originalRow.billing_date) : null,
-      sortingFn: 'datetime',
+      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'due_date',
@@ -45,8 +44,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{dueDate ? format(dueDate, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.due_date ? new Date(originalRow.due_date) : null,
-      sortingFn: 'datetime',
+      originalRow.due_date ? format(originalRow.due_date, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'or_number',
@@ -62,8 +60,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{orDate ? format(orDate, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.or_date ? new Date(originalRow.or_date) : null,
-      sortingFn: 'datetime',
+      originalRow.or_date ? format(originalRow.or_date, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'sa_number',
@@ -101,8 +98,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{billStart ? format(billStart, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.billing_start ? new Date(originalRow.billing_start) : null,
-      sortingFn: 'datetime',
+      originalRow.billing_start ? format(originalRow.billing_start, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'billing_end',
@@ -114,8 +110,7 @@ const billingStatementsColumns: ColumnDef<Tables<'billing_statements'>>[] = [
       return <div>{billEnd ? format(billEnd, 'MMMM dd, yyyy') : ''}</div>
     },
     accessorFn: (originalRow) =>
-      originalRow.billing_end ? new Date(originalRow.billing_end) : null,
-      sortingFn: 'datetime',
+      originalRow.billing_end ? format(originalRow.billing_end, 'MMMM dd, yyyy') : '',
   },
   {
     accessorKey: 'amount_paid',

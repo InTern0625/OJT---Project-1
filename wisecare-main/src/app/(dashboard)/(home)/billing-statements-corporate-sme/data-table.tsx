@@ -87,7 +87,7 @@ const DataTable = <TData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} />
-            {['admin', 'under-writing', 'finance'].includes(user?.user_metadata?.department) && <AddBillingStatementButton />}
+            {['admin', 'under-writing'].includes(user?.user_metadata?.department) && <AddBillingStatementButton />}
           </div>
         </div>
       </PageHeader>

@@ -42,9 +42,11 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
           <div className="text-xs text-[#64748b] lg:text-wrap">
             {account?.company_address || ''}
           </div>
+          {account?.is_account_active === false && (
             <div>
-              <ActiveBadge statusType={(account?.status_type as any)?.name} />
+              <ActiveBadge isActive={false} />
             </div>
+          )}
         </div>
         <div className="flex w-full flex-col items-center justify-evenly gap-4 xl:flex-row">
           <Separator

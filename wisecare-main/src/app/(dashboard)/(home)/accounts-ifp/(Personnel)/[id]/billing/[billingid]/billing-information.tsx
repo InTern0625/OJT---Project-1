@@ -30,10 +30,6 @@ const BillingInformation = ({ billingId }: { billingId: string }) => {
             <p className="font-medium">{data.mode_of_payments?.name}</p>
           </div>
           <div>
-            <p className="text-gray-600">Billing Date</p>
-            <p className="font-medium">{data.billing_date}</p>
-          </div>
-          <div>
             <p className="text-gray-600">SA Number</p>
             <p className="font-medium">{data.sa_number}</p>
           </div>

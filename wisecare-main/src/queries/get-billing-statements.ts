@@ -14,7 +14,6 @@ const getBillingStatements = (supabase: TypedSupabaseClient) => {
         program_type: program_types!program_types_id(name)
       ),
     due_date,
-    billing_date,
     or_number,
     or_date,
     sa_number,

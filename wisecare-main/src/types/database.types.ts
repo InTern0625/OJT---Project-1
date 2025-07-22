@@ -380,10 +380,6 @@ export type Database = {
           columns_sme_accounts: Json[] | null
           columns_ifp_renewals: Json[] | null
           columns_sme_renewals: Json[] | null
-          custom__sort_ifp_accounts: string
-          custom__sort_sme_accounts: string
-          custom__sort_ifp_renewals: string
-          custom__sort_sme_renewals: string
           user_id: string
         }
         Insert: {
@@ -394,10 +390,6 @@ export type Database = {
           columns_sme_accounts?: Json[] | null
           columns_ifp_renewals?: Json[] | null
           columns_sme_renewals?: Json[] | null
-          custom__sort_ifp_accounts?: string
-          custom__sort_sme_accounts?: string
-          custom__sort_ifp_renewals?: string
-          custom__sort_sme_renewals?: string
           user_id: string
         }
         Update: {
@@ -408,10 +400,6 @@ export type Database = {
           columns_sme_accounts?: Json[] | null
           columns_ifp_renewals?: Json[] | null
           columns_sme_renewals?: Json[] | null
-          custom__sort_ifp_accounts?: string
-          custom__sort_sme_accounts?: string
-          custom__sort_ifp_renewals?: string
-          custom__sort_sme_renewals?: string
           user_id?: string
         }
         Relationships: [
