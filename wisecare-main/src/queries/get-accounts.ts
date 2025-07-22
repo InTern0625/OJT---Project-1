@@ -6,6 +6,7 @@ interface AccountFilters {
   sortOrder?: {col: string | null, desc: boolean }
   search?: {key: string | null, value: string | null}
   range?: { start: number; end: number }
+  agentIds?: string[]
 }
 
 const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}) => {
@@ -99,12 +100,11 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
 
   //Search filter
   const searchValue = filters.search?.value ?? ''
-  if (searchValue && filters.search) {
-    if (filters.search.key === 'company') {
-      query = query.ilike('company_name', `${searchValue}%`)
-    } else if (filters.search.key === 'agent') {
-      query = query.ilike('agent_id.first_name', `${searchValue}%`) 
-    }
+  if (filters.search?.key === 'company' && searchValue) {
+    query = query.ilike('company_name', `${searchValue}%`)
+  }
+  if (filters.agentIds && filters.agentIds.length > 0 && filters.search?.key === "agent") {
+    query = query.in('agent_id', filters.agentIds)
   }
 
   // Pagination

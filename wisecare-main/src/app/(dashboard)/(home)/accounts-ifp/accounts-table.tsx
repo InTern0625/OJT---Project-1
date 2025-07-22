@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import getUserIDbyName from '@/queries/get-user-name-by-id'  
 
 interface AccountsTableProps {
   initialPageIndex: number
@@ -22,7 +23,8 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
   )
   const [customSortID, setCustomSortID] = useState<string | null>(null)
-  
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -64,6 +66,18 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm) 
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getAccounts(supabase, { 
       accountType: 'IFP',
@@ -79,9 +93,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
   

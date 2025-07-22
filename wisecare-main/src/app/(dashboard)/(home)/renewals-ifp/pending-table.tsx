@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import getUserIDbyName from '@/queries/get-user-name-by-id'  
 
 interface PendingTableProps {
   initialPageIndex: number
@@ -21,9 +22,11 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   const threeMonthsLater = new Date()
   threeMonthsLater.setMonth(now.getMonth() + 3)
   
-const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
+    getAccountsColumnSortingByUserId(supabase, "columns_ifp_renewals"),
   )
   const [customSortID, setCustomSortID] = useState<string | null>(null)
   const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
@@ -36,13 +39,12 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
   const from = pageIndex * pageSize
   
   const to = from + pageSize - 1
-  //console.log("PAGE", pageIndex, pageSize, from, to)
-  //const { data, count, isLoading } = useQuery(getAccounts(supabase))
+
   //Get ID of custom sort
   useEffect(() => {
     const fetchSortID = async () => {
-      const sortKey = (columnSortingData?.columns_sme_renewals?.[0] as any)?.id
-      const storedRaw = columnSortingData?.custom__sort_sme_renewals ?? null
+      const sortKey = (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id
+      const storedRaw = columnSortingData?.custom__sort_ifp_renewals ?? null
       setCustomSortStatus(storedRaw)
 
       if (!customSortStatus || !sortKey) return
@@ -68,24 +70,37 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm) 
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getRenewalStatements(supabase, { 
       accountType: 'IFP',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
-        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc
+        col: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id, 
+        desc: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.desc
       },
       customSort: {
-        key: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id,
+        key: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id,
         value: customSortID
       },
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
 
@@ -103,23 +118,7 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     customSortStatus,
     setCustomSortStatus,
   })
-  /*
-  //const { data: test } = useQuery(getRenewalStatements(supabase))
-  
-  const filteredData = (data || [])
-  .filter((item: any) => {
-    const accountType = item.account_types?.name?.toUpperCase()
-    const expiration = item.expiration_date ? new Date(item.expiration_date) : null
-    const isBusiness = item.account_types !== null
-    const isIFP = item.program_type !== null
 
-    const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return ((!isBusiness && isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
-  })
-  .map((item: any) => ({
-    ...item,
-    program_type_id: item.program_type?.id ?? null, 
-  }))*/
   const displayData = isLoading ? previousData : accountData
 
   return <DataTable 

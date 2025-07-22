@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import getUserIDbyName from '@/queries/get-user-name-by-id'  
 
 interface PendingTableProps {
   initialPageIndex: number
@@ -20,7 +21,10 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   const now = new Date()
   const threeMonthsLater = new Date()
   threeMonthsLater.setMonth(now.getMonth() + 3)
+
   const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const { data: columnSortingData } = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
@@ -65,6 +69,18 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm) 
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getRenewalStatements(supabase, { 
       accountType: 'Business',
@@ -80,9 +96,10 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
   
@@ -100,23 +117,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     customSortStatus,
     setCustomSortStatus,
   })
-  /*
-  //const { data: test } = useQuery(getRenewalStatements(supabase))
-  
-  const filteredData = (test || [])
-  .filter((item: any) => {
-    const accountType = item.account_types?.name?.toUpperCase()
-    const expiration = item.expiration_date ? new Date(item.expiration_date) : null
-    const isBusiness = item.account_types !== null
-    const isIFP = item.program_type !== null
 
-    const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return ((isBusiness && !isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
-  })
-  .map((item: any) => ({
-    ...item,
-    account_type_id: item.account_types?.id ?? null, 
-  }))*/
   const displayData = isLoading ? previousData : accountData
   
   return <DataTable 

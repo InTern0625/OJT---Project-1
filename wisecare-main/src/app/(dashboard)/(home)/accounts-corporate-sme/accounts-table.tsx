@@ -8,6 +8,8 @@ import { createBrowserClient } from '@/utils/supabase-client'
 import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
+import getUserIDbyName from '@/queries/get-user-name-by-id'  
+
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
 
 interface AccountsTableProps {
@@ -23,7 +25,8 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     getAccountsColumnSortingByUserId(supabase, "columns_sme_accounts"),
   )
   const [customSortID, setCustomSortID] = useState<string | null>(null)
-  
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -34,7 +37,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
   const [previousData, setPreviousData] = useState<any[]>([])
   const from = pageIndex * pageSize
   const to = from + pageSize - 1
-  //const { data, count, isLoading } = useQuery(getAccounts(supabase))
+
   //Get ID of custom sort
   useEffect(() => {
     const fetchSortID = async () => {
@@ -63,6 +66,18 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm) 
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getAccounts(supabase, { 
       accountType: 'Business',
@@ -78,9 +93,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
   
@@ -98,20 +114,6 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     customSortStatus,
     setCustomSortStatus,
   })
-  
-
-  const filteredData = (data || [])
-    .filter(
-    (item: any) =>{
-        const isBusiness = item.account_type !== null;
-        const isIFP = item.program_type !== null;
-
-        return (isBusiness && !isIFP) || (!isBusiness && !isIFP);
-    })
-    .map((item: any) => ({
-      ...item,
-      account_type_id: item.account_type?.id ?? null,
-    }))
   
   const displayData = isLoading ? previousData : accountData
     

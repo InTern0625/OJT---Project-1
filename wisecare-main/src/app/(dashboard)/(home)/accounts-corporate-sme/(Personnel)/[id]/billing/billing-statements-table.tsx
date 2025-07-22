@@ -92,7 +92,7 @@ const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
                       key={cell.id}
                       onClick={() => {
                         if(index === 0) return
-                        router.push(`/accounts-ifp/${companyId}/billing/${row.original.id}`);
+                        router.push(`/accounts-corporate-sme/${companyId}/billing/${row.original.id}`);
                       }}
                     >
                       {flexRender(

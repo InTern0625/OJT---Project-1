@@ -6,6 +6,8 @@ interface renewalFilters {
   sortOrder?: {col: string | null, desc: boolean }
   search?: {key: string | null, value: string | null}
   range?: { start: number; end: number }
+  agentIds?: string[]
+
 }
 
 const getRenewalStatements = (supabase: TypedSupabaseClient, filters: renewalFilters = {}) => {
@@ -72,6 +74,8 @@ const getRenewalStatements = (supabase: TypedSupabaseClient, filters: renewalFil
     .lte('expiration_date', threeMonthsLater.toISOString())
     .order('expiration_date', { ascending: false })
     .throwOnError()
+
+  //Sort Filter
   if (filters.customSort?.key && filters.customSort?.value && filters.customSort.value !== "") {
     if (filters.customSort.key === "account_type_name") {
       query = query.eq("account_type_id", filters.customSort.value)
@@ -91,6 +95,15 @@ const getRenewalStatements = (supabase: TypedSupabaseClient, filters: renewalFil
     query = query.or('and(account_type.not.is.null,program_type.is.null),and(account_type.is.null,program_type.is.null)');
   }else if (filters.accountType === "IFP"){
     query = query.or('and(account_type.is.null,program_type.not.is.null),and(account_type.is.null,program_type.is.null)');
+  }
+
+  //Search filter
+  const searchValue = filters.search?.value ?? ''
+  if (filters.search?.key === 'company' && searchValue) {
+    query = query.ilike('company_name', `${searchValue}%`)
+  }
+  if (filters.agentIds && filters.agentIds.length > 0 && filters.search?.key === "agent") {
+    query = query.in('agent_id', filters.agentIds)
   }
 
   // Pagination
