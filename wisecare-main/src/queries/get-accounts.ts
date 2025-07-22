@@ -67,8 +67,7 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
       {
         count: 'exact',
         head: false,
-      },
-    )
+      },)
     .eq('is_active', true)
   
   
@@ -117,6 +116,6 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
     query = query.range(start, end)
   }
   return query
-}
+  }
 
 export default getAccounts

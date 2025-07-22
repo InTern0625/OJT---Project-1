@@ -16,7 +16,7 @@ import accountsSchema from '../accounts-schema'
 import { createBrowserClient } from '@/utils/supabase-client'
 import FileInput from '@/app/(dashboard)/(home)/accounts-ifp/forms/file-input'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 
 interface Props {
   isLoading: boolean
@@ -28,6 +28,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const form = useFormContext<z.infer<typeof accountsSchema>>()
   const supabase = createBrowserClient()
 
+  const [search] = useState("")
   const { data: agents } = useQuery(getAgents(supabase))
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: accountTypes } = useQuery(getTypes(supabase, 'account_types'))
@@ -37,6 +38,21 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const { data: roomPlan } = useQuery(getTypes(supabase, 'room_plans'))
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
+
+  //Filter Search Agent field by input
+  let agent = agents
+  const filteredAgents = useMemo(() => {
+    const lowerSearch = search.toLowerCase()
+
+    return (agent ?? []).filter((item) => {
+      const firstName = item.first_name?.toLowerCase() ?? ''
+      const lastName = item.last_name?.toLowerCase() ?? ''
+      return (
+        firstName.startsWith(lowerSearch) ||
+        lastName.startsWith(lowerSearch)
+      )
+    })
+  }, [search, agent])
 
   return (
     <div className="grid gap-4 py-4">
@@ -208,7 +224,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="agent_id"
           label="Agent"
           placeholder="Select Agent"
-          options={agents?.map((agent) => ({
+          options={filteredAgents?.map((agent) => ({
             label: `${agent.first_name} ${agent.last_name}`,
             value: agent.user_id,
           }))}

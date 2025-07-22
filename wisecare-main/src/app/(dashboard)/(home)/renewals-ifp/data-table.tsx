@@ -25,11 +25,12 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { Suspense, useState, useEffect } from 'react'
+import { useEffect, useState, SetStateAction, Dispatch, useMemo } from 'react'
 import TableViewOptions from '@/components/table-view-options'
-import TableSearch from '@/components/table-search'
+import TableSearch from '@/components/table-search-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { createBrowserClient } from '@/utils/supabase-client'
+import { fuzzyStartsWith } from '@/utils/filter-agent-company'
 import getAccountsColumnVisibilityByUserId from '@/queries/get-accounts-column-visibility-by-user-id'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-ifp/mutations/column-states'
@@ -38,18 +39,42 @@ import { useUserServer } from '@/providers/UserProvider'
 import { useRouter } from 'next/navigation'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
 import { isAfter, isBefore, addMonths } from 'date-fns'
+import { Skeleton } from '@/components/ui/skeleton'
+import getRenewalStatementsCount from '@/queries/get-renewal-counts'
 
 interface IData {
   id: string
 }
 interface DataTableProps<TData extends IData, TValue> {
   columns: ColumnDef<TData, TValue>[]
+  customSortStatus?: string | null
   data: TData[]
+  pageCount: number
+  pageIndex: number
+  pageSize: number
+  onPageChange: (index: number) => void
+  onPageSizeChange: (size: number) => void
+  searchMode: 'company' | 'agent'          
+  setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
+  searchTerm: string
+  setSearchTerm: Dispatch<SetStateAction<string>>
+  customSortID: string | null
 }
 
 const DataTable = <TData extends IData, TValue>({
   columns,
+  customSortStatus,
   data,
+  pageCount,
+  pageIndex,
+  pageSize,
+  onPageChange,
+  onPageSizeChange,
+  searchMode,
+  setSearchMode,
+  searchTerm,
+  setSearchTerm,
+  customSortID,
 }: DataTableProps<TData, TValue>) => {
   const supabase = createBrowserClient()
   const router = useRouter()
@@ -77,18 +102,30 @@ const DataTable = <TData extends IData, TValue>({
   const table = useReactTable({
     data,
     columns,
+    manualPagination: true, 
+    manualFiltering: true,
+    pageCount,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    onPaginationChange: (updater) => {
+      const newState = typeof updater === 'function' ? updater({ pageIndex, pageSize }) : updater
+      onPageChange(newState.pageIndex)
+      onPageSizeChange(newState.pageSize)
+    },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
-    onGlobalFilterChange: setGlobalFilter,
+    onGlobalFilterChange: setSearchTerm,
+    globalFilterFn: fuzzyStartsWith(searchMode),
     state: {
+      pagination: {
+        pageIndex,
+        pageSize,
+      },
       sorting,
       columnVisibility,
-      globalFilter,
-    },
+      globalFilter: searchTerm,
+    }
   })
   
   useEffect(() => {
@@ -97,29 +134,40 @@ const DataTable = <TData extends IData, TValue>({
       upsertRenewalIFPColumnVisibility([
         {
           user_id: user.id,
-          columns_ifp_accounts: columnVisibility,
+          columns_ifp_renewals: columnVisibility,
         },
       ])
     }, [columnVisibility, supabase, toast, upsertRenewalIFPColumnVisibility, user?.id])
   useEffect(() => {
     if (!user?.id) return
 
+    const sortedId = sorting[0]?.id
+    const allowed = ["status_type_name", "account_type_name", "program_type_name", "room_plan_name"]
+    const effectiveCustomSort = sortedId && allowed.includes(sortedId) ? customSortStatus : null
+
     upsertRenewalIFPColumnSorting([
       {
         user_id: user.id,
-        columns_ifp_accounts: sorting,
-      },
+        columns_ifp_renewals: sorting,
+        custom__sort_ifp_renewals: effectiveCustomSort ?? null
+      }
     ])
-  }, [sorting, supabase, toast, upsertRenewalIFPColumnSorting, user?.id])
+  }, [sorting, supabase, toast, upsertRenewalIFPColumnSorting, user?.id, customSortStatus])
 
    //Upcoming and overdue renewals
   const dateToday = new Date()
-  const upcomingCount = data.filter((row) => 
+  const renewalCountQuery = useMemo(() => {
+    return getRenewalStatementsCount(supabase, { 
+      accountType: 'IFP'
+    })
+  }, [supabase])
+  const { data: renewalCount, count, isLoading } = useQuery(renewalCountQuery)
+  const upcomingCount = (renewalCount ?? []).filter((row) => 
     (row as any).expiration_date &&
     isAfter((row as any).expiration_date, dateToday) &&
     isBefore((row as any).expiration_date, addMonths(dateToday, 3))
   ).length
-  const overdueCount = data.filter((row) =>
+  const overdueCount = (renewalCount ?? []).filter((row) =>
     (row as any).expiration_date &&
     isBefore((row as any).expiration_date, dateToday)
   ).length
@@ -133,9 +181,13 @@ const DataTable = <TData extends IData, TValue>({
               <PageDescription>{upcomingCount} Upcoming Statements | {overdueCount} Overdue Statements </PageDescription>
           </div>
           <div className="flex flex-row gap-4">
-            <TableSearch table={table} />
-            <ExportAccountsModal exportData={'accounts'} exportType ='renewals'/>
-            
+            <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
+            <ExportAccountsModal 
+              exportData={'accounts'} 
+              exportType ='renewals'
+              columnSortingID={(columnSortingData?.columns_ifp_renewals?.[0] as any)?.id}
+              customSortID={customSortID}
+            />
           </div>
         </div>
       </PageHeader>
