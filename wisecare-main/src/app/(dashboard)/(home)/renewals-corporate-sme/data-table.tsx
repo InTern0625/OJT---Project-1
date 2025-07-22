@@ -88,12 +88,12 @@ const DataTable = <TData extends IData, TValue>({
   const { upsertRenewalSMEColumnVisibility, upsertRenewalSMEColumnSorting } = useColumnStates()
   const [isAccountLoading, setIsAccountLoading] = useState(false)
   // get column visibility
-  const { data: columnVisibilityData } = useQuery(
+  const { data: columnVisibilityData, isLoading: isVisibilityLoading} = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_sme_renewals"),
   )
 
   // get column sorting
-  const { data: columnSortingData } = useQuery(
+    const { data: columnSortingData, isLoading: isSortingLoading} = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
   const [sorting, setSorting] = useState<SortingState>(
@@ -103,6 +103,24 @@ const DataTable = <TData extends IData, TValue>({
     (columnVisibilityData?.columns_sme_renewals as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
+
+   //placeholder for loading page
+    const isLoading = isVisibilityLoading || isSortingLoading
+    if (isLoading) {
+       return (
+        <div className="flex flex-col w-full h-[90vh] justify-center space-y-10">
+          <Skeleton className="h-50 w-full rounded-md" />
+          {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="flex space-x-4 w-full">
+            <Skeleton className="h-20 w-[20%] rounded" />
+            <Skeleton className="h-20 w-[30%] rounded" />
+            <Skeleton className="h-20 w-[25%] rounded" />
+            <Skeleton className="h-20 w-[25%] rounded" />
+          </div>
+        ))}
+      </div>
+       )
+    }
 
   const table = useReactTable({
     data,
