@@ -113,6 +113,7 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
     const { start, end } = filters.range
     query = query.range(start, end)
   }
+
   return query
 }
 
