@@ -5,6 +5,12 @@ import NumberInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/n
 import SelectInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/select-input'
 import TextInput from '@/app/(dashboard)/(home)/accounts-corporate-sme/forms/text-input'
 import getAgents from '@/queries/get-agents'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { FormField, FormItem, FormControl, FormMessage } from '@/components/ui/form'
+import { Trash2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
+import { useForm, useFieldArray } from 'react-hook-form'
 import getTypes from '@/queries/get-types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { FC } from 'react'
@@ -19,12 +25,19 @@ interface Props {
   isLoading: boolean
 }
 
-const MarketingInputs: FC<Props> = ({ isLoading }) => {
+  const MarketingInputs: FC<Props> = ({ isLoading }) => {
   const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
-
+  const onSubmit = async (data) => {
+    console.log('🧾 Submitted form data:', data)
+  }
   const form = useFormContext<z.infer<typeof accountsSchema>>()
   const supabase = createBrowserClient()
+  const { control, watch, setValue } = form
 
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: 'affiliate_entries',
+  })
   const { data: agents } = useQuery(getAgents(supabase))
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: accountTypes } = useQuery(getTypes(supabase, 'account_types'))
@@ -216,7 +229,7 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           label="Special Benefits"
           name="special_benefits"
           placeholder="Enter special benefits"
-          
+
         />
       )}
       {isAccountBenefitUploadEnabled ? (
@@ -338,6 +351,101 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="commision_rate"
           maskType="percentage"
         />
+      </div>
+
+      {/* Affiliates */}
+      <div className="space-y-4">
+        <h3 className="text-md mt-3 font-semibold">Affiliates</h3>
+
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <TextInput
+            form={form}
+            isLoading={isLoading}
+            label="Affiliate Company Name"
+            name="affiliate_name"
+            placeholder="Enter affiliate name"
+          />
+          <TextInput
+            form={form}
+            isLoading={isLoading}
+            label="Affiliate Address"
+            name="affiliate_address"
+            placeholder="Enter affiliate address"
+          />
+
+          <div className="sm:col-span-2">
+            <Button
+              type="button"
+              variant="ghost"
+              className="border border-gray-300 hover:bg-gray-100"
+              onClick={() => {
+                const newName = form.watch('affiliate_name')?.toString().trim()
+                const newAddress = form.watch('affiliate_address')?.toString().trim()
+                if (newName && newAddress) {
+                  append({
+                    affiliate_name: newName,
+                    affiliate_address: newAddress,
+                    is_active: true, // default value
+                  })
+                  form.setValue('affiliate_name', '')
+                  form.setValue('affiliate_address', '')
+                }
+              }}
+            >
+              <Plus size={18} className="mr-2" /> Add Affiliate
+            </Button>
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          {fields.map((field, index) => (
+            <div
+              key={field.id}
+              className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-md bg-gray-50 p-4 border"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full">
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name={`affiliate_entries.${index}.affiliate_name`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} placeholder="Affiliate Name" className="w-full" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="flex-1">
+                  <FormField
+                    control={form.control}
+                    name={`affiliate_entries.${index}.affiliate_address`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormControl>
+                          <Input {...field} placeholder="Affiliate Address" className="w-full" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="mt-2 sm:mt-0 sm:ml-4">
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  type="button"
+                  onClick={() => remove(index)}
+                >
+                  <Trash2 size={16} />
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
