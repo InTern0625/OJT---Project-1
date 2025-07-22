@@ -87,15 +87,16 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
     query = query.order('created_at', { ascending: false })
   }
 
-
   //Account type filter
   if (filters.accountType === "Business") {
-    query = query.or('and(account_type.not.is.null,program_type.is.null),and(account_type.is.null,program_type.is.null)');
-  }else if (filters.accountType === "IFP"){
-    query = query.or('and(account_type.is.null,program_type.not.is.null),and(account_type.is.null,program_type.is.null)');
+    query = query.or(
+      'and(account_type_id.not.is.null,program_types_id.is.null),and(account_type_id.is.null,program_types_id.is.null)'
+    );
+  } else if (filters.accountType === "IFP") {
+    query = query.or(
+      'and(account_type_id.is.null,program_types_id.not.is.null),and(account_type_id.is.null,program_types_id.is.null)'
+    );
   }
-
-
 
   //Search filter
   const searchValue = filters.search?.value ?? ''
