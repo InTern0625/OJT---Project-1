@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import getUserIDbyName from '@/queries/get-user-name-by-id'  
 
 interface PendingTableProps {
   initialPageIndex: number
@@ -21,7 +22,9 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   const threeMonthsLater = new Date()
   threeMonthsLater.setMonth(now.getMonth() + 3)
   
-const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const { data: columnSortingData } = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_ifp_renewals"),
   )
@@ -67,6 +70,18 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm) 
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getRenewalStatements(supabase, { 
       accountType: 'IFP',
@@ -82,9 +97,10 @@ const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
 
