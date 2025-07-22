@@ -8,13 +8,19 @@ import getTypes from '@/queries/get-types'
 
 const AccountsCount = () => {
   const supabase = createBrowserClient()
-  const { data: count, isLoading } = useQuery(getAccounts(supabase, { accountType: 'Business' }))
+  const { data: count, isLoading } = useQuery(getAccounts(supabase))
   const { data: statusTypes } = useQuery(getTypes(supabase, 'status_types'))
 
   const countsByStatus = useMemo(() => {
     const result: Record<string, number> = {}
 
-    ;(count || [])
+    ;(count || []).filter((item: any) => {
+      const isBusiness = item.account_type !== null
+      const isIFP = item.program_type !== null
+
+      // Include if: IFP only, or neither (exclude if business account)
+      return (isBusiness && !isIFP) || (!isBusiness && !isIFP)
+    })
     .forEach((item: any) => {
       const key = item.status_type?.name?.toLowerCase() || 'unknown'
       result[key] = (result[key] || 0) + 1

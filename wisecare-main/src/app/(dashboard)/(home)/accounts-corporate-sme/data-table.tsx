@@ -7,7 +7,7 @@ import { useColumnStates } from '@/app/(dashboard)/(home)/accounts-corporate-sme
 import AccountRequest from '@/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request'
 import { PageHeader, PageTitle } from '@/components/page-header'
 import TablePagination from '@/components/table-pagination'
-import TableSearch from '@/components/table-search-accounts'
+import TableSearch from '@/components/table-search'
 import TableViewOptions from '@/components/table-view-options'
 import {
   Table,
@@ -33,72 +33,50 @@ import {
   useReactTable,
   VisibilityState,
 } from '@tanstack/react-table'
-import { fuzzyStartsWith } from '@/utils/filter-agent-company'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, SetStateAction, Dispatch } from 'react'
+import { useEffect, useState } from 'react'
 import AccountsProvider from './accounts-provider'
 import AddAccountButton from './add-account-button'
-import { Row } from '@tanstack/react-table'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 
 interface IData {
   id: string
 }
 
-
 interface DataTableProps<TData extends IData, TValue> {
-  columns: ColumnDef<TData, TValue>[],
-  customSortStatus?: string | null
+  columns: ColumnDef<TData, TValue>[]
   data: TData[]
-  pageCount: number
-  pageIndex: number
-  pageSize: number
-  onPageChange: (index: number) => void
-  onPageSizeChange: (size: number) => void
-  searchMode: 'company' | 'agent'          
-  setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
-  searchTerm: string
-  setSearchTerm: Dispatch<SetStateAction<string>>
-  customSortID: string | null
+  initialPageIndex?: number
+  initialPageSize?: number
 }
-
 
 const DataTable = <TData extends IData, TValue>({
   columns,
-  customSortStatus,
   data,
-  pageCount,
-  pageIndex,
-  pageSize,
-  onPageChange,
-  onPageSizeChange,
-  searchMode,
-  setSearchMode,
-  searchTerm,
-  setSearchTerm,
-  customSortID,
+  initialPageIndex = 0,
+  initialPageSize = 10,
 }: DataTableProps<TData, TValue>) => {
   const router = useRouter()
   const { toast } = useToast()
   const { user } = useUserServer()
   const supabase = createBrowserClient()
-  const { upsertAccSMEColumnVisibility, upsertAccSMEColumnSorting } = useColumnStates()
+  const { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting } = useColumnStates()
 
   // get column visibility
   const { data: columnVisibilityData } = useQuery(
-    getAccountsColumnVisibilityByUserId(supabase, "columns_sme_accounts"),
+    getAccountsColumnVisibilityByUserId(supabase, "columns_sme_renewals"),
   )
 
   // get column sorting
   const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase, "columns_sme_accounts"),
+    getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
 
   const [sorting, setSorting] = useState<SortingState>(
-    (columnSortingData?.columns_sme_accounts as unknown as SortingState) ?? [],
+    (columnSortingData?.columns_sme_renewals as unknown as SortingState) ?? [],
   )
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    (columnVisibilityData?.columns_sme_accounts as VisibilityState) ?? {},
+    (columnVisibilityData?.columns_sme_renewals as VisibilityState) ?? {},
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [isAccountLoading, setIsAccountLoading] = useState(false)
@@ -106,59 +84,47 @@ const DataTable = <TData extends IData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    manualPagination: true, 
-    manualFiltering: true,
-    pageCount,
     getCoreRowModel: getCoreRowModel(),
-    onPaginationChange: (updater) => {
-      const newState = typeof updater === 'function' ? updater({ pageIndex, pageSize }) : updater
-      onPageChange(newState.pageIndex)
-      onPageSizeChange(newState.pageSize)
-    },
+    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     getFilteredRowModel: getFilteredRowModel(),
-    onGlobalFilterChange: setSearchTerm,
-    globalFilterFn: fuzzyStartsWith(searchMode),
+    onGlobalFilterChange: setGlobalFilter,
     state: {
-      pagination: {
-        pageIndex,
-        pageSize,
-      },
       sorting,
       columnVisibility,
-      globalFilter: searchTerm,
-    }
+      globalFilter,
+    },
+    initialState: {
+      pagination: {
+        pageIndex: initialPageIndex ?? 0,
+        pageSize: initialPageSize ?? 10,
+      },
+    },
   })
 
   useEffect(() => {
     if (!user?.id) return
 
-    upsertAccSMEColumnVisibility([
+    upsertAccIFPColumnVisibility([
       {
         user_id: user.id,
-        columns_sme_accounts: columnVisibility,
+        columns_sme_renewals: columnVisibility,
       },
     ])
-  }, [columnVisibility, supabase, toast, upsertAccSMEColumnVisibility, user?.id])
+  }, [columnVisibility, supabase, toast, upsertAccIFPColumnVisibility, user?.id])
 
   useEffect(() => {
     if (!user?.id) return
 
-    const sortedId = sorting[0]?.id
-    const allowed = ["status_type_name", "account_type_name"]
-    const effectiveCustomSort = sortedId && allowed.includes(sortedId) ? customSortStatus : null
-
-    upsertAccSMEColumnSorting([
+    upsertAccIFPColumnSorting([
       {
         user_id: user.id,
-        columns_sme_accounts: sorting,
-        custom__sort_sme_accounts: effectiveCustomSort ?? null
-      }
+        columns_sme_renewals: sorting,
+      },
     ])
-  }, [sorting, supabase, toast, upsertAccSMEColumnSorting, user?.id, customSortStatus])
-  
+  }, [sorting, supabase, toast, upsertAccIFPColumnSorting, user?.id])
   return (
     <AccountsProvider>
       <div className="flex flex-col">
@@ -169,14 +135,9 @@ const DataTable = <TData extends IData, TValue>({
               <AccountsCount />
             </div>
             <div className="flex flex-row gap-4">
-              <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
+              <TableSearch table={table} />
               {['marketing', 'after-sales', 'admin'].includes(user?.user_metadata?.department) && <AddAccountButton />}
-              <ExportAccountsModal 
-                exportData={'accounts'} 
-                exportType ='accounts' 
-                columnSortingID={(columnSortingData?.columns_sme_accounts?.[0] as any)?.id}
-                customSortID={customSortID}
-              />
+              <ExportAccountsModal exportData={'accounts'} exportType ='accounts'/>
             </div>
           </div>
         </PageHeader>

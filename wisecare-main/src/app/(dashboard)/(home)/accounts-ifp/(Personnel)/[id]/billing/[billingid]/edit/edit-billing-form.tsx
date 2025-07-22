@@ -97,10 +97,6 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
           or_date: data.or_date
             ? normalizeToUTC(new Date(data.or_date))
             : undefined,
-          billing_date: data.billing_date
-            ? normalizeToUTC(new Date(data.billing_date))
-            : undefined,
-
         })
       })(e)
     },
@@ -181,12 +177,13 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
-          name="billing_date"
+          name="due_date"
           render={({ field }) => (
             <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-              <FormLabel className="text-right">Billing Date</FormLabel>
+              <FormLabel className="text-right">Due Date</FormLabel>
               <FormControl className="col-span-3">
                 <Popover>
                   <PopoverTrigger asChild>
@@ -229,6 +226,19 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
                     />
                   </PopoverContent>
                 </Popover>
+              </FormControl>
+              <FormMessage className="col-span-3 col-start-2" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="or_number"
+          render={({ field }) => (
+            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+              <FormLabel className="text-right">OR Number</FormLabel>
+              <FormControl className="col-span-3">
+                <Input {...field} disabled={isPending} />
               </FormControl>
               <FormMessage className="col-span-3 col-start-2" />
             </FormItem>
@@ -302,12 +312,50 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
         />
         <FormField
           control={form.control}
-          name="or_number"
+          name="total_contract_value"
           render={({ field }) => (
             <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-              <FormLabel className="text-right">OR Number</FormLabel>
+              <FormLabel className="text-right">Total Contract Value</FormLabel>
               <FormControl className="col-span-3">
-                <Input {...field} disabled={isPending} />
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  ref={maskedTotalContractValueRef}
+                  onInput={field.onChange}
+                  value={field.value ?? ''}
+                />
+              </FormControl>
+              <FormMessage className="col-span-3 col-start-2" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="balance"
+          render={({ field }) => (
+            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+              <FormLabel className="text-right">Balance</FormLabel>
+              <FormControl className="col-span-3">
+                <Input
+                  {...field}
+                  disabled={isPending}
+                  ref={maskedBalanceRef}
+                  onInput={field.onChange}
+                  value={field.value ?? ''}
+                />
+              </FormControl>
+              <FormMessage className="col-span-3 col-start-2" />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="billing_period"
+          render={({ field }) => (
+            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+              <FormLabel className="text-right">Billing Period</FormLabel>
+              <FormControl className="col-span-3">
+                <Input type="number" {...field} disabled={isPending} />
               </FormControl>
               <FormMessage className="col-span-3 col-start-2" />
             </FormItem>
@@ -343,206 +391,6 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
                   {...field}
                   disabled={isPending}
                   ref={maskedAmountPaidRef}
-                  onInput={field.onChange}
-                  value={field.value ?? ''}
-                />
-              </FormControl>
-              <FormMessage className="col-span-3 col-start-2" />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="due_date"
-          render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-              <FormLabel className="text-right">Due Date</FormLabel>
-              <FormControl className="col-span-3">
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={'outline'}
-                        className={cn(
-                          'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring col-span-3 flex h-12 w-full rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
-                          !field.value && 'text-muted-foreground',
-                          'text-left font-normal',
-                        )}
-                        disabled={isPending}
-                      >
-                        {field.value ? (
-                          format(field.value, 'PPP')
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      initialFocus
-                      captionLayout="dropdown"
-                      toYear={new Date().getFullYear() + 20}
-                      fromYear={1900}
-                      classNames={{
-                        day_hidden: 'invisible',
-                        dropdown:
-                          'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
-                        caption_dropdowns: 'flex gap-3',
-                        vhidden: 'hidden',
-                        caption_label: 'hidden',
-                      }}
-                    />
-                  </PopoverContent>
-                </Popover>
-              </FormControl>
-              <FormMessage className="col-span-3 col-start-2" />
-            </FormItem>
-          )}
-        />
-       <FormField
-          control={form.control}
-          name="balance"
-          render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-              <FormLabel className="text-right">Balance</FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  {...field}
-                  disabled={isPending}
-                  ref={maskedBalanceRef}
-                  onInput={field.onChange}
-                  value={field.value ?? ''}
-                />
-              </FormControl>
-              <FormMessage className="col-span-3 col-start-2" />
-            </FormItem>
-          )}
-        />
-        <FormItem>
-          <div className="grid grid-cols-8 gap-x-4 items-center">
-            <FormLabel className="text-right col-span-2">Billing Period</FormLabel>
-            <FormField
-              control={form.control}
-              name="billing_start"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-1 col-span-3 items-center gap-x-4 gap-y-0">
-                  <FormControl className="col-span-1">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring col-span-3 flex h-12 w-full rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
-                              !field.value && 'text-muted-foreground',
-                              'text-left font-normal',
-                            )}
-                            disabled={isPending}
-                          >
-                            {field.value ? (
-                              format(field.value, 'PPP')
-                            ) : (
-                              <span>Start Date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                          captionLayout="dropdown"
-                          toYear={new Date().getFullYear() + 20}
-                          fromYear={1900}
-                          classNames={{
-                            day_hidden: 'invisible',
-                            dropdown:
-                              'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
-                            caption_dropdowns: 'flex gap-3',
-                            vhidden: 'hidden',
-                            caption_label: 'hidden',
-                          }}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormMessage className="col-span-3 col-start-2" />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="billing_end"
-              render={({ field }) => (
-                <FormItem className="grid grid-cols-1 col-span-3 items-center gap-x-4 gap-y-0">
-                  <FormControl className="col-span-1">
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={'outline'}
-                            className={cn(
-                              'border-input ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring col-span-3 flex h-12 w-full rounded-lg border bg-white px-4 py-3 text-sm shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:ring-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50',
-                              !field.value && 'text-muted-foreground',
-                              'text-left font-normal',
-                            )}
-                            disabled={isPending}
-                          >
-                            {field.value ? (
-                              format(field.value, 'PPP')
-                            ) : (
-                              <span>End Date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value}
-                          onSelect={field.onChange}
-                          initialFocus
-                          captionLayout="dropdown"
-                          toYear={new Date().getFullYear() + 20}
-                          fromYear={1900}
-                          classNames={{
-                            day_hidden: 'invisible',
-                            dropdown:
-                              'px-2 py-1.5 max-h-[100px] overflow-y-auto rounded-md bg-popover text-popover-foreground text-sm  focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background',
-                            caption_dropdowns: 'flex gap-3',
-                            vhidden: 'hidden',
-                            caption_label: 'hidden',
-                          }}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  </FormControl>
-                  <FormMessage className="col-span-3 col-start-2" />
-                </FormItem>
-              )}
-            />
-          </div>
-        </FormItem>
-        <FormField
-          control={form.control}
-          name="total_contract_value"
-          render={({ field }) => (
-            <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
-              <FormLabel className="text-right">Total Contract Value</FormLabel>
-              <FormControl className="col-span-3">
-                <Input
-                  {...field}
-                  disabled={isPending}
-                  ref={maskedTotalContractValueRef}
                   onInput={field.onChange}
                   value={field.value ?? ''}
                 />

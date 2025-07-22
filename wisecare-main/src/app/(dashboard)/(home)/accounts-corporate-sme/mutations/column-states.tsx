@@ -7,7 +7,7 @@ import { useUpsertMutation } from '@supabase-cache-helpers/postgrest-react-query
 export const useColumnStates = () => {
   const supabase = createBrowserClient()
 
-  const { mutateAsync: upsertAccSMEColumnVisibility } = useUpsertMutation(
+  const { mutateAsync: upsertAccIFPColumnVisibility } = useUpsertMutation(
     supabase.from('accounts_column_visibility') as any,
     ['user_id'],
     'user_id, columns_ifp_accounts',
@@ -22,10 +22,10 @@ export const useColumnStates = () => {
     },
   )
 
-  const { mutateAsync: upsertAccSMEColumnSorting } = useUpsertMutation(
+  const { mutateAsync: upsertAccIFPColumnSorting } = useUpsertMutation(
     supabase.from('accounts_column_sorting') as any,
     ['user_id'],
-    'user_id, columns_ifp_accounts, custom__sort_sme_accounts',
+    'user_id, columns_ifp_accounts',
     {
       onError: () => {
         toast({
@@ -36,7 +36,7 @@ export const useColumnStates = () => {
       },
     },
   )
-  const { mutateAsync: upsertRenewalSMEColumnVisibility } = useUpsertMutation(
+  const { mutateAsync: upsertRenewalIFPColumnVisibility } = useUpsertMutation(
     supabase.from('accounts_column_visibility') as any,
     ['user_id'],
     'user_id, columns_ifp_renewals',
@@ -51,10 +51,10 @@ export const useColumnStates = () => {
     },
   )
 
-  const { mutateAsync: upsertRenewalSMEColumnSorting } = useUpsertMutation(
+  const { mutateAsync: upsertRenewalIFPColumnSorting } = useUpsertMutation(
     supabase.from('accounts_column_sorting') as any,
     ['user_id'],
-    'user_id, columns_ifp_renewals, custom__sort_sme_renewals',
+    'user_id, columns_ifp_renewals',
     {
       onError: () => {
         toast({
@@ -65,5 +65,5 @@ export const useColumnStates = () => {
       },
     },
   )
-  return { upsertAccSMEColumnVisibility, upsertAccSMEColumnSorting, upsertRenewalSMEColumnVisibility, upsertRenewalSMEColumnSorting }
+  return { upsertAccIFPColumnVisibility, upsertAccIFPColumnSorting, upsertRenewalIFPColumnVisibility, upsertRenewalIFPColumnSorting }
 }

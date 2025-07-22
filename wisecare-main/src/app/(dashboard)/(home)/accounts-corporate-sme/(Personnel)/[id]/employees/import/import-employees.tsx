@@ -84,10 +84,8 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           maximum_benefit_limit: employee.maximum_benefit_limit,
           member_type: employee.member_type,
           dependent_relation: employee.dependent_relation,
-          cancellation_date: employee.cancellation_date,
           expiration_date: employee.expiration_date,
           created_by: user.id,
-          remarks: employee.remarks,
         }
       })
     )

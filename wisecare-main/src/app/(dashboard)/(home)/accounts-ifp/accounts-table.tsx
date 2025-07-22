@@ -5,10 +5,6 @@ import getAccounts from '@/queries/get-accounts'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import DataTable from './data-table'
 import { createBrowserClient } from '@/utils/supabase-client'
-import { useState, useEffect, useMemo } from 'react'
-import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
-import getTypesIDbyName from '@/queries/get-typesIDbyName'  
-import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
 
 interface AccountsTableProps {
   initialPageIndex: number
@@ -17,88 +13,10 @@ interface AccountsTableProps {
 
 const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps) => {
   const supabase = createBrowserClient()
-  const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
-  const { data: columnSortingData } = useQuery(
-    getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
-  )
-  const [customSortID, setCustomSortID] = useState<string | null>(null)
+  const { data, isLoading } = useQuery(getAccounts(supabase))
   
-  const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
-  const [searchTerm, setSearchTerm] = useState('')
-
-  
-  //Pagination
-  const [pageIndex, setPageIndex] = useState(initialPageIndex)
-  const [pageSize, setPageSize] = useState(initialPageSize)
-  const [previousData, setPreviousData] = useState<any[]>([])
-  const from = pageIndex * pageSize
-  const to = from + pageSize - 1
-  //const { data, count, isLoading } = useQuery(getAccounts(supabase))
-  //Get ID of custom sort
-  useEffect(() => {
-    const fetchSortID = async () => {
-      const sortKey = (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id
-      const storedRaw = columnSortingData?.custom__sort_ifp_accounts ?? null
-      setCustomSortStatus(storedRaw)
-
-      if (!customSortStatus || !sortKey) return
-
-      let tableName: TypeTabs | null = null
-      if (sortKey === 'status_type_name') {
-        tableName = 'status_types'
-      } else if (sortKey === 'program_type_name') {
-        tableName = 'program_types'
-      } else if (sortKey === 'room_plan_name'){
-        tableName = 'room_plans'
-      } else {
-        return
-      }
-      const { data, error } = await getTypesIDbyName(supabase, tableName, customSortStatus)
-      if (error) {
-        return
-      }
-
-      setCustomSortID(data?.id ?? null)
-    }
-
-    fetchSortID()
-  }, [supabase, customSortStatus, columnSortingData])
-
-  const accountQuery = useMemo(() => {
-    return getAccounts(supabase, { 
-      accountType: 'IFP',
-      range: { start: from, end: to },
-      sortOrder: {
-        col: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id, 
-        desc: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.desc
-      },
-      customSort: {
-        key: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id,
-        value: customSortID
-      },
-      search: {
-        key: searchMode,
-        value: searchTerm
-      }
-    })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
-
-  const { data, count, isLoading } = useQuery(accountQuery)
-  
-  const accountData = (data || []).map((item: any) => ({
-    ...item,
-    account_type_id: item.account_type?.id ?? null,
-  }))
-  useEffect(() => {
-    if (data && !isLoading) {
-      setPreviousData(data)
-    }
-  }, [data, isLoading])
-
-  const columns = AccountsColumns({
-    customSortStatus,
-    setCustomSortStatus,
-  })
+  if (isLoading) return null
+  const columns = AccountsColumns()
 
   const filteredData = (data || [])
     .filter(
@@ -112,23 +30,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       ...item,
       account_type_id: item.account_type?.id ?? null,
     }))
-
-  const displayData = isLoading ? previousData : accountData
-  
   return <DataTable 
             columns={columns} 
-            data={displayData ?? []}
-            pageCount={Math.ceil((count || 0) / pageSize)}
-            pageIndex={pageIndex}
-            pageSize={pageSize}
-            onPageChange={setPageIndex}
-            onPageSizeChange={setPageSize}
-            customSortStatus={customSortStatus} 
-            searchMode={searchMode}
-            setSearchMode={setSearchMode}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            customSortID={customSortID}
-          />
+            data={filteredData || []} 
+            initialPageIndex={initialPageIndex}
+            initialPageSize={initialPageSize}/>
 }
 export default AccountsTable

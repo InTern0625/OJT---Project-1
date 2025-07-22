@@ -11,7 +11,6 @@ const getBillingStatementByCompanyId = (
       id,
       account_id,
       mode_of_payments(name, id),
-      billing_date,
       due_date,
       or_number,
       or_date,

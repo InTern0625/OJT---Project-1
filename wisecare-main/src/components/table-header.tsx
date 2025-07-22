@@ -35,6 +35,7 @@ const TableHeader = <TData, TValue>({
   }
   const handleStatusClick = (status: string) => {
     onStatusClick?.(status);
+    // Trigger a sort (direction doesn't matter for custom sorting)
     column.toggleSorting(false);
   };
 

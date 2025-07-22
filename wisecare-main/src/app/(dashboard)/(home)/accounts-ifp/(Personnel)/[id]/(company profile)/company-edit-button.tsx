@@ -4,7 +4,7 @@ import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Pe
 import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider'
 import EditPendingRequest from '@/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit-pending-request'
 import { Button } from '@/components/ui/button'
-import { Pencil, UserRound } from 'lucide-react'
+import { Pencil, UserRoundPen } from 'lucide-react'
 import { FC, useState, useCallback, useMemo, useEffect } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useUserServer } from '@/providers/UserProvider'
@@ -76,7 +76,6 @@ const CompanyEditButton: FC<Props> = ({ role, accountId }) => {
       .from('pending_accounts')
       .select('id')
       .eq('account_id', accountId)
-      .eq('is_active', true)
       .eq('is_approved', false)
       .limit(1)
       .maybeSingle()
@@ -108,7 +107,7 @@ const CompanyEditButton: FC<Props> = ({ role, accountId }) => {
           <TooltipTrigger asChild={true}>
             <div>
               <Button className="w-full gap-2 md:max-w-xs" onClick={handleClick}>
-                {isBeingEdited ? <UserRound/> : <Pencil/>}<span> Edit Account Details</span>
+                {isBeingEdited ? <UserRoundPen/> : <Pencil/>}<span> Edit Account Details</span>
               </Button>
             </div>
           </TooltipTrigger>

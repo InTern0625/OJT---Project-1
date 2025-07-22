@@ -8,8 +8,9 @@ import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corpora
 import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-HMO-information'
 import CompanyInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information'
 import accountsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema'
+import CompanyAffiliatesInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-affiliates-information'
+import AffiliatesInformationFields from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/affiliates-information-fields'
 import currencyOptions from '@/components/maskito/currency-options'
-import CompanyAffiliatesInformation from './company-affiliates-information'
 import numberOptions from '@/components/maskito/number-options'
 import percentageOptions from '@/components/maskito/percentage-options'
 import { Button } from '@/components/ui/button'
@@ -38,6 +39,25 @@ interface Props {
   companyId: string
 }
 
+const onSubmit = async (data: z.infer<typeof companyEditsSchema>) => {
+  const supabase = createBrowserClient()
+
+  const { affiliate_entries } = data
+
+  const { error } = await supabase
+    .from('accounts') // 👈 or your actual table
+    .update({
+      affiliate_entries: affiliate_entries, // this should be a JSONB or separate linked table
+    })
+    .eq('id', accountId) // make sure you're updating the correct row
+
+  if (error) {
+    toast.error('Failed to save affiliates.')
+    console.error(error)
+  } else {
+    toast.success('Affiliates saved successfully!')
+  }
+}
 const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { editMode, setEditMode, statusId } = useCompanyEditContext()
   const supabase = createBrowserClient()
@@ -47,7 +67,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { data: activeTypes } = useQuery(getTypes(supabase, 'status_types'))
   const defaultStatusID = activeTypes?.[0]?.id ?? undefined
   const isSpecialBenefitsFilesEnabled = useFeatureFlag('account-benefit-upload')
-  
   const existingContractFiles = useMemo(
     () => account?.contract_proposal_files ?? [],
     [account?.contract_proposal_files],
@@ -343,15 +362,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           setInitialAffiliates(updatedAffiliates || [])
         }
 
-        const { error: updateError } = await supabase
-        .from('accounts')
-        .update({
-          is_editing: false, 
-          editing_user: null,
-          editing_timestampz: null
-        })
-        .eq('id', companyId)
-
         // Handle file input
         const specialBenefitsFiles = data.special_benefits_files
           ? Array.from(data.special_benefits_files)
@@ -575,7 +585,6 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
               </span>
               <CompanyAffiliatesInformation id={companyId} />
             </div>
-
           </div>
         </div>
         <div className="mt-4 flex flex-row items-center justify-between gap-2 lg:ml-auto lg:justify-end">
