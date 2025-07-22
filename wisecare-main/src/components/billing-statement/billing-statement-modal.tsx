@@ -269,7 +269,7 @@ const BillingStatementModal = <TData,>({
                               aria-expanded={openCommand}
                               className="col-span-3 rounded-sm justify-between overflow-hidden"
                             >
-                              {accounts.find((item) => item.id === field.value)?.company_name ??
+                              {accounts?.find((item) => item.id === field.value)?.company_name ??
                                 "Select Company..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>
@@ -280,7 +280,7 @@ const BillingStatementModal = <TData,>({
                               <CommandList>
                                 <CommandEmpty>No Companies.</CommandEmpty>
                                 <CommandGroup>
-                                  {accounts.map((item) => (
+                                  {accounts?.map((item) => (
                                     <CommandItem
                                       key={item.id}
                                       value={item.company_name}
