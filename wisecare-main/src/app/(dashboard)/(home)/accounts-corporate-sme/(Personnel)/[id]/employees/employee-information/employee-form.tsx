@@ -36,6 +36,8 @@ import { FC, FormEventHandler, useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import getTypes from '@/queries/get-types'
+import getAffiliation from '@/queries/get-company-affiliation'
+
 //Extend gender_type to company schema
 interface ExtendedEmployeeData extends Tables<'company_employees'> {
   gender_type?: {
@@ -49,6 +51,10 @@ interface ExtendedEmployeeData extends Tables<'company_employees'> {
   civil_status_type?: {
     id: string
     name: string
+  } | null
+  company_affiliate_type?: {
+    id: string
+    affiliate_name: string
   } | null
 }
 
@@ -86,6 +92,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
       expiration_date: undefined,
       cancelation_date: undefined,
       remarks: '',
+      company_affiliate_id: undefined,
     },
   })
   const supabase = createBrowserClient()
@@ -196,6 +203,9 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
           : undefined,
         remarks: oldEmployeeData.remarks ?? '',
         principal_member_name: oldEmployeeData.principal_member_name ?? '',
+        company_affiliate_id: oldEmployeeData.company_affiliate_type?.id
+          ? (oldEmployeeData.company_affiliate_type as any).id.toString()
+          : undefined,
       })
 
       // trigger a re-render
@@ -205,7 +215,7 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
   const { data: roomPlanTypes } = useQuery(getTypes(supabase, 'room_plans'))
-  
+  const { data: affiliationList } = useQuery(getAffiliation(supabase, accountId))
   return (
     <Form {...form}>
       {/* key is used to trigger a re-render */}
@@ -667,6 +677,35 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
                       />
                     </PopoverContent>
                   </Popover>
+                </FormControl>
+                <FormMessage className="col-span-3 col-start-2" />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="company_affiliate_id"
+            render={({ field }) => (
+              <FormItem className="grid grid-cols-4 items-center gap-x-4 gap-y-0">
+                <FormLabel className="text-right">Company Affiliates</FormLabel>
+                <FormControl className="col-span-3">
+                  <Select
+                    {...field}
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={isPending}
+                  >
+                    <SelectTrigger className="col-span-3">
+                      <SelectValue placeholder="Select Affiliation" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {affiliationList?.map((type: { id: string; affiliate_name: string }) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.affiliate_name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage className="col-span-3 col-start-2" />
               </FormItem>

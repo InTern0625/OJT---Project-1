@@ -598,6 +598,7 @@ export type Database = {
           gender_types_id: string | null
           civil_status_id: string | null
           room_plan_id: string | null
+          company_affiliate_id: string | null
         }
         Insert: {
           account_id?: string | null
@@ -625,6 +626,7 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           room_plan_id?: string | null
+          company_affiliate_id?: string | null
         }
         Update: {
           account_id?: string | null
@@ -652,6 +654,7 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           room_plan_id?: string | null
+          company_affiliate_id?: string | null
         }
         Relationships: [
           {
@@ -687,6 +690,13 @@ export type Database = {
             columns: ['room_plan_id']
             isOneToOne: false
             referencedRelation: 'room_plans'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_company_affiliate_id_fkey'
+            columns: ['company_affiliate_id']
+            isOneToOne: false
+            referencedRelation: 'company_affiliates'
             referencedColumns: ['id']
           },
         ]

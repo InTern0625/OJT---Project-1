@@ -46,6 +46,13 @@ const employeesColumns: ColumnDef<Tables<'company_employees'>>[] = [
     ),
   },
   {
+    accessorKey: 'affiliate?.affiliate_name',
+    header: ({ column }) => <TableHeader column={column} title="Company Affiliation" />,
+    cell: ({ row }) => (
+      <span className="capitalize">{(row.original as any)?.affiliate?.affiliate_name ?? '---'}</span>
+    ),
+  },
+  {
     id: 'actions',
     cell: ({ row }) => {
       const employee = row.original

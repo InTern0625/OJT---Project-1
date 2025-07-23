@@ -1,19 +1,19 @@
 import { TypedSupabaseClient } from '@/types/typedSupabaseClient'
-import { TypeTabs } from '../app/(dashboard)/admin/types/type-card'
 
-const getAffiliationIDbyName = (
+const getTypesIDbyName = (
   supabase: TypedSupabaseClient,
-  page: TypeTabs,
+  accountId: string,
   name: string
 ) => {
   return supabase
-    .from(page)
+    .from('company_affiliates')
     .select('id')
     .eq('is_active', true)
+    .eq("parent_company_id", accountId)
     .ilike('name', name)
     .maybeSingle()
     .throwOnError()
 }
 
 
-export default getAffiliationIDbyName
+export default getTypesIDbyName

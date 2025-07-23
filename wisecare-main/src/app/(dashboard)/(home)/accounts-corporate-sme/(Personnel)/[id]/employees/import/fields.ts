@@ -4,6 +4,7 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import getTypes from '@/queries/get-types'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useMemo } from 'react'
+import getAffiliation from '@/queries/get-company-affiliation'
 
 const supabase = createBrowserClient()
 
@@ -18,9 +19,10 @@ const mapToOptions = (data?: { id: string; name: string }[]) =>
     ],
   })) ?? []
 
-export const useImportFields = () => {
+export const useImportFields = (accountId: string) => {
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
+  const { data: affiliationList } = useQuery(getAffiliation(supabase, accountId))
 
   const importFields = useMemo(() => [
     {
@@ -281,6 +283,16 @@ export const useImportFields = () => {
         type: 'input',
       },
       example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      label: 'Affiliation',
+      key: 'affiliation.name',
+      alternateMatches: ['affiliate', 'affiliation', 'company affiliation'],
+      fieldType: {
+        type: 'select',
+        options: mapToOptions(civilStatusTypes ?? [])
+      },
+      example: 'single',
     },
   ], [genderTypes, civilStatusTypes])
   return importFields

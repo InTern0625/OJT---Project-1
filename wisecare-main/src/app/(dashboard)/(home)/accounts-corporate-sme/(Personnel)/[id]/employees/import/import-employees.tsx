@@ -10,6 +10,7 @@ import { ReactSpreadsheetImport } from 'react-spreadsheet-import'
 import { Result } from 'react-spreadsheet-import/types/types'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
+import getAffiliationIDbyName from '@/queries/get-affiliation-by-id'  
 
 interface ImportEmployeesProps {
   isOpen: boolean
@@ -20,7 +21,7 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
   const supabase = createBrowserClient()
   const { toast } = useToast()
   const { accountId } = useCompanyContext()
-  const importFields = useImportFields()
+  const importFields = useImportFields(accountId)
 
   const { mutateAsync } = useInsertMutation(
     // @ts-ignore
@@ -53,9 +54,11 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
         const genderTypeName = employee['gender_type.name']
         const civilStatusTypeName = employee['civil_status_type.name']
         const roomPlanTypeName = employee['room_plan_type.name']
+        const affiliateName = employee["affiliate.name"]
         let genderType = null
         let civilStatusType = null
         let roomPlanType = null
+        let affiliateId = null
         if (typeof genderTypeName === 'string') {
           const { data} = await getTypesIDbyName(supabase, 'gender_types', genderTypeName)
           genderType = data
@@ -67,6 +70,10 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
         if (typeof roomPlanTypeName === 'string') {
           const { data} = await getTypesIDbyName(supabase, 'gender_types', roomPlanTypeName)
           roomPlanType = data
+        }
+         if (typeof affiliateName === 'string') {
+          const { data} = await getAffiliationIDbyName(supabase, accountId, affiliateName)
+          affiliateId = data
         }
 
         return {
@@ -88,6 +95,7 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           expiration_date: employee.expiration_date,
           created_by: user.id,
           remarks: employee.remarks,
+          company_affiliate_id: affiliateId?.id
         }
       })
     )
