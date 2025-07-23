@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="26dfc364-1776-4e51-9a45-1065fb713561" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.env.example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.git-branches.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.github/workflows/production.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.github/workflows/pull-request.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.github/workflows/staging.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.github/workflows/supabase-ci.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.husky/pre-commit" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.lintstagedrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.nvmrc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.prettierignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.prettierrc.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.storybook/main.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/.storybook/preview.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/components.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/jest.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/jest.polyfills.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/jest.setup.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/next-env.d.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/next.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/package.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/pnpm-lock.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/postcss.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/public/mockServiceWorker.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/sentry.client.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/sentry.edge.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/sentry.server.config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/confirm-account/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/confirm-account/set-password-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/confirm-account/set-password-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/forgot-password/forgot-password-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/forgot-password/forgot-password-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/forgot-password/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/sign-in/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/sign-in/sign-in-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/sign-in/sign-in-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(auth)/sign-in/splash-art.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/client-acquisition/chart-config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/client-acquisition/client-acquisition-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/client-acquisition/client-acquisition-chart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/commission/commission-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/commission/commission-chart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/commission/process-commission-chart.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/page-title.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/retention-rate/chart-config.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/retention-rate/retention-rate-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/retention-rate/retention-rate-chart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/top-agents/top-agents-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/top-agents/top-agents-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/top-hmo/count-hmo.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/top-hmo/top-hmo-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/top-hmo/top-hmo-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/upcoming-renewals/renewal-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/upcoming-renewals/renewal-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/(dashboard)/upcoming-renewals/renewal-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-HMO-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-about.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-account-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-affiliates-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-cancel-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-contract-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-file-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/delete/company-delete-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/delete/company-delete-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit-pending-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/account-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/affiliates-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/company-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/contract-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/file-upload.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/hmo-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/select-company-active.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/billing-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/delete-billing-statement.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/edit/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/[billingid]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/billing-mobile-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/billing-statement-tab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/billing-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/billing-statements-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/stats-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/billing/total-selected.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/company-header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees-add-personnel-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees-add-personnel-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees-add-personnel-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees-page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/delete-duplicate-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-actions-dropdown.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/delete-all-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/delete-employee.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/employee-details.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/employee-form-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-information/employee-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-mobile-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employee-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-tab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/employees-table-search.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-delete-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-request-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-requests-list-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/export-requests/employee-export-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/fields.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/import-employees-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/import-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/parseDate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/parseRow.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/import/themeOverrides.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/member-type.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/employees/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/delete-company-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/accounts-count.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/accounts-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/accounts-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/add-account-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/add-account-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/columns/accounts-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/delete-pending-export-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-request-list-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-request-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/combo-box.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/date-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/file-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/input-with-mask.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/marketing-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/number-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/select-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/forms/text-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/mutations/column-states.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request-list-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/request/account-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-corporate-sme/request/delete-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-HMO-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-about.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-account-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-cancel-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-contract-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edit-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-edits-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-file-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-information-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/company-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/delete/company-delete-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/delete/company-delete-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit-pending-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/account-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/company-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/contract-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/file-upload.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/edit/hmo-information-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/(company profile)/select-company-active.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/billing-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/delete-billing-statement.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/edit-billing-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/edit/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/[billingid]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-mobile-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-statement-tab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/billing-statements-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/stats-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/billing/total-selected.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/company-header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-add-personnel-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-add-personnel-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-add-personnel-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-information.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees-page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/delete-duplicate-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-actions-dropdown.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/delete-all-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/delete-employee.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/employee-details.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/employee-form-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-information/employee-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-mobile-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employee-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-tab.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/employees-table-search.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/export-employees.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/member-type.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/employees/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/[id]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/(Personnel)/delete-company-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/accounts-count.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/accounts-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/accounts-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/accounts-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/add-account-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/add-account-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/columns/accounts-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/delete-pending-export-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-request-list-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-request-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/export-account-requests.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/age_compute.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/combo-box.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/date-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/file-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/input-with-mask.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/marketing-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/number-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/select-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/forms/text-input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/mutations/column-states.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/request/account-request-list-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/request/account-request-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/request/account-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/accounts-ifp/request/delete-request.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/add-billing-statement-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-statement-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/forms/disabled-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/forms/pending-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/forms/pending-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-corporate-sme/pending-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/add-billing-statement-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/billing-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/billing-statement-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/billing-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/forms/disabled-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/forms/pending-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/forms/pending-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/billing-statements-ifp/pending-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/account-files/account-downloads-file-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/account-files/account-downloads.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/downloads-delete-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/downloads-page-title.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/downloads-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/downloads-sheet.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/employee-files/employee-downloads-file-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/employee-files/employee-downloads.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/export/accounts-export.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/export/employees-export.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/export/export-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/export/export-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/file-manager/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/forms/disabled-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/forms/pending-inputs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/forms/pending-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/pending-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/pending-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/pending/update-pending-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/[id]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/[id]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/[id]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/billing-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/pending-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/renewal-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-corporate-sme/renewal-statements-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/[id]/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/[id]/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/[id]/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/billing-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/data-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/pending-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/renewal-statements-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/(home)/renewals-ifp/renewal-statements-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/agent-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/agents-count.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/agents-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/create/add-agent-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/create/add-agent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/create/delete-agent.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/edit/edit-agent-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/agents/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/account-export-request-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/account-export-requests-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/account-export-requests-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/account-export-requests-rows.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/account-export-requests-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/account-exports/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/accounts-approval-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/action-request-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-data-table-row.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-form-ifp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-form-sme.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-info.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/approval-request-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/accounts/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/components/approval-information-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/components/export-requests-approval-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/components/operation-badge.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/employee-export-requests-columns.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/employee-export-requests-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/employee-export-requests-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/employee-export-requests-rows.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/employee-exports-requests-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/approval-request/employee-exports/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/logs/activity-table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/logs/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/logs/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/create-type.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/delete-type.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/edit/edit-type-fields.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/edit/edit-type.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/type-card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/type-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/type-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/types-navigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/types/types-title.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/create/add-user-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/create/add-user.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/edit/confirm-email.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/edit/delete-user.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/edit/edit-user-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/loading.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/user-list-header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/user-list.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/admin/users/user-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/(layout)/settings-nav-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/(layout)/settings-navigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/(layout)/settings-page-title.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/(layout)/settings-provider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/account/account-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/account/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/account/user-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/security/page.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/security/security-form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/(dashboard)/settings/security/security-schema.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/.well-known/vercel/flags/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/api/auth/callback/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/api/message/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/api/users/route.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/global-error.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/globals.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/layout.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/app/not-found.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/assets/icons/ellipsis-vertical.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/assets/images/wisecare-logo-2 1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ThemeToggle.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/active-badge.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/billing-statement/billing-statement-modal.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/billing-statement/delete-billing-statement.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/billing-statement/formatOriginalData.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/confirmation-dialog/confirmation-dialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/confirmation-dialog/confirmationStore.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navbar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/admin-navigation-client.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/admin-navigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/app-sidebar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/nav-logo.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/nav-user.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/navigation-back.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/navigation-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/navigation.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/navigation/sub-navigation-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/notification/notification-bell.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/notification/notification-content.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/notification/notification-item.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/signout-button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/layout/user-dropdown.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/maskito/currency-options.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/maskito/number-options.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/maskito/options.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/maskito/percentage-options.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/message.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/page-header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/table-header.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/table-pagination.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/table-search-accounts.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/table-search.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/table-view-options.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/accordion.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/alert-dialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/avatar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/badge.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/button.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/calendar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/card.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/chart.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/checkbox.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/collapsible.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/command.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/dialog.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/dropdown-menu.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/form.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/input.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/label.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/popover.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/progress.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/scroll-area.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/select.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/separator.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/sheet.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/sidebar.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/skeleton.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/switch.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/table.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/tabs.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/toast.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/toaster.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/tooltip.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/components/ui/use-toast.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/hooks/use-mobile.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/hooks/useGetMessage.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/hooks/useUser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/instrumentation.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/middleware.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/mocks/browser.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/mocks/handlers.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/mocks/index.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/mocks/server.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/providers/FeatureFlagProvider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/providers/ReactQueryProvider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/providers/ThemeProvider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/providers/UserProvider.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-account-by-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-accounts-column-sorting-by-user-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-accounts-column-visibility-by-user-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-accounts.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-activity-log.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-agents.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-all-accounts.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-all-pending-employee-exports.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-approved-exports.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-billing-statement-by-company-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-billing-statement-by-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-billing-statements.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-company-affiliates.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-employee-by-company-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-employee-count.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-employee-inputs.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-enum-types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-notifications.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-pending-account-exports.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-pending-accounts.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-pending-employee-exports.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-renewal-counts.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-renewal-statements.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-typesIDbyName.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-user-name-by-id.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/queries/get-users.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/accessibility.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/accessibility.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/addon-library.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/assets.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/avif-test-image.avif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/context.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/discord.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/docs.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/figma-plugin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/github.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/share.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/styling.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/testing.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/theming.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/tutorials.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/assets/youtube.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/atoms/Button.stories.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/atoms/Input.stories.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/stories/atoms/Message.stories.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/test/test-utils.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/types/database.types.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/types/typedSupabaseClient.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/custom-sorting.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/filter-agent-company.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/flags.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/get-pending-count.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/get-role.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/get-weeks.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/is-admin.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/normalize-to-utc.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/page-protect.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/pagination.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/retentionRate.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/supabase-client.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/supabase.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/tailwind.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/src/utils/utils.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/config.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240518110803_add_user_profile_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240518120705_add_types_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240518121753_add_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240624051035_add_notifications_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240624051633_add_trigger_on_new_account_created.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240711071942_add_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240829045034_add_columns_to_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240831102932_add_company_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240901051840_user_profile_function_update.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240902085312_add_activity_logs_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240903064911_add_update_rls_to_types_tables.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240904050640_fix_search_path_warnings.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240904102255_allow_null_values_to_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240918024102_column_visibility_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240925010944_company_employees_columns.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20240926041613_change_company_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241015080647_remove_finance_columns_from_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241015102724_add_billing_statements_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241015105115_update_search_accounts_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016052830_alter_accounts_policy.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016055056_add_search_billing_statements_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016060151_add_company_id_to_billing_statements.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016065116_fix_search_billing_statements_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016081607_drop_mode_of_premium.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016084944_delete_mode_of_premium_on_billing_statements.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241016090139_fix_search_billing_statement_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241019104320_fix2_for_billing_statement_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241019113242_fix3_for_billing_statement_rpc.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241020235146_update_company_employees_rls.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241023134424_admin_to_billing_statments_rls.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241024083102_change_maximum_benefit_limit_data_type.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241027110502_delete_rcp_search_function.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241027122803_fix_postgres_warning_on_rls_auth_uid.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241031034911_add_pending_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241031041800_add_rls_to_pending_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241031054111_add_columns_to_pending_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241031094042_add_update_rls_on_pending_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241101102311_pending_accounts_created_by_not_nullable.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241102145036_remove_rls_to_users_on_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241102150409_change_company_name_to_be_unique.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103003332_add_is_delete_account_column_to_pending_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103014212_add_pending_billing_statements_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103064429_add_rls_for_update_on_pending_billing_statments.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103123506_remove_rls_access_to_employees_on_billing_statements_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103131928_add_pending_company_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241103142326_add_rls_to_insert_to_pending_company_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241104025632_add_rls_for_updating_company_employees.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241104111019_add_pending_export_requests_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241104150917_add_policy_for_users_on_export_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241105111612_add_read_and_update_access_to_users_on_pending_exports.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241107024658_add_is_account_active_column_on_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241107111714_fix_migration_errors.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241110091956_add_RLS_for_admin_to_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241110111853_add_policies_for_admin_on_pending_exports.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241111123922_rls_update_on_employees.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241112121323_add_account_status_changes_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241117122414_add_approved_by_and_approved_at_columns_and_remove_default_value_on_created_by.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241128030047_refactor_fields_on_employees.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241128122627_refactor_rls_on_accounts_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241130132345_updated_finance_to_allow_access_to_billing_statements.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241130140707_remove_pending_billing_statement_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241201022923_insert_edit_access_for_some_employees_on_master_list_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241201032107_delete_pending_company_employees_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20241205055926_refactor_rls_for_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250126112336_remove_amount_column_on_billing_statements.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250126113251_remove_id_column_on_account_visibility.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250127062253_remove_mode_of_premium_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250202123355_add_more_dependent_relation_types.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250202130414_add_principal_name_column.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250223040341_add_column_sorting_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250223043619_add_indexes.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250224082446_rename_current_hmo_to_old_hmo.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250224083949_rename_current_hmo_to_old_hmo_on_request_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250224091407_fix_account_status_function.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250224091724_add_original_effective_date_on_accounts.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250224094613_add_effective_date_on_pending_table.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250225024027_add_accounts_bucket.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250225102619_add_special_benefits_files_column.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250625060006_add-billing-start-column.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/migrations/20250625060944_add-billing-end-column.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/supabase/seed.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/tsconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/wisecare-main/wisecare-main/vercel.json" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/wisecare-main" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "InTern0625"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/InTern0625/OJT---Project-1.git",
+    "accountId": "6a0fb6b2-1e3f-4e8d-987e-eac473e71780"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="30H3ay2NZDjc2DqHG4w8lUHtszB" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "Nina-Affiliates-Section",
+    "last_opened_file_path": "C:/Users/compc/Documents/GitHub/OJT---Project-1"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="26dfc364-1776-4e51-9a45-1065fb713561" name="Changes" comment="" />
+      <created>1753270737973</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1753270737973</updated>
+    </task>
+    <servers />
+  </component>
+</project>
