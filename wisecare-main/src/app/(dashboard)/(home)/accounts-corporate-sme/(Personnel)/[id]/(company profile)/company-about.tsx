@@ -1,5 +1,6 @@
 'use client'
 
+import companyEditsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edits-schema'
 import CompanyAccountInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-account-information'
 import CompanyCancelButton from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-cancel-button'
 import CompanyContractInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-contract-information'
@@ -7,6 +8,8 @@ import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corpora
 import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-HMO-information'
 import CompanyInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information'
 import accountsSchema from '@/app/(dashboard)/(home)/accounts-corporate-sme/accounts-schema'
+import CompanyAffiliatesInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-affiliates-information'
+import AffiliatesInformationFields from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/edit/affiliates-information-fields'
 import currencyOptions from '@/components/maskito/currency-options'
 import numberOptions from '@/components/maskito/number-options'
 import percentageOptions from '@/components/maskito/percentage-options'
@@ -36,6 +39,25 @@ interface Props {
   companyId: string
 }
 
+const onSubmit = async (data: z.infer<typeof companyEditsSchema>) => {
+  const supabase = createBrowserClient()
+
+  const { affiliate_entries } = data
+
+  const { error } = await supabase
+    .from('accounts') // 👈 or your actual table
+    .update({
+      affiliate_entries: affiliate_entries, // this should be a JSONB or separate linked table
+    })
+    .eq('id', accountId) // make sure you're updating the correct row
+
+  if (error) {
+    toast.error('Failed to save affiliates.')
+    console.error(error)
+  } else {
+    toast.success('Affiliates saved successfully!')
+  }
+}
 const CompanyAbout: FC<Props> = ({ companyId }) => {
   const { editMode, setEditMode, statusId } = useCompanyEditContext()
   const supabase = createBrowserClient()
@@ -58,6 +80,28 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
     () => account?.additional_benefits_files ?? [],
     [account?.additional_benefits_files]
   )
+  const [initialAffiliates, setInitialAffiliates] = useState<
+    { id: string; affiliate_name: string; affiliate_address: string }[]
+  >([])
+
+  useEffect(() => {
+    const fetchAffiliates = async () => {
+      const { data, error } = await supabase
+        .from('company_affiliates')
+        .select('id, affiliate_name, affiliate_address')
+        .eq('parent_company_id', companyId)
+        .eq('is_active', true)
+
+      if (error) {
+        console.error('Error fetching affiliates:', error)
+      } else {
+        setInitialAffiliates(data || [])
+      }
+    }
+
+    fetchAffiliates()
+  }, [companyId])
+
   const form = useForm<z.infer<typeof accountsSchema>>({
     resolver: zodResolver(accountsSchema),
     defaultValues: {
@@ -159,6 +203,8 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         account?.designation_of_contact_person ?? '',
       email_address_of_contact_person:
         account?.email_address_of_contact_person ?? '',
+      affiliate_entries: initialAffiliates, // ✅ fetched affiliates here
+      deleted_affiliate_ids: [], // ✅ track for soft delete
     },
   })
   
@@ -234,13 +280,79 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         }
 
         await supabase
-        .from('accounts')
-        .update({
-          is_editing: false, 
-          editing_user: null,
-          editing_timestampz: null
-        })
-        .eq('id', companyId)
+          .from('accounts')
+          .update({
+            is_editing: false,
+            editing_user: null,
+            editing_timestampz: null,
+          })
+          .eq('id', companyId)
+
+        // Save affiliates to `company_affiliates` table
+        const { affiliate_entries, deleted_affiliate_ids } = data
+
+        if (Array.isArray(affiliate_entries)) {
+          for (const entry of affiliate_entries) {
+            if (entry.id) {
+              // Update existing
+              const { error } = await supabase
+                .from('company_affiliates')
+                .update({
+                  affiliate_name: entry.affiliate_name,
+                  affiliate_address: entry.affiliate_address,
+                })
+                .eq('id', entry.id)
+
+              if (error) {
+                console.error('❌ Error updating affiliate:', error)
+              }
+            } else {
+              // Insert new
+              const { error } = await supabase
+                .from('company_affiliates')
+                .insert({
+                  parent_company_id: companyId,
+                  created_by: user.id,
+                  is_active: true,
+                  affiliate_name: entry.affiliate_name,
+                  affiliate_address: entry.affiliate_address,
+                })
+
+              if (error) {
+                console.error('❌ Error inserting affiliate:', error)
+              }
+            }
+          }
+        }
+
+        // Soft delete removed affiliates
+        if (Array.isArray(deleted_affiliate_ids)) {
+          for (const id of deleted_affiliate_ids) {
+            const { error } = await supabase
+              .from('company_affiliates')
+              .update({ is_active: false })
+              .eq('id', id)
+
+            if (error) {
+              console.error('❌ Error deleting affiliate:', error)
+            } else {
+              console.log('🗑️ Soft-deleted affiliate ID:', id)
+            }
+          }
+        }
+
+        // ✅ Re-fetch updated active affiliates
+        const { data: updatedAffiliates, error: fetchError } = await supabase
+          .from('company_affiliates')
+          .select('id, affiliate_name, affiliate_address')
+          .eq('parent_company_id', companyId)
+          .eq('is_active', true)
+
+        if (fetchError) {
+          console.error('❌ Error refetching updated affiliates:', fetchError)
+        } else {
+          setInitialAffiliates(updatedAffiliates || [])
+        }
 
         // Handle file input
         const specialBenefitsFiles = data.special_benefits_files
@@ -437,6 +549,12 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
               <span className="text-xl font-semibold">HMO Information</span>
               <CompanyHMOInformation id={companyId} />
+            </div>
+            <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
+              <span className="text-xl font-semibold">
+                Affiliates Information
+              </span>
+              <CompanyAffiliatesInformation id={companyId} />
             </div>
           </div>
         </div>

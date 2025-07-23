@@ -73,6 +73,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
       contract_proposal_files: [],
       additional_benefits_text: '',
       additional_benefits_files: [],
+      affiliate_entries: [],
     },
   })
 
@@ -281,6 +282,58 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
             }),
           },
         ])
+        const { data: insertedAccount, error: insertError } = await supabase
+          .from(
+            ['marketing', 'after-sales'].includes(
+              user?.user_metadata?.department,
+            )
+              ? 'pending_accounts'
+              : 'accounts',
+          )
+          .insert([insertPayload])
+          .select('id')
+          .single()
+
+        if (insertError || !insertedAccount) {
+          toast({
+            title: 'Error',
+            description: insertError?.message,
+            variant: 'destructive',
+          })
+          return
+        }
+
+        // Insert affiliate entries
+        if (
+          Array.isArray(data.affiliate_entries) &&
+          data.affiliate_entries.length > 0
+        ) {
+          const affiliatePayload = data.affiliate_entries.map((entry) => ({
+            parent_company_id: insertedAccount.id,
+            affiliate_name: entry.affiliate_name,
+            affiliate_address: entry.affiliate_address,
+            is_active: entry.is_active ?? true,
+            created_by: user.id,
+          }))
+
+          const { error: affiliateError } = await supabase
+            .from('company_affiliates')
+            .insert(affiliatePayload)
+          if (affiliateError) {
+            toast({
+              title: 'Affiliate insert error',
+              description: affiliateError.message,
+              variant: 'destructive',
+            })
+          }
+        }
+
+        toast({
+          title: 'Account Created!',
+          description: 'Account and affiliates saved successfully.',
+        })
+        form.reset()
+        setIsOpen(false)
       })(e)
     },
     [form, isSpecialBenefitsFilesEnabled, mutateAsync, supabase, uploadSpecialBenefits, uploadContractProposal, uploadAdditionalBenefits],

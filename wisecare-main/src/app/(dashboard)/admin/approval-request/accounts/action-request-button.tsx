@@ -138,6 +138,8 @@ const ActionRequestButton: FC<ActionRequestButtonProps> = ({
           civil_status_id: (selectedData as any).civil_status?.id, 
           card_number: selectedData.card_number,
           room_plan_id: (selectedData as any).room_plan?.id,
+          affiliate_name: (selectedData as any).affiliate_name?.id,
+          affiliate_address: selectedData.affiliate_address,
           mbl: selectedData.mbl,
           premium: selectedData.premium,
           program_types_id: (selectedData as any).program_type?.id,

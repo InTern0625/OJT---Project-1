@@ -14,8 +14,12 @@ import { Tables } from '@/types/database.types'
 import { ColumnDef } from '@tanstack/react-table'
 import { Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
 
-const employeesColumns: ColumnDef<Tables<'company_employees'>>[] = [
-  // company name is not needed since we are already in the company page
+// ✅ Extended type to include related company affiliate
+type CompanyEmployeeWithAffiliate = Tables<'company_employees'> & {
+  company_affiliates?: Pick<Tables<'company_affiliates'>, 'affiliate_name'>
+}
+
+const employeesColumns: ColumnDef<CompanyEmployeeWithAffiliate>[] = [
   {
     accessorKey: 'card_number',
     header: ({ column }) => <TableHeader column={column} title="Card Number" />,
@@ -44,6 +48,20 @@ const employeesColumns: ColumnDef<Tables<'company_employees'>>[] = [
     cell: ({ row }) => (
       <span className="capitalize">{row.original.member_type}</span>
     ),
+  },
+  {
+    id: 'company_affiliate',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Affiliated Company" />
+    ),
+    cell: ({ row }) => (
+      <span className="capitalize">
+        {row.original.company_affiliates?.affiliate_name ?? '---'}
+      </span>
+    ),
+    accessorFn: (originalRow) =>
+      (originalRow as CompanyEmployeeWithAffiliate).company_affiliates
+        ?.affiliate_name ?? '',
   },
   {
     id: 'actions',
