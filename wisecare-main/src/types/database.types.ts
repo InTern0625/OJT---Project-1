@@ -1244,6 +1244,44 @@ export type Database = {
           },
         ]
       }
+      company_affiliates: {
+        Row: {
+          id: string 
+          parent_company_id: string
+          affiliate_name: string 
+          affiliate_address: string 
+          is_active: boolean 
+          created_at: string 
+          created_by: string
+        }
+        Insert: {
+          id?: string | null 
+          parent_company_id?: string | null
+          affiliate_name?: string | null 
+          affiliate_address?: string | null 
+          is_active?: boolean
+          created_at?: string | null 
+          created_by?: string | null
+        }
+        Update: {
+          id?: string | null 
+          parent_company_id?: string | null
+          affiliate_name?: string | null 
+          affiliate_address?: string | null 
+          is_active?: boolean
+          created_at?: string | null 
+          created_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_affiliates_parent_company_id_fkey'
+            columns: ['parent_company_id']
+            isOneToOne: true
+            referencedRelation: 'accounts'
+            referencedColumns: ['id']
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
