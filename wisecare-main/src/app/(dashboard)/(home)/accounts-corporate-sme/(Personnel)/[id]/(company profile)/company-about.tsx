@@ -88,7 +88,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
       status_id: account?.status_type
         ? (account.status_type as any).id
         : defaultStatusID,
-      agent_id: account?.agent?.user_id ?? undefined,
+      agent_id: account?.agent?.[0]?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
       company_address: account?.company_address ?? '',
       nature_of_business: account?.nature_of_business ?? '',

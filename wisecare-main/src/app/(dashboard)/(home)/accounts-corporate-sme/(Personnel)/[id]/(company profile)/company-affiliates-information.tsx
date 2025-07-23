@@ -42,7 +42,7 @@ const CompanyAffiliatesInformation = ({ id }: Props) => {
   }, [editMode, id, supabase])
 
 
-  if (editMode) return <AffiliatesInformationFields />
+  if (editMode) return <AffiliatesInformationFields companyId={id} />
 
   return (
     <div className="flex flex-col gap-4">

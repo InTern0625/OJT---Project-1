@@ -9,6 +9,7 @@ import { useState, useEffect, useMemo } from 'react'
 import getAccountsColumnSortingByUserId from '@/queries/get-accounts-column-sorting-by-user-id'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import getUserIDbyName from '@/queries/get-user-name-by-id'
 
 interface PendingTableProps {
   initialPageIndex: number
@@ -20,20 +21,23 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   const now = new Date()
   const threeMonthsLater = new Date()
   threeMonthsLater.setMonth(now.getMonth() + 3)
+
   const [customSortStatus, setCustomSortStatus] = useState<string | null>(null)
+  const [userID, setUserID] = useState<string[] | null>(null)
+
   const { data: columnSortingData } = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
   const [customSortID, setCustomSortID] = useState<string | null>(null)
   const [searchMode, setSearchMode] = useState<'company' | 'agent'>('company')
   const [searchTerm, setSearchTerm] = useState('')
-  
+
   //Pagination
   const [pageIndex, setPageIndex] = useState(initialPageIndex)
   const [pageSize, setPageSize] = useState(initialPageSize)
   const [previousData, setPreviousData] = useState<any[]>([])
   const from = pageIndex * pageSize
-  
+
   const to = from + pageSize - 1
   //console.log("PAGE", pageIndex, pageSize, from, to)
   //const { data, count, isLoading } = useQuery(getAccounts(supabase))
@@ -65,12 +69,24 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     fetchSortID()
   }, [supabase, customSortStatus, columnSortingData])
 
+  useEffect(() => {
+    const fetchUserID = async() => {
+      if (searchMode == "agent"){
+        const { data, error } = await getUserIDbyName(supabase, searchTerm)
+        if (error) return
+        const ids = data?.map((d) => d.user_id) ?? []
+        setUserID(ids)
+      }
+    }
+    fetchUserID()
+  }, [supabase, searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
-    return getRenewalStatements(supabase, { 
+    return getRenewalStatements(supabase, {
       accountType: 'Business',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
+        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id,
         desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc
       },
       customSort: {
@@ -80,12 +96,13 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
       search: {
         key: searchMode,
         value: searchTerm
-      }
+      },
+      agentIds: searchMode === 'agent' ? userID ?? [] : undefined
     })
-  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm])
+  }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
   const { data, count, isLoading } = useQuery(accountQuery)
-  
+
   const accountData = (data || []).map((item: any) => ({
     ...item,
     account_type_id: item.account_type?.id ?? null,
@@ -100,34 +117,18 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     customSortStatus,
     setCustomSortStatus,
   })
-  /*
-  //const { data: test } = useQuery(getRenewalStatements(supabase))
-  
-  const filteredData = (test || [])
-  .filter((item: any) => {
-    const accountType = item.account_types?.name?.toUpperCase()
-    const expiration = item.expiration_date ? new Date(item.expiration_date) : null
-    const isBusiness = item.account_types !== null
-    const isIFP = item.program_type !== null
 
-    const isExpirationValid = expiration !== null && expiration <= threeMonthsLater 
-    return ((isBusiness && !isIFP) || (!isBusiness && !isIFP)) && isExpirationValid
-  })
-  .map((item: any) => ({
-    ...item,
-    account_type_id: item.account_types?.id ?? null, 
-  }))*/
   const displayData = isLoading ? previousData : accountData
-  
-  return <DataTable 
-            columns={columns} 
+
+  return <DataTable
+            columns={columns}
             data={displayData ?? []}
             pageCount={Math.ceil((count || 0) / pageSize)}
             pageIndex={pageIndex}
             pageSize={pageSize}
             onPageChange={setPageIndex}
             onPageSizeChange={setPageSize}
-            customSortStatus={customSortStatus} 
+            customSortStatus={customSortStatus}
             searchMode={searchMode}
             setSearchMode={setSearchMode}
             searchTerm={searchTerm}

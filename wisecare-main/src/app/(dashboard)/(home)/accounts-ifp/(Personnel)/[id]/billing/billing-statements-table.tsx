@@ -37,22 +37,6 @@ const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
   const [globalFilter, setGlobalFilter] = useState<any>('')
   const [rowSelection, setRowSelection] = useState({})
 
-  //placeholder for loading page
-  if (isLoading) {
-     return (
-      <div className="flex flex-col w-full h-[90vh] justify-center space-y-10">
-        <Skeleton className="h-50 w-full rounded-md" />
-        {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="flex space-x-4 w-full">
-          <Skeleton className="h-20 w-[20%] rounded" />
-          <Skeleton className="h-20 w-[30%] rounded" />
-          <Skeleton className="h-20 w-[25%] rounded" />
-          <Skeleton className="h-20 w-[25%] rounded" />
-        </div>
-      ))}
-    </div>
-     )
-  }
   const table = useReactTable({
     data: (data as any) || [],
     columns: BillingStatementsColumns,
@@ -104,7 +88,7 @@ const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell, index) => (
-                    <TableCell 
+                    <TableCell
                       key={cell.id}
                       onClick={() => {
                         if(index === 0) return

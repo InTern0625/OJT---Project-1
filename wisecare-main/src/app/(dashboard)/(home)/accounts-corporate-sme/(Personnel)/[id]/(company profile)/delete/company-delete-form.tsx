@@ -121,7 +121,7 @@ const CompanyDeleteForm: FC<Props> = ({
           {
             account_id: accountId,
             is_delete_account: true,
-            account_type_id: account?.account_type?.id,
+            account_type_id: account?.account_type?.[0]?.id,
             company_name: data.companyName,
             created_by: user?.id,
             operation_type: 'delete',
@@ -131,7 +131,7 @@ const CompanyDeleteForm: FC<Props> = ({
     },
     [
       account?.company_name,
-      account?.account_type?.id,
+      account?.account_type?.[0]?.id,
       accountId,
       form,
       mutateAsync,

@@ -111,7 +111,7 @@ const AccountInformationFields = () => {
                 </FormControl>
               </PopoverTrigger>
               <PopoverContent className="p-0">
-                <Command>
+                <Command {...({} as React.ComponentProps<typeof Command>)}>
                   <CommandInput placeholder="Search agent..." className="h-9" />
                   <CommandList>
                     <CommandEmpty>No agent found.</CommandEmpty>

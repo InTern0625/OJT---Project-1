@@ -40,8 +40,6 @@ import { useRouter } from 'next/navigation'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/export-accounts-modal'
 import { isAfter, isBefore, addMonths } from 'date-fns'
 import getRenewalStatementsCount from '@/queries/get-renewal-counts'
-import { Skeleton } from '@/components/ui/skeleton'
-
 
 interface IData {
   id: string
@@ -55,7 +53,7 @@ interface DataTableProps<TData extends IData, TValue> {
   pageSize: number
   onPageChange: (index: number) => void
   onPageSizeChange: (size: number) => void
-  searchMode: 'company' | 'agent'          
+  searchMode: 'company' | 'agent'
   setSearchMode: Dispatch<SetStateAction<'company' | 'agent'>>
   searchTerm: string
   setSearchTerm: Dispatch<SetStateAction<string>>
@@ -84,12 +82,12 @@ const DataTable = <TData extends IData, TValue>({
   const { upsertRenewalIFPColumnVisibility, upsertRenewalIFPColumnSorting } = useColumnStates()
   const [isAccountLoading, setIsAccountLoading] = useState(false)
   // get column visibility
-  const { data: columnVisibilityData, isLoading: isVisibilityLoading } = useQuery(
+  const { data: columnVisibilityData } = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_ifp_accounts"),
   )
 
   // get column sorting
-  const { data: columnSortingData, isLoading: isSortingLoading } = useQuery(
+  const { data: columnSortingData } = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_ifp_accounts"),
   )
   const [sorting, setSorting] = useState<SortingState>(
@@ -100,28 +98,10 @@ const DataTable = <TData extends IData, TValue>({
   )
   const [globalFilter, setGlobalFilter] = useState<any>('')
 
-  //placeholder for loading page
-    const isLoading = isVisibilityLoading || isSortingLoading
-    if (isLoading) {
-       return (
-        <div className="flex flex-col w-full h-[90vh] justify-center space-y-10">
-          <Skeleton className="h-50 w-full rounded-md" />
-          {Array.from({ length: 5 }).map((_, i) => (
-          <div key={i} className="flex space-x-4 w-full">
-            <Skeleton className="h-20 w-[20%] rounded" />
-            <Skeleton className="h-20 w-[30%] rounded" />
-            <Skeleton className="h-20 w-[25%] rounded" />
-            <Skeleton className="h-20 w-[25%] rounded" />
-          </div>
-        ))}
-      </div>
-       )
-    }
-
   const table = useReactTable({
     data,
     columns,
-    manualPagination: true, 
+    manualPagination: true,
     manualFiltering: true,
     pageCount,
     getCoreRowModel: getCoreRowModel(),
@@ -146,10 +126,10 @@ const DataTable = <TData extends IData, TValue>({
       globalFilter: searchTerm,
     }
   })
-  
+
   useEffect(() => {
       if (!user?.id) return
-  
+
       upsertRenewalIFPColumnVisibility([
         {
           user_id: user.id,
@@ -176,12 +156,12 @@ const DataTable = <TData extends IData, TValue>({
    //Upcoming and overdue renewals
   const dateToday = new Date()
   const renewalCountQuery = useMemo(() => {
-    return getRenewalStatementsCount(supabase, { 
+    return getRenewalStatementsCount(supabase, {
       accountType: 'IFP'
     })
   }, [supabase])
   const { data: renewalCount, count, isLoading } = useQuery(renewalCountQuery)
-  const upcomingCount = (renewalCount ?? []).filter((row) => 
+  const upcomingCount = (renewalCount ?? []).filter((row) =>
     (row as any).expiration_date &&
     isAfter((row as any).expiration_date, dateToday) &&
     isBefore((row as any).expiration_date, addMonths(dateToday, 3))
@@ -201,8 +181,8 @@ const DataTable = <TData extends IData, TValue>({
           </div>
           <div className="flex flex-row gap-4">
             <TableSearch table={table} searchMode={searchMode} setSearchMode={setSearchMode}/>
-            <ExportAccountsModal 
-              exportData={'accounts'} 
+            <ExportAccountsModal
+              exportData={'accounts'}
               exportType ='renewals'
               columnSortingID={(columnSortingData?.columns_ifp_renewals?.[0] as any)?.id}
               customSortID={customSortID}
