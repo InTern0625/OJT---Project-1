@@ -57,7 +57,6 @@ const DeleteAffiliate: FC<DeleteAffiliateProps<any>> = ({
     await mutateAsync({
       id: originalData.id,
       is_active: false,
-      updated_at: new Date().toISOString(),
     })
   }
 

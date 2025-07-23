@@ -129,7 +129,8 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
       room_plan: room_plan_id (name, id),
       affiliate: company_affiliate_id(affiliate_name)
       `)
-      .eq('account_id', accountId) as unknown as { data: ExtendedEmployeeData[] }
+      .eq('account_id', accountId)
+      .eq('is_active', true) as unknown as { data: ExtendedEmployeeData[] }
     if (!oldEmployeesData || oldEmployeesData.length === 0) {
       toast({
         title: 'No employees data found',

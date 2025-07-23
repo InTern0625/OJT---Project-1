@@ -11,6 +11,7 @@ import { Result } from 'react-spreadsheet-import/types/types'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
 import getAffiliationIDbyName from '@/queries/get-affiliation-by-id'  
+import getCompanyName from '@/queries/get-company-name-by-id'
 
 interface ImportEmployeesProps {
   isOpen: boolean
@@ -55,6 +56,9 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
         const civilStatusTypeName = employee['civil_status_type.name']
         const roomPlanTypeName = employee['room_plan_type.name']
         const affiliateName = employee["affiliate.name"]
+        const { data: company } =  await getCompanyName(supabase, accountId)
+        const companyName = company?.company_name
+
         let genderType = null
         let civilStatusType = null
         let roomPlanType = null
@@ -71,11 +75,19 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           const { data} = await getTypesIDbyName(supabase, 'gender_types', roomPlanTypeName)
           roomPlanType = data
         }
-         if (typeof affiliateName === 'string') {
-          const { data} = await getAffiliationIDbyName(supabase, accountId, affiliateName)
-          affiliateId = data
-        }
+        
+        if (typeof affiliateName === 'string') {
+          const { data } = await getAffiliationIDbyName(supabase, accountId, affiliateName)
 
+          if (data) {
+            affiliateId = data
+          } else if (
+            companyName &&
+            affiliateName.toLowerCase().trim() === companyName.toLowerCase().trim()
+          ) {
+            affiliateId = null //If parent company name then null
+          }
+        }
         return {
           account_id: accountId,
           first_name: employee.first_name,
@@ -91,11 +103,11 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           maximum_benefit_limit: employee.maximum_benefit_limit,
           member_type: employee.member_type,
           dependent_relation: employee.dependent_relation,
-          cancellation_date: employee.cancellation_date,
+          cancelation_date: employee.cancelation_date,
           expiration_date: employee.expiration_date,
           created_by: user.id,
           remarks: employee.remarks,
-          company_affiliate_id: affiliateId?.id
+          company_affiliate_id: affiliateId?.id ?? null
         }
       })
     )

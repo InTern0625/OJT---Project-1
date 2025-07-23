@@ -37,6 +37,7 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import getTypes from '@/queries/get-types'
 import getAffiliation from '@/queries/get-company-affiliation'
+import getCompanyName from '@/queries/get-company-name-by-id'
 
 //Extend gender_type to company schema
 interface ExtendedEmployeeData extends Tables<'company_employees'> {
@@ -139,7 +140,6 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
             description: 'User not found',
           })
         }
-
         await mutateAsync([
           {
             ...(oldEmployeeData && {
@@ -161,6 +161,10 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
               ? normalizeToUTC(new Date(data.cancelation_date))
               : undefined,
             updated_at: new Date().toISOString(),
+            company_affiliate_id:
+              data.company_affiliate_id === '__default__'
+                ? undefined
+                : data.company_affiliate_id,
           },
         ])
       })(e)
@@ -216,6 +220,8 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
   const { data: roomPlanTypes } = useQuery(getTypes(supabase, 'room_plans'))
   const { data: affiliationList } = useQuery(getAffiliation(supabase, accountId))
+  const { data: company } =  useQuery(getCompanyName(supabase, accountId))
+  const companyName = company?.company_name
   return (
     <Form {...form}>
       {/* key is used to trigger a re-render */}
@@ -692,13 +698,14 @@ const EmployeeForm: FC<EmployeeFormProps> = ({
                   <Select
                     {...field}
                     onValueChange={field.onChange}
-                    value={field.value}
+                    value={field.value ?? "__default__"}
                     disabled={isPending}
                   >
                     <SelectTrigger className="col-span-3">
                       <SelectValue placeholder="Select Affiliation" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="__default__">{companyName} (Parent)</SelectItem>
                       {affiliationList?.map((type: { id: string; affiliate_name: string }) => (
                         <SelectItem key={type.id} value={type.id}>
                           {type.affiliate_name}
