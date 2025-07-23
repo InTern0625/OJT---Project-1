@@ -19,6 +19,17 @@ const mapToOptions = (data?: { id: string; name: string }[]) =>
     ],
   })) ?? []
 
+const mapToOptionsAffiliates = (data?: { id: string; affiliate_name: string }[]) =>
+  data?.map((item) => ({
+    label: item.affiliate_name,
+    value: item.affiliate_name.toLowerCase(), // or use item.id if needed
+    alternateMatches: [
+      item.affiliate_name.toLowerCase(),
+      item.affiliate_name.toUpperCase(),
+      item.affiliate_name,
+    ],
+  })) ?? []
+
 export const useImportFields = (accountId: string) => {
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
@@ -290,10 +301,10 @@ export const useImportFields = (accountId: string) => {
       alternateMatches: ['affiliate', 'affiliation', 'company affiliation'],
       fieldType: {
         type: 'select',
-        options: mapToOptions(civilStatusTypes ?? [])
+        options: mapToOptionsAffiliates(affiliationList ?? [])
       },
       example: 'single',
     },
-  ], [genderTypes, civilStatusTypes])
+  ], [genderTypes, civilStatusTypes, affiliationList])
   return importFields
 }
