@@ -44,7 +44,7 @@ const CompanyAccountInformation: FC<CompanyAccountInformationProps> = ({
             label="Agent"
             value={
               account?.agent
-                ? `${account?.agent?.first_name} ${account?.agent?.last_name}`
+                ? `${account?.agent?.[0].first_name} ${account?.agent?.[0].last_name}`
                 : undefined
             }
           />

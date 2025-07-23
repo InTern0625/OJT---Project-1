@@ -27,7 +27,7 @@ const BillingInformation = ({ billingId }: { billingId: string }) => {
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <p className="text-gray-600">Mode of Payment</p>
-            <p className="font-medium">{data.mode_of_payments?.name}</p>
+            <p className="font-medium">{data.mode_of_payments?.[0].name}</p>
           </div>
           <div>
             <p className="text-gray-600">Billing Date</p>

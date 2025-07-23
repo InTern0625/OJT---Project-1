@@ -101,7 +101,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             currencyOptions,
           ) as unknown as number)
         : undefined,
-      agent_id: account?.agent?.user_id ?? undefined,
+      agent_id: account?.agent?.[0].user_id ?? undefined,
       commision_rate: account?.commision_rate
         ? (maskitoTransform(
             account.commision_rate.toString(),

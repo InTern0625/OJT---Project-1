@@ -122,7 +122,7 @@ const BillingStatementModal = <TData,>({
   )
   
   const { data: unFilteredAccounts } = useQuery(getAllAccounts(supabase))
-  let accounts = unFilteredAccounts
+  let accounts = unFilteredAccounts 
   if (accountType == "Business"){
     accounts = unFilteredAccounts?.filter(
       (acc) => {
@@ -278,7 +278,7 @@ const BillingStatementModal = <TData,>({
                               aria-expanded={openCommand}
                               className="col-span-3 rounded-sm justify-between overflow-hidden"
                             >
-                              {accounts.find((item) => item.id === field.value)?.company_name ??
+                              {accounts?.find((item) => item.id === field.value)?.company_name ??
                                 "Select Company..."}
                               <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                             </Button>

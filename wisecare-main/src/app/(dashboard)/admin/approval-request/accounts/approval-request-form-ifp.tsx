@@ -218,7 +218,7 @@ const ApprovalFormIFP = () => {
                             }
                             oldValue={
                                 oldData?.agent
-                                ? `${oldData.agent.first_name} ${oldData.agent.last_name}`
+                                ? `${oldData.agent?.[0].first_name} ${oldData.agent?.[0].last_name}`
                                 : '-'
                             }
                         />

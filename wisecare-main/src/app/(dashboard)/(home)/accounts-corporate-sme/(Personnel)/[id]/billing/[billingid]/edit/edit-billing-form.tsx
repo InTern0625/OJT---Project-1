@@ -58,7 +58,7 @@ const EditBillingForm = ({ billingid }: { billingid: string }) => {
     resolver: zodResolver(BillingStatementSchema),
     defaultValues: {
       ...(billingStatement && formatOriginalData(billingStatement as any)),
-      mode_of_payment_id: billingStatement?.mode_of_payments?.id,
+      mode_of_payment_id: billingStatement?.mode_of_payments?.[0]?.id,
     },
   })
 

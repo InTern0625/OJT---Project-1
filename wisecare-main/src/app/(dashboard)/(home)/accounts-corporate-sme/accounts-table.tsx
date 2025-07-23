@@ -100,19 +100,6 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     setCustomSortStatus,
   })
   
-  const filteredData = (data || [])
-    .filter(
-    (item: any) =>{
-        const isBusiness = item.account_type !== null;
-        const isIFP = item.program_type !== null;
-
-        return (isBusiness && !isIFP) || (!isBusiness && !isIFP);
-    })
-    .map((item: any) => ({
-      ...item,
-      account_type_id: item.account_type?.id ?? null,
-    }))
-  
   const displayData = isLoading ? previousData : accountData
     
   return <DataTable 
@@ -128,6 +115,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
             setSearchMode={setSearchMode}
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
+            customSortID={customSortID}
           />
 }
 export default AccountsTable

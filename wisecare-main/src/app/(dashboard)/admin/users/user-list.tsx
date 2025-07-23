@@ -111,7 +111,7 @@ const UserList = () => {
           userId={user.user_id}
           firstName={user.first_name || ''}
           lastName={user.last_name || ''}
-          department={user.departments?.name || ''}
+          department={user.departments?.[0].name || ''}
           email={user.email || ''}
         />
       ))}
