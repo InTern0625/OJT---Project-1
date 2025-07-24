@@ -82,6 +82,10 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     fetchUserID()
   }, [supabase, searchTerm, searchMode])
 
+  useEffect(() => {
+    setPageIndex(0)
+  }, [searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getRenewalStatements(supabase, { 
       accountType: 'IFP',
