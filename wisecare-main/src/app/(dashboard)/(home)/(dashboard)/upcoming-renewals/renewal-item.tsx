@@ -4,7 +4,7 @@ import { cn } from '@/utils/tailwind'
 import { formatDate, isAfter, isBefore, addMonths } from 'date-fns'
 import { CalendarDays } from 'lucide-react'
 import Link from 'next/link'
-import { FC } from 'react'
+import { FC, useState, useEffect} from 'react'
 
 interface RenewalItemProps {
   data: Tables<'accounts'>
@@ -36,15 +36,19 @@ const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
   }
 
   const status = getStatusFromExpirationDate()
+  //setPath if ifp or sme, dashboard
+  const path = data.program_types_id != null
+  ? 'renewals-ifp'
+  : 'renewals-corporate-sme'  
 
   return (
     <li className="bg-muted flex items-center justify-between rounded-lg p-4">
       <div>
-        <Link href={`/accounts/${data.id}`} className="font-semibold">
+        <Link href={`/${path}//${data.id}`} className="font-semibold">
           {data.company_name}
         </Link>
         <Link
-          href={`/accounts/${data.id}`}
+          href={`/${path}//${data.id}`}
           className="text-muted-foreground mt-1 flex items-center text-sm"
         >
           <CalendarDays className="mr-1 h-4 w-4" />
@@ -53,7 +57,7 @@ const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
         </Link>
       </div>
       <div className="text-right">
-        <Link href={`/accounts/${data.id}`}>
+        <Link href={`/${path}//${data.id}`}>
           <Badge className={cn('mt-1 capitalize', getStatusColor(status))}>
             {status}
           </Badge>
