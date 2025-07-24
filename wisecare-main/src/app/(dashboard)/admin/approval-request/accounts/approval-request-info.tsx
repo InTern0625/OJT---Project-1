@@ -21,7 +21,7 @@ const ApprovalRequestInfo = () => {
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-4xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-x-2">
-            Account Approval Request
+            Account Approval Request 
             <OperationBadge operationType={selectedData?.operation_type} />
           </DialogTitle>
           <DialogDescription>

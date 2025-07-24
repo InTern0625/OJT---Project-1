@@ -51,6 +51,11 @@ const ApprovalFormIFP = () => {
                             oldValue={(oldData as any)?.company_name}
                         />
                         <ApprovalInformationItem
+                            label={'Account Status'}
+                            value={(selectedData as any)?.status_type?.name}
+                            oldValue={(oldData as any)?.status_type?.name}
+                        />
+                        <ApprovalInformationItem
                             label={'Birthdate'}
                             value={
                                 selectedData?.birthdate

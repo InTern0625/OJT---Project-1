@@ -267,6 +267,11 @@ const ApprovalFormSME = () => {
                             oldValue={(oldData as any)?.company_name}
                         />
                         <ApprovalInformationItem
+                            label={'Account Status'}
+                            value={(selectedData as any)?.status_type?.name}
+                            oldValue={(oldData as any)?.status_type?.name}
+                        />
+                        <ApprovalInformationItem
                             label={'Company Address'}
                             value={(selectedData as any)?.company_address}
                             oldValue={(oldData as any)?.company_address}
