@@ -64,7 +64,7 @@ import {
 } from '@supabase-cache-helpers/postgrest-react-query'
 import { format } from 'date-fns'
 import { CalendarIcon, Loader2, ChevronsUpDown, Check} from 'lucide-react'
-import { FormEventHandler, ReactNode, useCallback, useState } from 'react'
+import { FormEventHandler, ReactNode, useCallback, useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { createBrowserClient } from '@/utils/supabase-client'
@@ -228,7 +228,15 @@ const BillingStatementModal = <TData,>({
   //   }
   // }, [CompanyContext, form])
   const [openCommand, setOpenCommand] = useState(false)
-
+  const [search, setSearch] = useState("")
+  
+  //filter accounts by search letters
+  const filteredAccounts = useMemo(() => {
+  if (!search) return accounts ?? []
+    return (accounts ?? []).filter((item) =>
+    item.company_name.toLowerCase().startsWith(search.toLowerCase())
+  )
+  }, [search, accounts])
   const maskedTotalContractValueRef = useMaskito({ options: currencyOptions })
   const maskedBalanceRef = useMaskito({ options: currencyOptions })
   const maskedAmountBilledRef = useMaskito({ options: currencyOptions })
@@ -276,11 +284,11 @@ const BillingStatementModal = <TData,>({
                           </PopoverTrigger>
                           <PopoverContent className="w-[500px] p-0 overflow-hidden">
                             <Command className="overflow-hidden">
-                              <CommandInput placeholder="Search Company..." />
+                              <CommandInput placeholder="Search Company..." onValueChange={setSearch}/>
                               <CommandList>
                                 <CommandEmpty>No Companies.</CommandEmpty>
                                 <CommandGroup>
-                                  {accounts?.map((item) => (
+                                  {filteredAccounts?.map((item) => (
                                     <CommandItem
                                       key={item.id}
                                       value={item.company_name}
