@@ -13,6 +13,31 @@ import {
 import { Tables } from '@/types/database.types'
 import { ColumnDef } from '@tanstack/react-table'
 import { Eye, MoreHorizontal, Pencil, Trash2 } from 'lucide-react'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
+import getCompanyName from '@/queries/get-company-name-by-id'
+import { createBrowserClient } from '@/utils/supabase-client'
+import { useEffect, useState } from 'react'
+
+const CompanyAffiliationCell = ({ employee }: { employee: any }) => {
+  const [companyName, setCompanyName] = useState<string | null>(null)
+  const { accountId } = useCompanyContext()
+
+  useEffect(() => {
+    if (!employee?.affiliate?.affiliate_name && employee?.account_id) {
+      const fetchName = async () => {
+        const supabase = createBrowserClient()
+        const { data } = await getCompanyName(supabase, accountId)
+
+        setCompanyName(data?.company_name ?? null)
+      }
+      fetchName()
+    }
+  })
+
+  const name = employee?.affiliate?.affiliate_name ?? companyName ?? '---'
+
+  return <span>{name}</span>
+}
 
 const employeesColumns: ColumnDef<Tables<'company_employees'>>[] = [
   // company name is not needed since we are already in the company page
@@ -44,6 +69,11 @@ const employeesColumns: ColumnDef<Tables<'company_employees'>>[] = [
     cell: ({ row }) => (
       <span className="capitalize">{row.original.member_type}</span>
     ),
+  },
+  {
+    accessorKey: 'affiliate?.affiliate_name',
+    header: ({ column }) => <TableHeader column={column} title="Company Affiliation" />,
+    cell: ({ row }) => <CompanyAffiliationCell employee={row.original} />,
   },
   {
     id: 'actions',

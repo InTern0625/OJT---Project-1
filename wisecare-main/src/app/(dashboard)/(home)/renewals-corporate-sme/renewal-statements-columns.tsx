@@ -9,6 +9,7 @@ import {
 import { formatDate, isAfter, isBefore, addMonths } from 'date-fns'
 import { useState } from 'react'
 import { useSortingOrder } from '@/utils/custom-sorting'
+import normalizeToUTC from '@/utils/normalize-to-utc'
 
 const getStatusFromExpirationDate = (expirationDate: string | null) => {
   const today = new Date()
@@ -46,20 +47,26 @@ type AccountWithJoins = Tables<'accounts'> & {
   dependent_plan_type?: { name: string | null }
 }
 
-export const RenewalStatementsColumns = () => {
+export const RenewalStatementsColumns = ({
+  customSortStatus,
+  setCustomSortStatus,
+}: {
+  customSortStatus: string | null;
+  setCustomSortStatus: (status: string | null) => void;
+}) => {  
   const statusOrder = useSortingOrder("status_types")
-  
-  const [activeSortStatus, setActiveSortStatus] = useState<string | null>(null);
-  const statusSorter = (a: string, b: string) => {
-    // If clicking "Active", bring Active to top
-    if (activeSortStatus) {
-      if (a === activeSortStatus) return -1;
-      if (b === activeSortStatus) return 1;
+  const accountOrder = useSortingOrder("account_types")
+
+  const orderSorter = (a: string, b: string, sortOrder: string[]) => {
+    // Bring Sort selection to top
+    if (customSortStatus) {
+      if (a === customSortStatus) return -1;
+      if (b === customSortStatus) return 1;
     }
 
     // Fall back to default order
-    const indexA = statusOrder.indexOf(a);
-    const indexB = statusOrder.indexOf(b);
+    const indexA = sortOrder.indexOf(a);
+    const indexB = sortOrder.indexOf(b);
     
     if (indexA === -1) return 1;
     if (indexB === -1) return -1;
@@ -95,13 +102,13 @@ export const RenewalStatementsColumns = () => {
         column={column} 
         title="Account Status" 
         customSortOrder={statusOrder}
-        onStatusClick={setActiveSortStatus}
+        onStatusClick={setCustomSortStatus}
       />
     ),
     sortingFn: (rowA, rowB, columnId) => {
       const statusA = rowA.getValue(columnId) as string;
       const statusB = rowB.getValue(columnId) as string;
-      return statusSorter(statusA, statusB);
+      return orderSorter(statusA, statusB, statusOrder);
     },
   },
   { accessorKey: 'company_name', header: ({ column }) => <TableHeader column={column} title="Company Name" /> },
@@ -114,8 +121,19 @@ export const RenewalStatementsColumns = () => {
   },
   {
     accessorKey: 'account_types.name',
-    header: ({ column }) => <TableHeader column={column} title="Account Type" />,
+    header: ({ column }) => 
+      <TableHeader 
+        column={column} 
+        title="Account Type"
+        customSortOrder={accountOrder}
+        onStatusClick={setCustomSortStatus}
+      />,
     cell: ({ row }) => (row.original as any).account_types?.name ?? '-',
+    sortingFn: (rowA, rowB, columnId) => {
+      const statusA = rowA.getValue(columnId) as string;
+      const statusB = rowB.getValue(columnId) as string;
+      return orderSorter(statusA, statusB, accountOrder);
+    },
   },
   {
     accessorKey: 'total_utilization',
@@ -132,28 +150,93 @@ export const RenewalStatementsColumns = () => {
   { accessorKey: 'initial_head_count', header: ({ column }) => <TableHeader column={column} title="Headcount" /> },
   {
     accessorKey: 'effective_date',
-    header: ({ column }) => <TableHeader column={column} title="Effective Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.effective_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Effective Date" />
+    ),
+    cell: ({ row }) => {
+      const effectiveDate = row.original.effective_date
+      ? normalizeToUTC(new Date(row.original.effective_date))
+      : null
+      return (
+        <div>
+          {effectiveDate ? format(effectiveDate, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.effective_date ? new Date(originalRow.effective_date) : null,
   },
   {
     accessorKey: 'coc_issue_date',
-    header: ({ column }) => <TableHeader column={column} title="COC Issue Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.coc_issue_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="COC Issue Date" />
+    ),
+    cell: ({ row }) => {
+      const cocIssueDate = row.original.coc_issue_date
+      ? normalizeToUTC(new Date(row.original.coc_issue_date))
+      : null
+      return (
+        <div>
+          {cocIssueDate ? format(cocIssueDate, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.coc_issue_date ? new Date(originalRow.coc_issue_date) : null,
   },
   {
     accessorKey: 'expiration_date',
-    header: ({ column }) => <TableHeader column={column} title="Expiration Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.expiration_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Expiration Date" />
+    ),
+    cell: ({ row }) => {
+      const expirationDate = row.original.expiration_date
+      ? normalizeToUTC(new Date(row.original.expiration_date))
+      : null
+      return (
+        <div>
+          {expirationDate ? format(expirationDate, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.expiration_date ? new Date(originalRow.expiration_date) : null,
   },
   {
     accessorKey: 'delivery_date_of_membership_ids',
-    header: ({ column }) => <TableHeader column={column} title="ID Delivery Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.delivery_date_of_membership_ids),
+    header: ({ column }) => (
+      <TableHeader column={column} title="ID Delivery Date" />
+    ),
+    cell: ({ row }) => {
+      const deliveryDateOfMembershipIds = row.original.delivery_date_of_membership_ids
+      ? normalizeToUTC(new Date(row.original.delivery_date_of_membership_ids))
+      : null
+      return (
+        <div>
+          {deliveryDateOfMembershipIds ? format(deliveryDateOfMembershipIds, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.delivery_date_of_membership_ids ? new Date(originalRow.delivery_date_of_membership_ids) : null,
   },
   {
     accessorKey: 'orientation_date',
-    header: ({ column }) => <TableHeader column={column} title="Orientation Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.orientation_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Orientation Date" />
+    ),
+    cell: ({ row }) => {
+      const orientationDate = row.original.orientation_date
+      ? normalizeToUTC(new Date(row.original.orientation_date))
+      : null
+      return (
+        <div>
+          {orientationDate ? format(orientationDate, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.orientation_date ? new Date(originalRow.orientation_date) : null,
   },
   {
     accessorKey: 'initial_contract_value',
@@ -167,13 +250,39 @@ export const RenewalStatementsColumns = () => {
   },
   {
     accessorKey: 'wellness_lecture_date',
-    header: ({ column }) => <TableHeader column={column} title="Wellness Lecture" />,
-    cell: ({ row }) => formatDateSafe(row.original.wellness_lecture_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Wellness Lecture" />
+    ),
+    cell: ({ row }) => {
+      const wellnessLecture = row.original.wellness_lecture_date
+      ? normalizeToUTC(new Date(row.original.wellness_lecture_date))
+      : null
+      return (
+        <div>
+          {wellnessLecture ? format(wellnessLecture, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.wellness_lecture_date ? new Date(originalRow.wellness_lecture_date) : null,
   },
   {
     accessorKey: 'annual_physical_examination_date',
-    header: ({ column }) => <TableHeader column={column} title="APE Date" />,
-    cell: ({ row }) => formatDateSafe(row.original.annual_physical_examination_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="APE Date" />
+    ),
+    cell: ({ row }) => {
+      const annualPhysicalExamination = row.original.annual_physical_examination_date
+      ? normalizeToUTC(new Date(row.original.annual_physical_examination_date))
+      : null
+      return (
+        <div>
+          {annualPhysicalExamination ? format(annualPhysicalExamination, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.annual_physical_examination_date ? new Date(originalRow.annual_physical_examination_date) : null,
   },
   {
     accessorKey: 'commision_rate',
@@ -183,13 +292,40 @@ export const RenewalStatementsColumns = () => {
   { accessorKey: 'summary_of_benefits', header: ({ column }) => <TableHeader column={column} title="Benefits" /> },
   {
     accessorKey: 'created_at',
-    header: ({ column }) => <TableHeader column={column} title="Created At" />,
-    cell: ({ row }) => formatDateSafe(row.original.created_at),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Created At" />
+    ),
+    cell: ({ row }) => {
+      const createdAt = row.original.created_at
+      ? normalizeToUTC(new Date(row.original.created_at))
+      : null
+      return (
+        <div>
+          {createdAt ? format(createdAt, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+      (originalRow as any)?.created_at
+        ? new Date((originalRow as any).created_at) : null,
   },
   {
     accessorKey: 'updated_at',
-    header: ({ column }) => <TableHeader column={column} title="Updated At" />,
-    cell: ({ row }) => formatDateSafe(row.original.updated_at),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Updated At" />
+    ),
+    cell: ({ row }) => {
+      const updatedAt = row.original.updated_at
+      ? normalizeToUTC(new Date(row.original.updated_at))
+      : null
+      return (
+        <div>
+          {updatedAt ? format(updatedAt, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.updated_at ? new Date(originalRow.updated_at) : null,
   },
   { accessorKey: 'name_of_signatory', header: ({ column }) => <TableHeader column={column} title="Signatory Name" /> },
   { accessorKey: 'designation_of_contact_person', header: ({ column }) => <TableHeader column={column} title="Contact Designation" /> },
@@ -197,8 +333,21 @@ export const RenewalStatementsColumns = () => {
   { accessorKey: 'is_account_active', header: ({ column }) => <TableHeader column={column} title="Account Active" /> },
   {
     accessorKey: 'original_effective_date',
-    header: ({ column }) => <TableHeader column={column} title="Original Effective" />,
-    cell: ({ row }) => formatDateSafe(row.original.original_effective_date),
+    header: ({ column }) => (
+      <TableHeader column={column} title="Original Effective" />
+    ),
+    cell: ({ row }) => {
+      const originalEffective = row.original.original_effective_date
+      ? normalizeToUTC(new Date(row.original.original_effective_date))
+      : null
+      return (
+        <div>
+          {originalEffective ? format(originalEffective, 'MMMM dd, yyyy') : ''}
+        </div>
+      )
+    },
+    accessorFn: (originalRow) =>
+        originalRow?.original_effective_date ? new Date(originalRow.original_effective_date) : null,
   },
   {
     accessorKey: 'special_benefits_files',

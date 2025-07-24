@@ -380,6 +380,10 @@ export type Database = {
           columns_sme_accounts: Json[] | null
           columns_ifp_renewals: Json[] | null
           columns_sme_renewals: Json[] | null
+          custom__sort_ifp_accounts: string
+          custom__sort_sme_accounts: string
+          custom__sort_ifp_renewals: string
+          custom__sort_sme_renewals: string
           user_id: string
         }
         Insert: {
@@ -390,6 +394,10 @@ export type Database = {
           columns_sme_accounts?: Json[] | null
           columns_ifp_renewals?: Json[] | null
           columns_sme_renewals?: Json[] | null
+          custom__sort_ifp_accounts?: string
+          custom__sort_sme_accounts?: string
+          custom__sort_ifp_renewals?: string
+          custom__sort_sme_renewals?: string
           user_id: string
         }
         Update: {
@@ -400,6 +408,10 @@ export type Database = {
           columns_sme_accounts?: Json[] | null
           columns_ifp_renewals?: Json[] | null
           columns_sme_renewals?: Json[] | null
+          custom__sort_ifp_accounts?: string
+          custom__sort_sme_accounts?: string
+          custom__sort_ifp_renewals?: string
+          custom__sort_sme_renewals?: string
           user_id?: string
         }
         Relationships: [
@@ -586,6 +598,7 @@ export type Database = {
           gender_types_id: string | null
           civil_status_id: string | null
           room_plan_id: string | null
+          company_affiliate_id: string | null
         }
         Insert: {
           account_id?: string | null
@@ -613,6 +626,7 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           room_plan_id?: string | null
+          company_affiliate_id?: string | null
         }
         Update: {
           account_id?: string | null
@@ -640,6 +654,7 @@ export type Database = {
           gender_types_id?: string | null
           civil_status_id?: string | null
           room_plan_id?: string | null
+          company_affiliate_id?: string | null
         }
         Relationships: [
           {
@@ -675,6 +690,13 @@ export type Database = {
             columns: ['room_plan_id']
             isOneToOne: false
             referencedRelation: 'room_plans'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'company_employees_company_affiliate_id_fkey'
+            columns: ['company_affiliate_id']
+            isOneToOne: false
+            referencedRelation: 'company_affiliates'
             referencedColumns: ['id']
           },
         ]
@@ -1228,6 +1250,44 @@ export type Database = {
             columns: ['department_id']
             isOneToOne: false
             referencedRelation: 'departments'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      company_affiliates: {
+        Row: {
+          id: string 
+          parent_company_id: string
+          affiliate_name: string 
+          affiliate_address: string 
+          is_active: boolean 
+          created_at: string 
+          created_by: string
+        }
+        Insert: {
+          id?: string | null 
+          parent_company_id?: string | null
+          affiliate_name?: string | null 
+          affiliate_address?: string | null 
+          is_active?: boolean
+          created_at?: string | null 
+          created_by?: string | null
+        }
+        Update: {
+          id?: string | null 
+          parent_company_id?: string | null
+          affiliate_name?: string | null 
+          affiliate_address?: string | null 
+          is_active?: boolean
+          created_at?: string | null 
+          created_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'company_affiliates_parent_company_id_fkey'
+            columns: ['parent_company_id']
+            isOneToOne: true
+            referencedRelation: 'accounts'
             referencedColumns: ['id']
           },
         ]

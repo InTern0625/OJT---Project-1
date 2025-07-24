@@ -1,7 +1,16 @@
 import { TypedSupabaseClient } from '@/types/typedSupabaseClient'
+import { emitKeypressEvents } from 'readline'
+interface AccountFilters {
+  accountType?: string
+  customSort?: {key: string | null, value: string | null}
+  sortOrder?: {col: string | null, desc: boolean }
+  search?: {key: string | null, value: string | null}
+  range?: { start: number; end: number }
+  agentIds?: string[]
+}
 
-const getAccounts = (supabase: TypedSupabaseClient) => {
-  return supabase
+const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}) => {
+  let query = supabase
     .from('accounts')
     .select(
       `
@@ -62,7 +71,52 @@ const getAccounts = (supabase: TypedSupabaseClient) => {
       },
     )
     .eq('is_active', true)
-    .order('created_at', { ascending: false })
+  
+  
+  // Sort Filters
+  if (filters.customSort?.key && filters.customSort?.value && filters.customSort.value !== "") {
+    if (filters.customSort.key === "account_type_name") {
+      query = query.eq("account_type_id", filters.customSort.value)
+    } else if (filters.customSort.key === "status_type_name") {
+      query = query.eq("status_id", filters.customSort.value)
+    }
+  } else if (filters.sortOrder?.col && !(filters.sortOrder.col == "account_type_name" || filters.sortOrder.col == "status_type_name")) {
+    //Normal sorting only run if custom key or value is undefined
+    query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
+  } else {
+    //if none
+    query = query.order('created_at', { ascending: false })
+  }
+
+  //Account type filter
+  if (filters.accountType === "Business") {
+    query = query.or(
+      'and(account_type_id.not.is.null,program_types_id.is.null),and(account_type_id.is.null,program_types_id.is.null)'
+    );
+  } else if (filters.accountType === "IFP") {
+    query = query.or(
+      'and(account_type_id.is.null,program_types_id.not.is.null),and(account_type_id.is.null,program_types_id.is.null)'
+    );
+  }
+
+
+
+
+  //Search filter
+  const searchValue = filters.search?.value ?? ''
+  if (filters.search?.key === 'company' && searchValue) {
+    query = query.ilike('company_name', `${searchValue}%`)
+  }
+  if (filters.agentIds && filters.agentIds.length > 0 && filters.search?.key === "agent") {
+    query = query.in('agent_id', filters.agentIds)
+  }
+
+  // Pagination
+  if (filters.range) {
+    const { start, end } = filters.range
+    query = query.range(start, end)
+  }
+  return query
 }
 
 export default getAccounts

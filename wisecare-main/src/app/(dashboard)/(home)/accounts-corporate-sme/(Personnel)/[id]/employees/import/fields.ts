@@ -4,13 +4,14 @@ import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import getTypes from '@/queries/get-types'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useMemo } from 'react'
-
+import getAffiliation from '@/queries/get-company-affiliation'
+import getCompanyName from '@/queries/get-company-name-by-id'
 const supabase = createBrowserClient()
 
 const mapToOptions = (data?: { id: string; name: string }[]) =>
   data?.map((item) => ({
     label: item.name,
-    value: item.name.toLowerCase(), // or use item.id if needed
+    value: item.name.toLowerCase(), 
     alternateMatches: [
       item.name.toLowerCase(),
       item.name.toUpperCase(),
@@ -18,10 +19,42 @@ const mapToOptions = (data?: { id: string; name: string }[]) =>
     ],
   })) ?? []
 
-export const useImportFields = () => {
+const mapToOptionsAffiliates = (
+  data?: { id: string; affiliate_name: string; parent_company_id?: string }[] | null,
+  parentName?: string
+) => {
+  const affiliateOptions = data?.map((item) => ({
+    label: item.affiliate_name,
+    value: item.affiliate_name.toLowerCase(),
+    alternateMatches: [
+      item.affiliate_name.toLowerCase(),
+      item.affiliate_name.toUpperCase(),
+      item.affiliate_name,
+    ],
+  })) ?? []
+
+  if (parentName) {
+    const parentValue = parentName.toLowerCase()
+    const exists = affiliateOptions.some(opt => opt.value === parentValue)
+
+    if (!exists) {
+      affiliateOptions.push({
+        label: parentName,
+        value: parentValue,
+        alternateMatches: [parentValue, parentName.toUpperCase(), parentName],
+      })
+    }
+  }
+
+  return affiliateOptions
+}
+
+export const useImportFields = (accountId: string) => {
   const { data: genderTypes } = useQuery(getTypes(supabase, 'gender_types'))
   const { data: civilStatusTypes } = useQuery(getTypes(supabase, 'civil_status_types'))
-
+  const { data: affiliationList } = useQuery(getAffiliation(supabase, accountId))
+  const { data: companyName } = useQuery(getCompanyName(supabase, accountId))
+  
   const importFields = useMemo(() => [
     {
       // Visible in table header and when matching columns.
@@ -264,6 +297,35 @@ export const useImportFields = () => {
       },
       example: '1/25/2024',
     },
-  ], [genderTypes, civilStatusTypes])
+    {
+      label: 'Cancelation Date',
+      key: 'cancelation_date',
+      alternateMatches: ['cancelation date', 'cancelation', 'cancelation_date'],
+      fieldType: {
+        type: 'input',
+      },
+      example: '1/25/2024',
+    },
+    {
+      label: 'Remarks',
+      key: 'remarks',
+      alternateMatches: ['remarks', 'Remarks', 'remark', 'Remark', 'REMARKS', 'REMARKS'],
+      fieldType: {
+        type: 'input',
+      },
+      example: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
+    },
+    {
+      label: 'Affiliation',
+      key: 'affiliation.name',
+      alternateMatches: ['affiliate', 'affiliation', 'company affiliation'],
+      fieldType: {
+        type: 'select',
+        options: mapToOptionsAffiliates(affiliationList, companyName?.company_name ?? '')
+      },
+      example: companyName ?? 'Wise Care Provider',
+    }
+  ], [genderTypes, civilStatusTypes, affiliationList, companyName])
+  
   return importFields
 }

@@ -10,6 +10,8 @@ import { ReactSpreadsheetImport } from 'react-spreadsheet-import'
 import { Result } from 'react-spreadsheet-import/types/types'
 import { createBrowserClient } from '@/utils/supabase-client'
 import getTypesIDbyName from '@/queries/get-typesIDbyName'  
+import getAffiliationIDbyName from '@/queries/get-affiliation-by-id'  
+import getCompanyName from '@/queries/get-company-name-by-id'
 
 interface ImportEmployeesProps {
   isOpen: boolean
@@ -20,7 +22,7 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
   const supabase = createBrowserClient()
   const { toast } = useToast()
   const { accountId } = useCompanyContext()
-  const importFields = useImportFields()
+  const importFields = useImportFields(accountId)
 
   const { mutateAsync } = useInsertMutation(
     // @ts-ignore
@@ -53,9 +55,14 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
         const genderTypeName = employee['gender_type.name']
         const civilStatusTypeName = employee['civil_status_type.name']
         const roomPlanTypeName = employee['room_plan_type.name']
+        const affiliateName = employee["affiliate.name"]
+        const { data: company } =  await getCompanyName(supabase, accountId)
+        const companyName = company?.company_name
+
         let genderType = null
         let civilStatusType = null
         let roomPlanType = null
+        let affiliateId = null
         if (typeof genderTypeName === 'string') {
           const { data} = await getTypesIDbyName(supabase, 'gender_types', genderTypeName)
           genderType = data
@@ -68,7 +75,19 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           const { data} = await getTypesIDbyName(supabase, 'gender_types', roomPlanTypeName)
           roomPlanType = data
         }
+        
+        if (typeof affiliateName === 'string') {
+          const { data } = await getAffiliationIDbyName(supabase, accountId, affiliateName)
 
+          if (data) {
+            affiliateId = data
+          } else if (
+            companyName &&
+            affiliateName.toLowerCase().trim() === companyName.toLowerCase().trim()
+          ) {
+            affiliateId = null //If parent company name then null
+          }
+        }
         return {
           account_id: accountId,
           first_name: employee.first_name,
@@ -84,8 +103,11 @@ const ImportEmployees = ({ isOpen, setIsOpen }: ImportEmployeesProps) => {
           maximum_benefit_limit: employee.maximum_benefit_limit,
           member_type: employee.member_type,
           dependent_relation: employee.dependent_relation,
+          cancelation_date: employee.cancelation_date,
           expiration_date: employee.expiration_date,
           created_by: user.id,
+          remarks: employee.remarks,
+          company_affiliate_id: affiliateId?.id ?? null
         }
       })
     )

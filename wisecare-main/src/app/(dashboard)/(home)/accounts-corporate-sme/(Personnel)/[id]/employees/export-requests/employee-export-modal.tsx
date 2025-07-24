@@ -29,6 +29,10 @@ interface ExtendedEmployeeData extends Tables<'company_employees'> {
     id: string
     name: string
   } | null
+  affiliate?: {
+    id: string
+    affiliate_name: string
+  } | null
 }
 interface EmployeeExportModalProps {
   exportData: Enums<'export_type'>
@@ -122,9 +126,11 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
       principal_member_name,
       gender_type: gender_types_id(name, id),
       civil_status_type: civil_status_id (name, id),
-      room_plan: room_plan_id (name, id)
+      room_plan: room_plan_id (name, id),
+      affiliate: company_affiliate_id(affiliate_name)
       `)
-      .eq('account_id', accountId) as unknown as { data: ExtendedEmployeeData[] }
+      .eq('account_id', accountId)
+      .eq('is_active', true) as unknown as { data: ExtendedEmployeeData[] }
     if (!oldEmployeesData || oldEmployeesData.length === 0) {
       toast({
         title: 'No employees data found',
@@ -159,9 +165,10 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
         'Cancelation Date': employee.cancelation_date || '',
         Remarks: employee.remarks || '',
         'Principal Member Name': employee.principal_member_name || '',
+        'Company Affiliation': employee?.affiliate?.affiliate_name || '',
       }
     })
-    /*
+    
     await mutateAsync([
       {
         export_type: exportData,
@@ -169,7 +176,7 @@ const EmployeeExportModal: FC<EmployeeExportModalProps> = ({
         account_id: accountId,
         data: employeesData,
       },
-    ])*/
+    ])
   }
 
   return (

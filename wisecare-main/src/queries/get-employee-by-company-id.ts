@@ -27,7 +27,8 @@ const getEmployeeByCompanyId = (
       created_at,
       gender_type: gender_types_id(name, id),
       civil_status_type: civil_status_id(name, id),
-      room_plan_type: room_plan_id(name, id)
+      room_plan_type: room_plan_id(name, id),
+      affiliate: company_affiliate_id(affiliate_name, affiliate_address)
     `,
     )
     .eq('account_id', companyId)

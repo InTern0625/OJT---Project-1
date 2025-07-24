@@ -1,7 +1,7 @@
 import { TypedSupabaseClient } from '@/types/typedSupabaseClient'
 import { TypeTabs } from '../app/(dashboard)/admin/types/type-card'
 
-const getTypesIDbyName = (
+const getAffiliationIDbyName = (
   supabase: TypedSupabaseClient,
   page: TypeTabs,
   name: string
@@ -16,4 +16,4 @@ const getTypesIDbyName = (
 }
 
 
-export default getTypesIDbyName
+export default getAffiliationIDbyName

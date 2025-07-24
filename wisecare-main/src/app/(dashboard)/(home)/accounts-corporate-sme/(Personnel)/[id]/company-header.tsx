@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import getAccountById from '@/queries/get-account-by-id'
 import getEmployeeCount from '@/queries/get-employee-count'
+import getAffiliateCount from '@/queries/get-affiliate-count'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -18,8 +19,11 @@ interface CompanyHeaderProps {
 const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
   const supabase = createBrowserClient()
   const { data: account } = useQuery(getAccountById(supabase, id))
-  const { count: employeeCount, isPending } = useQuery(
+  const { count: employeeCount, isPending: isEmployeePending } = useQuery(
     getEmployeeCount(supabase, id),
+  )
+  const { count: affiliateCount, isPending: isAffiliatePending } = useQuery(
+    getAffiliateCount(supabase, id),
   )
 
   const canSeeEmployee = ['admin', 'marketing', 'after-sales', 'under-writing'].includes(userRole || '')
@@ -54,7 +58,7 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
           <div className="flex flex-row gap-12 pt-6 text-center xl:pt-0">
             <div className="flex flex-col">
               <div className="text-sm font-bold">
-                {isPending ? (
+                {isEmployeePending ? (
                   <Skeleton className="mx-auto h-5 w-full" />
                 ) : (
                   employeeCount
@@ -62,6 +66,18 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
               </div>
               <div className="text-xs font-medium text-[#64748b] uppercase">
                 Employees
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <div className="text-sm font-bold">
+                {isAffiliatePending ? (
+                  <Skeleton className="mx-auto h-5 w-full" />
+                ) : (
+                  affiliateCount
+                )}
+              </div>
+              <div className="text-xs font-medium text-[#64748b] uppercase">
+                Affiliates
               </div>
             </div>
             <div className="flex flex-col">
@@ -100,6 +116,14 @@ const CompanyHeader: FC<CompanyHeaderProps> = ({ id, userRole }) => {
               className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
             >
               Employees
+          </Link>
+          )}
+          {canSeeEmployee &&(
+            <Link
+              href={`/accounts-corporate-sme/${id}/affiliates`}
+              className="ring-offset-background focus-visible:ring-ring data-[state=active]:text-foreground inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium whitespace-nowrap text-[#64748b] transition-all focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+            >
+              Affiliates
           </Link>
           )}
         </div>
