@@ -3,6 +3,7 @@
 import CompanyAccountInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-account-information'
 import CompanyCancelButton from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-cancel-button'
 import CompanyContractInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-contract-information'
+import CompanyAffiliationInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-affiliation-information'
 import { useCompanyEditContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-edit-provider'
 import CompanyHMOInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-HMO-information'
 import CompanyInformation from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-information'
@@ -437,6 +438,10 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
               <span className="text-xl font-semibold">HMO Information</span>
               <CompanyHMOInformation id={companyId} />
+            </div>
+            <div className="border-border bg-card mx-auto w-full rounded-2xl border p-6">
+              <span className="text-xl font-semibold">Affiliation Information</span>
+              <CompanyAffiliationInformation id={companyId} />
             </div>
           </div>
         </div>
