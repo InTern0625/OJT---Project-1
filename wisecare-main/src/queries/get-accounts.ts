@@ -79,6 +79,10 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
       query = query.eq("account_type_id", filters.customSort.value)
     } else if (filters.customSort.key === "status_type_name") {
       query = query.eq("status_id", filters.customSort.value)
+    } else if (filters.customSort.key === "program_type_id") {
+      query = query.eq("program_type_id", filters.customSort.value)
+    } else if (filters.customSort.key === "room_plan_id") {
+      query = query.eq("room_plan_id", filters.customSort.value)
     }
   } else if (filters.sortOrder?.col && !(filters.sortOrder.col == "account_type_name" || filters.sortOrder.col == "status_type_name")) {
     //Normal sorting only run if custom key or value is undefined
@@ -100,8 +104,6 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   }
 
 
-
-
   //Search filter
   const searchValue = filters.search?.value ?? ''
   if (filters.search?.key === 'company' && searchValue) {
@@ -110,7 +112,9 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   if (filters.agentIds && filters.agentIds.length > 0 && filters.search?.key === "agent") {
     query = query.in('agent_id', filters.agentIds)
   }
-
+  if (filters.agentIds && filters.search?.key === "agent"){
+    query = query.in('agent_id', filters.agentIds)
+  }
   // Pagination
   if (filters.range) {
     const { start, end } = filters.range
@@ -118,5 +122,4 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   }
   return query
 }
-
 export default getAccounts

@@ -71,7 +71,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
       if (searchMode == "agent"){
         const { data, error } = await getUserIDbyName(supabase, searchTerm) 
         if (error) return
-        const ids = data?.map((d) => d.user_id) ?? []
+        const ids = data?.map((d) => d.user_id) ?? undefined
         setUserID(ids)
       }
     }

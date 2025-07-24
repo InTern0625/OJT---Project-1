@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -17,6 +17,8 @@ import { Enums } from '@/types/database.types'
 import DeletePendingExportRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/delete-pending-export-requests'
 import getAccounts from '@/queries/get-accounts'
 import { createBrowserClient } from '@/utils/supabase-client'
+import getTypesIDbyName from '@/queries/get-typesIDbyName'  
+import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
 
 
 interface ExportAccountsModalProps {
@@ -32,17 +34,19 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
   const supabase = createBrowserClient()
   const [pendingRequest, setIsPendingRequest] = useState('')
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-  const filters = customSortID && columnSortingID
-    ? {
-        customSort: {
-          key: columnSortingID,
-          value: customSortID,
-        },
-      }
-    : {}
 
+  const filters =
+    columnSortingID && customSortID
+      ? {
+          customSort: {
+            key: columnSortingID,
+            value: customSortID,
+          },
+          accountType: 'Business',
+        }
+      : {accountType: 'Business'}
+  console.log("FILT", filters, columnSortingID, customSortID)
   const { data: oldAccountsData } = useQuery(getAccounts(supabase, filters))
-
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore
     supabase.from('pending_export_requests'),
@@ -109,28 +113,12 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
         const now = new Date()
         const threeMonthsLater = new Date()
         threeMonthsLater.setMonth(now.getMonth() + 3)
-        const isBusiness = account.account_type !== null;
-        const isIFP = account.program_type !== null;
-
-
-        const validAccount = (isBusiness && !isIFP) || (!isBusiness && !isIFP);
-
-
         const expiration = account.expiration_date ? new Date(account.expiration_date) : null
        
         const isExpirationValid = expiration !== null && expiration <= threeMonthsLater
 
 
-        return validAccount && isExpirationValid
-
-
-      }else if (exportType == "accounts"){
-        const isBusiness = account.account_type !== null;
-        const isIFP = account.program_type !== null;
-
-
-        const validAccount = (isBusiness && !isIFP) || (!isBusiness && !isIFP);
-        return validAccount
+        return isExpirationValid
       }else{
         return account
       }

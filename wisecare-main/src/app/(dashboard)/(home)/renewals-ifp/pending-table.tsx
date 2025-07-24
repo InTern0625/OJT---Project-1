@@ -75,7 +75,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
       if (searchMode == "agent"){
         const { data, error } = await getUserIDbyName(supabase, searchTerm) 
         if (error) return
-        const ids = data?.map((d) => d.user_id) ?? []
+        const ids = data?.map((d) => d.user_id) ?? undefined
         setUserID(ids)
       }
     }
