@@ -7,11 +7,12 @@ import { useApprovalRequestContext } from '@/app/(dashboard)/admin/approval-requ
 import ApprovalInformationItem from '@/app/(dashboard)/admin/approval-request/components/approval-information-item'
 import { Button } from '@/components/ui/button'
 import getAccountById from '@/queries/get-account-by-id'
+import getCompanyAffiliates from '@/queries/get-company-affiliates'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { formatDate } from 'date-fns'
 import { Loader2 } from 'lucide-react'
-
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { useFeatureFlag } from '@/providers/FeatureFlagProvider'
 import { createBrowserClient } from '@/utils/supabase-client'
 
@@ -25,6 +26,11 @@ const ApprovalFormSME = () => {
     const { data: oldData } = useQuery(
         getAccountById(supabase, selectedData?.account_id ?? ''),
     )
+
+    const { data: affiliatesRaw = []} = useQuery(
+        getCompanyAffiliates(supabase, selectedData?.account_id ?? ''), 
+    )
+    const affiliates = affiliatesRaw || []
     return (
         <div>
             <div className="grid grid-cols-5">
@@ -254,6 +260,8 @@ const ApprovalFormSME = () => {
                             }
                         />
                     </div>
+
+
                 </div>
                 <div className="col-span-3 flex flex-col gap-y-6">
                     {/* Company Information */}
@@ -394,7 +402,28 @@ const ApprovalFormSME = () => {
                         )}
                     </div>
 
-
+                    {/* Affiliates */}
+                    <div className="grid grid-cols-1 gap-y-2">    
+                        <Collapsible>
+                            <CollapsibleTrigger className="font-medium underline underline-offset-2">
+                            Company Affiliates ({affiliates.length})
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                            <div className="mt-2 max-h-[200px] overflow-y-auto border border-gray-200 rounded-md p-2 bg-white shadow-sm">
+                                <div className="grid grid-cols-1 gap-y-2">
+                                {affiliates.map((affiliate, index) => (
+                                    <ApprovalInformationItem
+                                    key={index}
+                                    label={`Affiliate #${index + 1}`}
+                                    value={`Name: ${affiliate.affiliate_name} \n
+                                    Address: ${affiliate.affiliate_address}`}
+                                    />
+                                ))}
+                                </div>
+                            </div>
+                            </CollapsibleContent>
+                        </Collapsible>
+                    </div>
                 </div>
 
             </div>

@@ -78,10 +78,13 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     fetchUserID()
   }, [supabase, searchTerm, searchMode])
 
+  useEffect(() => {
+    setPageIndex(0)
+  }, [searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getAccounts(supabase, { 
       accountType: 'IFP',
-      range: { start: from, end: to },
       sortOrder: {
         col: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id, 
         desc: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.desc
@@ -104,6 +107,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     ...item,
     account_type_id: item.account_type?.id ?? null,
   }))
+
   useEffect(() => {
     if (data && !isLoading) {
       setPreviousData(data)
@@ -115,18 +119,6 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     setCustomSortStatus,
   })
 
-  const filteredData = (data || [])
-    .filter(
-      (item: any) =>{
-        const isBusiness = item.account_type !== null;
-        const isIFP = item.program_type !== null;
-
-        return (!isBusiness && isIFP) || (!isBusiness && !isIFP);
-    })
-    .map((item: any) => ({
-      ...item,
-      account_type_id: item.account_type?.id ?? null,
-    }))
 
   const displayData = isLoading ? previousData : accountData
   

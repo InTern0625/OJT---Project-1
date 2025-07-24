@@ -579,6 +579,7 @@ export type Database = {
           card_number: string | null
           created_at: string
           created_by: string | null
+          company_affiliate: string | null
           dependent_relation:
             | Database['public']['Enums']['dependent_type']
             | null
@@ -607,6 +608,7 @@ export type Database = {
           card_number?: string | null
           created_at?: string
           created_by?: string | null
+          company_affiliate?: string | null
           dependent_relation?:
             | Database['public']['Enums']['dependent_type']
             | null
@@ -635,6 +637,7 @@ export type Database = {
           card_number?: string | null
           created_at?: string
           created_by?: string | null
+          company_affiliate?: string | null
           dependent_relation?:
             | Database['public']['Enums']['dependent_type']
             | null
@@ -738,6 +741,27 @@ export type Database = {
         Relationships: []
       }
       mode_of_payments: {
+        Row: {
+          created_at: string | null
+          id: string
+          is_active: boolean
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+        }
+        Relationships: []
+      }
+      company_affiliate: {
         Row: {
           created_at: string | null
           id: string

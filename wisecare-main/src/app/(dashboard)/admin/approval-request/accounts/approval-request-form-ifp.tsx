@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import getAccountById from '@/queries/get-account-by-id'
 import normalizeToUTC from '@/utils/normalize-to-utc'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { formatDate } from 'date-fns'
 import { Loader2 } from 'lucide-react'
 
@@ -24,6 +25,7 @@ const ApprovalFormIFP = () => {
     const { data: oldData } = useQuery(
         getAccountById(supabase, selectedData?.account_id ?? ''),
     )
+
     const computeAge = (birthdate: string | null | undefined): string => {
         if (!birthdate) return '-';
         const birth = new Date(birthdate);
@@ -221,7 +223,7 @@ const ApprovalFormIFP = () => {
                             }
                             oldValue={
                                 oldData?.agent
-                                ? `${oldData.agent.first_name} ${oldData.agent.last_name}`
+                                ? `${oldData.agent?.first_name} ${oldData.agent?.last_name}`
                                 : '-'
                             }
                         />

@@ -141,7 +141,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
 
       return {
         Agent: account.agent
-          ? `${account.agent.first_name} ${account.agent.last_name}`
+          ? `${account.agent?.first_name} ${account.agent?.last_name}`
           : '',
         'Company Name': account.company_name || '',
         'Company Address': account.company_address || '',

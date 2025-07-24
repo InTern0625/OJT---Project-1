@@ -27,7 +27,7 @@ import {
 import { useState } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useRouter } from 'next/navigation'
-import { Skeleton } from "@/components/ui/skeleton"
+import { Skeleton } from '@/components/ui/skeleton'
 
 const BillingStatementsTable = ({ companyId }: { companyId: string }) => {
   const supabase = createBrowserClient()

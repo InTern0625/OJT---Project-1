@@ -11,6 +11,7 @@ import getTypesIDbyName from '@/queries/get-typesIDbyName'
 import getUserIDbyName from '@/queries/get-user-name-by-id'  
 
 import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface AccountsTableProps {
   initialPageIndex: number
@@ -78,6 +79,10 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     fetchUserID()
   }, [supabase, searchTerm, searchMode])
 
+  useEffect(() => {
+    setPageIndex(0)
+  }, [searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
     return getAccounts(supabase, { 
       accountType: 'Business',
@@ -98,8 +103,8 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
     })
   }, [supabase, from, to, columnSortingData, customSortID, searchMode, searchTerm, userID])
 
-  const { data, count, isLoading } = useQuery(accountQuery)
-  
+  const { data, count, isLoading } = useQuery(accountQuery) 
+
   const accountData = (data || []).map((item: any) => ({
     ...item,
     account_type_id: item.account_type?.id ?? null,

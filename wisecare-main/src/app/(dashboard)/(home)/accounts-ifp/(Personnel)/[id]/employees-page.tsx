@@ -55,7 +55,7 @@ const EmployeesPage: FC<Props> = ({ companyId }) => {
             <CollapsibleContent>
               <div className="grid-cols-3 lg:grid">
                 <EmployeesInformation
-                  data={employee as Tables<'company_employees'>}
+                  data={employee as unknown as Tables<'company_employees'>}
                 />
               </div>
             </CollapsibleContent>

@@ -20,12 +20,12 @@ interface Props {
 }
 
 const MarketingInputs: FC<Props> = ({ isLoading }) => {
+
   const isAccountBenefitUploadEnabled = useFeatureFlag('account-benefit-upload')
   const [search] = useState("")
 
   const form = useFormContext<z.infer<typeof accountsSchema>>()
   const supabase = createBrowserClient()
-
   const { data: agents } = useQuery(getAgents(supabase))
   const { data: hmoProviders } = useQuery(getTypes(supabase, 'hmo_providers'))
   const { data: accountTypes } = useQuery(getTypes(supabase, 'account_types'))

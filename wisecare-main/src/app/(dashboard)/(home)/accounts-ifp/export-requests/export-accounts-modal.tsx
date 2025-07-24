@@ -175,7 +175,7 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
         'MBL': account.mbl || '',
         'Premium': account.premium || '',
         Agent: account.agent
-          ? `${account.agent.first_name} ${account.agent.last_name}`
+          ? `${account.agent?.first_name} ${account.agent?.last_name}`
           : '',
         'Commission Rate': account.commision_rate || '',
       }

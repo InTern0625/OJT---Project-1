@@ -113,8 +113,14 @@ const DataTable = <TData extends IData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     onPaginationChange: (updater) => {
       const newState = typeof updater === 'function' ? updater({ pageIndex, pageSize }) : updater
-      onPageChange(newState.pageIndex)
-      onPageSizeChange(newState.pageSize)
+
+      if (newState.pageIndex !== pageIndex) {
+        onPageChange(newState.pageIndex)
+      }
+
+      if (newState.pageSize !== pageSize) {
+        onPageSizeChange(newState.pageSize)
+      }
     },
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),

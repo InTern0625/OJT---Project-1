@@ -29,7 +29,6 @@ import { useEffect, useState, SetStateAction, Dispatch, useMemo } from 'react'
 import TableViewOptions from '@/components/table-view-options'
 import { useBillingContext } from '@/app/(dashboard)/(home)/billing-statements-corporate-sme/billing-provider'
 import TableSearch from '@/components/table-search-accounts'
-import { Skeleton } from '@/components/ui/skeleton'
 import getRenewalStatements from '@/queries/get-renewal-statements'
 import { Tables } from '@/types/database.types'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
@@ -45,6 +44,7 @@ import { useRouter } from 'next/navigation'
 import ExportAccountRequests from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-account-requests'
 import ExportAccountsModal from '@/app/(dashboard)/(home)/accounts-corporate-sme/export-requests/export-accounts-modal'
 import { isAfter, isBefore, addMonths } from 'date-fns'
+import { Skeleton } from '@/components/ui/skeleton'
 import getRenewalStatementsCount from '@/queries/get-renewal-counts'
 
 interface IData {
@@ -88,14 +88,15 @@ const DataTable = <TData extends IData, TValue>({
   const { upsertRenewalSMEColumnVisibility, upsertRenewalSMEColumnSorting } = useColumnStates()
   const [isAccountLoading, setIsAccountLoading] = useState(false)
   // get column visibility
-  const { data: columnVisibilityData } = useQuery(
+  const { data: columnVisibilityData} = useQuery(
     getAccountsColumnVisibilityByUserId(supabase, "columns_sme_renewals"),
   )
 
   // get column sorting
-  const { data: columnSortingData } = useQuery(
+  const { data: columnSortingData} = useQuery(
     getAccountsColumnSortingByUserId(supabase, "columns_sme_renewals"),
   )
+
   const [sorting, setSorting] = useState<SortingState>(
     (columnSortingData?.columns_sme_renewals as unknown as SortingState) ?? [],
   )

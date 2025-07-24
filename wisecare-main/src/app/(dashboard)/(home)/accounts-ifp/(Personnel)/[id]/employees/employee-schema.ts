@@ -20,6 +20,7 @@ const employeeSchema = z.object({
   cancelation_date: z.date().optional(),
   remarks: z.string().optional(),
   principal_member_name: z.string().optional(),
+  company_affiliate: z.string().optional(),
 })
 
 export default employeeSchema
