@@ -198,6 +198,13 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
           name="total_premium_paid"
           maskType="currency"
         />
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Remarks"
+          name="remarks"
+          placeholder="Enter remarks"
+        />
       </div>
       {isAccountBenefitUploadEnabled ? (
         <FileInput

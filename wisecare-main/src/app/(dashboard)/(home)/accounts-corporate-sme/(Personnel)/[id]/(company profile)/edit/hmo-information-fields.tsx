@@ -335,6 +335,24 @@ const HmoInformationFields: FC<HmoInformationProps> = ({ id }) => {
           )}
         />
       )}
+
+  <FormField
+    control={form.control}
+    name="remarks"
+    render={({ field }) => (
+      <FormItem>
+        <FormControl>
+          <div className="pt-4">
+            <div className="text-md grid w-full text-[#1e293b] md:grid-cols-2 lg:grid-cols-1">
+              Remarks:
+              <Input className="w-full" {...field} />
+            </div>
+          </div>
+        </FormControl>
+        <FormMessage />
+      </FormItem>
+    )}
+  />
     </>
   )
 }

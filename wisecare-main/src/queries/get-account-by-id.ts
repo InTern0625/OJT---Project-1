@@ -11,6 +11,7 @@ const getAccountById = (supabase: TypedSupabaseClient, id: string) => {
       is_account_active,
       agent:agent_id(first_name, last_name, user_id),
       company_name, 
+      remarks,
       company_address, 
       nature_of_business, 
       hmo_provider:hmo_provider_id(name, id), 

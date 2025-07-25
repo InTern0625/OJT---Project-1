@@ -67,6 +67,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         : defaultStatusID,
       agent_id: account?.agent?.user_id ?? undefined,
       company_name: account?.company_name ?? '',
+      remarks: account?.remarks ?? '',
       company_address: account?.company_address ?? '',
       nature_of_business: account?.nature_of_business ?? '',
       hmo_provider_id: account?.hmo_provider
@@ -313,6 +314,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
           {
             status_id: statusId ?? data.status_id,
             company_name: data.company_name,
+            remarks: data.remarks,
             company_address: data.company_address,
             nature_of_business: data.nature_of_business,
             contact_person: data.contact_person,

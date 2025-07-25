@@ -5,6 +5,7 @@ const accountsSchema = z.object({
   status_id: z.string().uuid().optional(),
   agent_id: z.string().uuid().optional(),
   company_name: z.string().min(1).max(255),
+  remarks: z.string().optional(),
   company_address: z.string().max(500).optional(),
   nature_of_business: z.string().max(500).optional(),
   hmo_provider_id: z.string().uuid().optional(),

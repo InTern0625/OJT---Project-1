@@ -17,6 +17,7 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   id,
   agent:agent_id(first_name, last_name),
   company_name,
+  remarks,
   company_address,
   nature_of_business,
   hmo_provider:hmo_provider_id(name, id),

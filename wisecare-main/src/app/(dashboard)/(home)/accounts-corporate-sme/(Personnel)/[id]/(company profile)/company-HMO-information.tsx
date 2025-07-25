@@ -178,6 +178,10 @@ const CompanyHmoInformation: FC<CompanyHmoInformationProps> = ({ id }) => {
               }
             />
           )}
+          <CompanyInformationItem
+            label={'Remarks'}
+            value={account?.remarks ?? '-'}
+          />
         </div>
       )}
     </>
