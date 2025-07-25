@@ -45,11 +45,11 @@ const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
   return (
     <li className="bg-muted flex items-center justify-between rounded-lg p-4">
       <div>
-        <Link href={`/${path}/${data.id}`} className="font-semibold">
+        <Link href={`/${path}//${data.id}`} className="font-semibold">
           {data.company_name}
         </Link>
         <Link
-          href={`/${path}/${data.id}`}
+          href={`/${path}//${data.id}`}
           className="text-muted-foreground mt-1 flex items-center text-sm"
         >
           <CalendarDays className="mr-1 h-4 w-4" />
@@ -58,7 +58,7 @@ const RenewalItem: FC<RenewalItemProps> = ({ data }) => {
         </Link>
       </div>
       <div className="text-right">
-        <Link href={`/${path}/${data.id}`}>
+        <Link href={`/${path}//${data.id}`}>
           <Badge className={cn('mt-1 capitalize', getStatusColor(status))}>
             {status}
           </Badge>

@@ -85,14 +85,7 @@ export const RenewalStatementsColumns = ({
       const status = getStatusFromExpirationDate(row.original.expiration_date)
       const colorClass = getStatusColor(status)
       return <span className={colorClass}>{status}</span>
-    },
-    enableSorting: true,
-    sortingFn: (rowA, rowB) => {
-      const statusA = getStatusFromExpirationDate(rowA.original.expiration_date)
-      const statusB = getStatusFromExpirationDate(rowB.original.expiration_date)
-      const order = ['overdue', 'upcoming', 'renewed']
-      return order.indexOf(statusA) - order.indexOf(statusB)
-    },
+    }
   },
   {
     accessorKey: 'status_type.name',
@@ -134,6 +127,28 @@ export const RenewalStatementsColumns = ({
       const statusB = rowB.getValue(columnId) as string;
       return orderSorter(statusA, statusB, accountOrder);
     },
+  },
+  {
+    accessorKey: 'agent',
+    header: ({ column }) => <TableHeader column={column} title="Agent" />,
+    cell: ({ row }) => {
+      if (
+        //@ts-ignore
+        !row.original.agent ||
+        //@ts-ignore
+        !row.original.agent.first_name ||
+        //@ts-ignore
+        !row.original.agent.last_name
+      ) {
+        return ''
+      }
+      return (
+        // @ts-ignore
+        `${row.original.agent.first_name} ${row.original.agent.last_name}`
+      )
+    },
+    accessorFn: (originalRow) =>
+      `${(originalRow as any).agent?.first_name ?? ''} ${(originalRow as any).agent?.last_name ?? ''}`,
   },
   {
     accessorKey: 'total_utilization',
@@ -203,6 +218,13 @@ export const RenewalStatementsColumns = ({
         originalRow?.expiration_date ? new Date(originalRow.expiration_date) : null,
   },
   {
+    accessorKey: 'mode_of_payment.name',
+    accessorFn: (originalRow) => (originalRow as any)?.mode_of_payment?.name ?? '',
+    header: ({ column }) => (
+      <TableHeader column={column} title="Mode of Payment" />
+    ),
+  },
+  {
     accessorKey: 'delivery_date_of_membership_ids',
     header: ({ column }) => (
       <TableHeader column={column} title="ID Delivery Date" />
@@ -269,7 +291,7 @@ export const RenewalStatementsColumns = ({
   {
     accessorKey: 'annual_physical_examination_date',
     header: ({ column }) => (
-      <TableHeader column={column} title="APE Date" />
+      <TableHeader column={column} title="Annual Physical Examination" />
     ),
     cell: ({ row }) => {
       const annualPhysicalExamination = row.original.annual_physical_examination_date
@@ -290,47 +312,9 @@ export const RenewalStatementsColumns = ({
     cell: ({ row }) => formatPercentage(row.original.commision_rate),
   },
   { accessorKey: 'summary_of_benefits', header: ({ column }) => <TableHeader column={column} title="Benefits" /> },
-  {
-    accessorKey: 'created_at',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Created At" />
-    ),
-    cell: ({ row }) => {
-      const createdAt = row.original.created_at
-      ? normalizeToUTC(new Date(row.original.created_at))
-      : null
-      return (
-        <div>
-          {createdAt ? format(createdAt, 'MMMM dd, yyyy') : ''}
-        </div>
-      )
-    },
-    accessorFn: (originalRow) =>
-      (originalRow as any)?.created_at
-        ? new Date((originalRow as any).created_at) : null,
-  },
-  {
-    accessorKey: 'updated_at',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Updated At" />
-    ),
-    cell: ({ row }) => {
-      const updatedAt = row.original.updated_at
-      ? normalizeToUTC(new Date(row.original.updated_at))
-      : null
-      return (
-        <div>
-          {updatedAt ? format(updatedAt, 'MMMM dd, yyyy') : ''}
-        </div>
-      )
-    },
-    accessorFn: (originalRow) =>
-        originalRow?.updated_at ? new Date(originalRow.updated_at) : null,
-  },
   { accessorKey: 'name_of_signatory', header: ({ column }) => <TableHeader column={column} title="Signatory Name" /> },
   { accessorKey: 'designation_of_contact_person', header: ({ column }) => <TableHeader column={column} title="Contact Designation" /> },
   { accessorKey: 'email_address_of_contact_person', header: ({ column }) => <TableHeader column={column} title="Contact Email" /> },
-  { accessorKey: 'is_account_active', header: ({ column }) => <TableHeader column={column} title="Account Active" /> },
   {
     accessorKey: 'original_effective_date',
     header: ({ column }) => (

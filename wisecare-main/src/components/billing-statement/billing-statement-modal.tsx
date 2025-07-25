@@ -238,7 +238,6 @@ const BillingStatementModal = <TData,>({
     item.company_name.toLowerCase().startsWith(search.toLowerCase())
   )
   }, [search, accounts])
-
   const maskedTotalContractValueRef = useMaskito({ options: currencyOptions })
   const maskedBalanceRef = useMaskito({ options: currencyOptions })
   const maskedAmountBilledRef = useMaskito({ options: currencyOptions })

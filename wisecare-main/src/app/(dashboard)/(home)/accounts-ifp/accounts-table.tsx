@@ -72,7 +72,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
       if (searchMode == "agent"){
         const { data, error } = await getUserIDbyName(supabase, searchTerm) 
         if (error) return
-        const ids = data?.map((d) => d.user_id) ?? []
+        const ids = data?.map((d) => d.user_id) ?? undefined
         setUserID(ids)
       }
     }
@@ -83,16 +83,28 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     setPageIndex(0)
   }, [searchTerm, searchMode])
 
+  useEffect(() => {
+    setPageIndex(0)
+  }, [searchTerm, searchMode])
+
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id
+    const sortKey =
+      originalSortKey === 'status'
+        ? 'expiration_date'
+        : originalSortKey === 'age'
+        ? 'birthdate'
+        : originalSortKey
+
     return getAccounts(supabase, { 
       accountType: 'IFP',
       range: {start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id, 
+        col: sortKey, 
         desc: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.desc
       },
       customSort: {
-        key: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id,
+        key: sortKey,
         value: customSortID
       },
       search: {
@@ -120,7 +132,6 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     customSortStatus,
     setCustomSortStatus,
   })
-
 
   const displayData = isLoading ? previousData : accountData
   

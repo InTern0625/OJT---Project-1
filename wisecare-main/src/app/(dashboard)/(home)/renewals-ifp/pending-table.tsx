@@ -75,7 +75,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
       if (searchMode == "agent"){
         const { data, error } = await getUserIDbyName(supabase, searchTerm) 
         if (error) return
-        const ids = data?.map((d) => d.user_id) ?? []
+        const ids = data?.map((d) => d.user_id) ?? undefined
         setUserID(ids)
       }
     }
@@ -87,15 +87,17 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   }, [searchTerm, searchMode])
 
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id
+    const sortKey = originalSortKey === 'status' ? 'expiration_date' : originalSortKey
     return getRenewalStatements(supabase, { 
       accountType: 'IFP',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id, 
+        col: sortKey,
         desc: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.desc
       },
       customSort: {
-        key: (columnSortingData?.columns_ifp_renewals?.[0] as any)?.id,
+        key: sortKey,
         value: customSortID
       },
       search: {

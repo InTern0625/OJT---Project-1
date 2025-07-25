@@ -20,13 +20,13 @@ import {
   MessageCircle,
   User,
   Users,
+  Building2
 } from 'lucide-react'
 import { FC, ReactNode } from 'react'
-import getCompanyAffiliates from '@/queries/get-company-affiliates'
+import { useCompanyContext } from '@/app/(dashboard)/(home)/accounts-corporate-sme/(Personnel)/[id]/(company profile)/company-provider'
+import getCompanyName from '@/queries/get-company-name-by-id'
 import { createBrowserClient } from '@/utils/supabase-client'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
-
-const supabase = createBrowserClient()
 
 const EmployeeDetailsItem = (item: {
   label: string
@@ -61,6 +61,10 @@ interface ExtendedEmployeeData extends Tables<'company_employees'> {
     id: string
     name: string
   } | null
+  affiliate?: {
+    id: string
+    affiliate_name: string
+  } | null
 }
 interface EmployeeDetailsProps {
   button: ReactNode
@@ -71,7 +75,12 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
   button,
   employeeData,
 }) => {
-
+  const { accountId } = useCompanyContext()
+  const supabase = createBrowserClient()
+  const { data: company } =  useQuery(getCompanyName(supabase, accountId))
+  const companyName = company?.company_name
+  ? `${company.company_name} (Parent)`
+  : ''
   const data = [
     {
       label: 'Birth Date',
@@ -120,6 +129,11 @@ const EmployeeDetails: FC<EmployeeDetailsProps> = ({
         ? format(new Date(employeeData.cancelation_date), 'PPP')
         : 'N/A',
       icon: CalendarDays,
+    },
+    {
+      label: 'Affiliation Name',
+      value: employeeData?.affiliate?.affiliate_name ?? companyName,
+      icon: Building2,
     },
     { label: 'Remarks', value: employeeData.remarks, icon: MessageCircle },
     { label: 'Affiliations', 

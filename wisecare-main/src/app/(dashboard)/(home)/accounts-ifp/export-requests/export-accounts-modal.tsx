@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from 'react'
+import React, { FC, useCallback, useState, useEffect } from 'react'
 import {
   Dialog,
   DialogContent,
@@ -17,7 +17,8 @@ import { Enums } from '@/types/database.types'
 import DeletePendingExportRequests from '@/app/(dashboard)/(home)/accounts-ifp/export-requests/delete-pending-export-requests'
 import getAccounts from '@/queries/get-accounts'
 import { createBrowserClient } from '@/utils/supabase-client'
-
+import getTypesIDbyName from '@/queries/get-typesIDbyName'  
+import { TypeTabs } from '@/app/(dashboard)/admin/types/type-card'
 
 interface ExportAccountsModalProps {
   exportData: Enums<'export_type'>
@@ -32,15 +33,18 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
   const supabase = createBrowserClient()
   const [pendingRequest, setIsPendingRequest] = useState('')
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-  const filters = customSortID && columnSortingID
-    ? {
-        customSort: {
-          key: columnSortingID,
-          value: customSortID,
-        },
-      }
-    : {}
 
+  const filters =
+    columnSortingID && customSortID
+      ? {
+          customSort: {
+            key: columnSortingID,
+            value: customSortID,
+          },
+          accountType: 'Business',
+        }
+      : {accountType: 'Business'}
+      
   const { data: oldAccountsData } = useQuery(getAccounts(supabase, filters))
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore

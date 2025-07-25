@@ -60,6 +60,7 @@ const getPendingAccounts = (
     room_plan: room_plan_id(name, id),
     mbl,
     premium,
+    remarks,
     program_type: program_types_id(name, id),
     gender_type: gender_types_id(name, id),
     civil_status: civil_status_id(name, id),

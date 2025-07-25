@@ -6,8 +6,8 @@ import { TypeTabs } from '../app/(dashboard)/admin/types/type-card'
 export const useSortingOrder = (sortType: string) => {
   const supabase = createBrowserClient()
   const sorting = sortType as TypeTabs  
-  const { data: statusTypes } = useQuery(getTypes(supabase, sorting))
-  return statusTypes?.map(type => type.name) || []
+  const { data: sortingTypeList } = useQuery(getTypes(supabase, sorting))
+  return sortingTypeList?.map(type => type.name) || []
 }
 
 export const createCustomSorter = (statusOrder: string[]) => {

@@ -39,8 +39,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
   const from = pageIndex * pageSize
   
   const to = from + pageSize - 1
-  //console.log("PAGE", pageIndex, pageSize, from, to)
-  //const { data, count, isLoading } = useQuery(getAccounts(supabase))
+
   //Get ID of custom sort
   useEffect(() => {
     const fetchSortID = async () => {
@@ -74,7 +73,7 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
       if (searchMode == "agent"){
         const { data, error } = await getUserIDbyName(supabase, searchTerm) 
         if (error) return
-        const ids = data?.map((d) => d.user_id) ?? []
+        const ids = data?.map((d) => d.user_id) ?? undefined
         setUserID(ids)
       }
     }
@@ -85,16 +84,20 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     setPageIndex(0)
   }, [searchTerm, searchMode])
 
+
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_sme_renewals?.[0] as any)?.id
+    const sortKey = originalSortKey === 'status' ? 'expiration_date' : originalSortKey
+
     return getRenewalStatements(supabase, { 
       accountType: 'Business',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
-        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc
+        col: sortKey, 
+        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc ?? false
       },
       customSort: {
-        key: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id,
+        key: sortKey,
         value: customSortID
       },
       search: {

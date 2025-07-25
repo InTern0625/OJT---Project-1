@@ -72,7 +72,6 @@ const getRenewalStatements = (supabase: TypedSupabaseClient, filters: renewalFil
     .eq('is_active', true)
     .eq('is_account_active', true)
     .lte('expiration_date', threeMonthsLater.toISOString())
-    .order('expiration_date', { ascending: false })
     .throwOnError()
 
   //Sort Filter
@@ -84,10 +83,34 @@ const getRenewalStatements = (supabase: TypedSupabaseClient, filters: renewalFil
     }
   } else if (filters.sortOrder?.col && !(filters.sortOrder.col == "account_type_name" || filters.sortOrder.col == "status_type_name")) {
     //Normal sorting only run if custom key or value is undefined
-    query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
+    if (filters.sortOrder.col === "agent") {
+      query = query.order('agent_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "hmo_provider_name"){
+      query = query.order('hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "civil_status_name"){
+      query = query.order('civil_status_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "gender_type_name"){
+      query = query.order('gender_types_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "mode_of_payment_name"){
+      query = query.order('mode_of_payment_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "room_plan_name"){
+      query = query.order('room_plan_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "program_type_name"){
+      query = query.order('program_types_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "previous_hmo_provider_name"){
+      query = query.order('previous_hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "old_hmo_provider_name"){
+      query = query.order('old_hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "principal_plan_type_name"){
+      query = query.order('principal_plan_type_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "dependent_plan_type_name"){
+      query = query.order('dependent_plan_type_id', { ascending: !filters.sortOrder.desc })
+    } else {
+      query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
+    }
   } else {
     //if none
-    query = query.order('created_at', { ascending: false })
+    query = query.order('expiration_date', { ascending: false })
   }
 
   //Account Type Filter

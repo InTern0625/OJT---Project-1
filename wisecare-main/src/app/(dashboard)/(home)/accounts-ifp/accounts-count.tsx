@@ -1,6 +1,6 @@
 import { PageDescription } from '@/components/page-header'
 import { Skeleton } from '@/components/ui/skeleton'
-import getAccounts from '@/queries/get-accounts'
+import getAccountsCount from '@/queries/get-accounts-count'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { useMemo } from 'react'
 import { createBrowserClient } from '@/utils/supabase-client'
@@ -8,7 +8,7 @@ import getTypes from '@/queries/get-types'
 
 const AccountsCount = () => {
   const supabase = createBrowserClient()
-  const { data: count, isLoading } = useQuery(getAccounts(supabase, { accountType: 'IFP' }))
+  const { data: count, isLoading } = useQuery(getAccountsCount(supabase, { accountType: 'IFP' }))
   const { data: statusTypes } = useQuery(getTypes(supabase, 'status_types'))
 
   const countsByStatus = useMemo(() => {
