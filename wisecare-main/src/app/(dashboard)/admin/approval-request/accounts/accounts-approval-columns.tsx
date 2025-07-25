@@ -46,13 +46,6 @@ const accountsApprovalColumns: ColumnDef<Tables<'pending_accounts'>>[] = [
     },
   },
   {
-    accessorKey: 'remarks',
-    header: ({ column }) => (
-      <TableHeader column={column} title="Remarks" />
-    ),
-    accessorFn: (row) => row.remarks,
-  },
-  {
     id: 'actions',
     cell: () => {
       return (

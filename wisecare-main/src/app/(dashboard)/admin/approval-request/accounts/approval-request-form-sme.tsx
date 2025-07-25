@@ -426,6 +426,18 @@ const ApprovalFormSME = () => {
                     </div>
                 </div>
 
+                    {/*Remarks*/}
+                    <div className="grid col-span-3 grid-cols-1 gap-y-2 mt-5">
+                        <span className="col-span-2 font-medium underline underline-offset-2">
+                            Remarks
+                        </span>
+                        <ApprovalInformationItem
+                            label=""
+                            value={selectedData?.remarks?.toString()}
+                            oldValue={oldData?.remarks?.toString()}
+                        />
+                    </div>
+
             </div>
             {/* Actions */}
             <div className="flex justify-end gap-x-2">
