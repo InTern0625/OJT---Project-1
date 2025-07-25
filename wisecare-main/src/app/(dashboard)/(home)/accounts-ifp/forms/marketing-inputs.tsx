@@ -196,6 +196,13 @@ const MarketingInputs: FC<Props> = ({ isLoading }) => {
             value: programTypes.id,
           }))}
         />
+        <TextInput
+          form={form}
+          isLoading={isLoading}
+          label="Remarks"
+          name="remarks"
+          placeholder="Enter remarks"
+        />
       </div>
       {isAccountBenefitUploadEnabled ? (
         <FileInput

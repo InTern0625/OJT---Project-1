@@ -6,6 +6,7 @@ const companyEditsSchema = z.object({
   status_id: z.string().optional(),
   agent_id: z.string().optional(),
   company_name: z.string().optional(),
+  remarks: z.string().optional(),
   company_address: z.string().optional(),
   nature_of_business: z.string().optional(),
   hmo_provider_id: z.string().optional(),

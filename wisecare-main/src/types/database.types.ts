@@ -154,6 +154,7 @@ export type Database = {
           card_number: string | null
           room_plan_id: string | null
           mbl: number | null
+          remarks: string | null
           program_types_id: string | null
           premium: number | null
           gender_types_id: string | null
@@ -211,6 +212,7 @@ export type Database = {
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null
+          remarks?: string | null
           program_types_id?: string | null
           premium?: number | null
           gender_types_id?: string | null
@@ -268,6 +270,7 @@ export type Database = {
           card_number?: string | null
           room_plan_id?: string | null
           mbl?: number | null
+          remarks?: string | null
           program_types_id?: string | null
           premium?: number | null
           gender_types_id?: string | null

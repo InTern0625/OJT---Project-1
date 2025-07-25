@@ -57,6 +57,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
         ? (account.status_type as any).id
         : defaultStatusID,
       company_name: account?.company_name ?? '',
+      remarks: account?.remarks ?? '',
       company_address: account?.company_address ?? '',
       birthdate: account?.birthdate
         ? normalizeToUTC(new Date(account.birthdate))
@@ -210,6 +211,7 @@ const CompanyAbout: FC<Props> = ({ companyId }) => {
             status_id: statusId ?? data.status_id,
             company_name: data.company_name,
             company_address: data.company_address,
+            remarks: data.remarks,
             birthdate: data?.birthdate
               ? normalizeToUTC(new Date(data.birthdate))
               : null,

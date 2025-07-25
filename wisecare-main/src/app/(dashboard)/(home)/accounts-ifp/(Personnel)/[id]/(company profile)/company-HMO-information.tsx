@@ -147,6 +147,10 @@ interface CompanyHmoInformationProps {
               }
             />
           )}
+          <CompanyInformationItem
+            label={'Remarks'}
+            value={account?.remarks ?? '-'}
+          />
         </div>
       )}
     </>
