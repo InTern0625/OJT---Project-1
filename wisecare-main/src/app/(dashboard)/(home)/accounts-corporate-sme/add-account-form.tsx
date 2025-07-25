@@ -73,7 +73,7 @@ const AddAccountForm = ({ setIsOpen }: AddAccountFormProps) => {
       contract_proposal_files: [],
       additional_benefits_text: '',
       additional_benefits_files: [],
-      company_name: '',
+      remarks: '',
     },
   })
 
