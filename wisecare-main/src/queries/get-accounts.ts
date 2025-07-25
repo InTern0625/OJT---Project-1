@@ -60,7 +60,7 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   room_plan: room_plan_id(name, id),
   mbl,
   premium,
-  program_type: program_types(name, id),
+  program_type: program_types_id(name, id),
   gender_type: gender_types_id(name, id),
   civil_status: civil_status_id(name, id),
   status_type: status_id(name, id)
@@ -74,6 +74,7 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
   
   
   // Sort Filters
+  console.log(filters)
   if (filters.customSort?.key && filters.customSort?.value && filters.customSort.value !== "") {
     if (filters.customSort.key === "account_type_name") {
       query = query.eq("account_type_id", filters.customSort.value)
@@ -84,10 +85,33 @@ const getAccounts = (supabase: TypedSupabaseClient, filters: AccountFilters = {}
     } else if (filters.customSort.key === "room_plan_id") {
       query = query.eq("room_plan_id", filters.customSort.value)
     }
-  } else if (filters.sortOrder?.col && !(filters.sortOrder.col == "account_type_name" || filters.sortOrder.col == "status_type_name")) {
-    //Normal sorting only run if custom key or value is undefined
-    query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
-  } else {
+  } else if (filters.sortOrder?.col && !['account_type_name', 'status_type_name'].includes(filters.sortOrder.col)){
+    if (filters.sortOrder.col === "agent") {
+      query = query.order('agent_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "hmo_provider_name"){
+      query = query.order('hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "civil_status_name"){
+      query = query.order('civil_status_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "gender_type_name"){
+      query = query.order('gender_types_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "mode_of_payment_name"){
+      query = query.order('mode_of_payment_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "room_plan_name"){
+      query = query.order('room_plan_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "program_type_name"){
+      query = query.order('program_types_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "previous_hmo_provider_name"){
+      query = query.order('previous_hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "old_hmo_provider_name"){
+      query = query.order('old_hmo_provider_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "principal_plan_type_name"){
+      query = query.order('principal_plan_type_id', { ascending: !filters.sortOrder.desc })
+    }else if (filters.sortOrder.col == "dependent_plan_type_name"){
+      query = query.order('dependent_plan_type_id', { ascending: !filters.sortOrder.desc })
+    } else {
+      query = query.order(filters.sortOrder.col, { ascending: !filters.sortOrder.desc })
+    }
+  }else {
     //if none
     query = query.order('created_at', { ascending: false })
   }

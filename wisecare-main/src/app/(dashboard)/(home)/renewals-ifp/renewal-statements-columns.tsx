@@ -88,12 +88,6 @@ export const RenewalStatementsColumns = ({
         return <span className={colorClass}>{status}</span>
       },
       enableSorting: true,
-      sortingFn: (rowA, rowB) => {
-        const statusA = getStatusFromExpirationDate(rowA.original.expiration_date)
-        const statusB = getStatusFromExpirationDate(rowB.original.expiration_date)
-        const order = ['overdue', 'upcoming', 'renewed']
-        return order.indexOf(statusA) - order.indexOf(statusB)
-      },
     },
     {
       accessorKey: 'status_type.name',

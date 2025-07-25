@@ -84,16 +84,20 @@ const PendingTable = ({ initialPageIndex, initialPageSize}: PendingTableProps) =
     setPageIndex(0)
   }, [searchTerm, searchMode])
 
+
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_sme_renewals?.[0] as any)?.id
+    const sortKey = originalSortKey === 'status' ? 'expiration_date' : originalSortKey
+
     return getRenewalStatements(supabase, { 
       accountType: 'Business',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id, 
-        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc
+        col: sortKey, 
+        desc: (columnSortingData?.columns_sme_renewals?.[0] as any)?.desc ?? false
       },
       customSort: {
-        key: (columnSortingData?.columns_sme_renewals?.[0] as any)?.id,
+        key: sortKey,
         value: customSortID
       },
       search: {

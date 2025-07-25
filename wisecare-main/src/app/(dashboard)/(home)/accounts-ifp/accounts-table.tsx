@@ -83,15 +83,23 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
   }, [searchTerm, searchMode])
 
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id
+    const sortKey =
+      originalSortKey === 'status'
+        ? 'expiration_date'
+        : originalSortKey === 'age'
+        ? 'birthdate'
+        : originalSortKey
+
     return getAccounts(supabase, { 
       accountType: 'IFP',
       range: { start: from, end: to },
       sortOrder: {
-        col: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id, 
+        col: sortKey, 
         desc: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.desc
       },
       customSort: {
-        key: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id,
+        key: sortKey,
         value: customSortID
       },
       search: {
@@ -118,19 +126,6 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
     customSortStatus,
     setCustomSortStatus,
   })
-
-  const filteredData = (data || [])
-    .filter(
-      (item: any) =>{
-        const isBusiness = item.account_type !== null;
-        const isIFP = item.program_type !== null;
-
-        return (!isBusiness && isIFP) || (!isBusiness && !isIFP);
-    })
-    .map((item: any) => ({
-      ...item,
-      account_type_id: item.account_type?.id ?? null,
-    }))
 
   const displayData = isLoading ? previousData : accountData
   

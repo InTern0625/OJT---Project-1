@@ -83,6 +83,13 @@ const AccountsTable = ({ initialPageIndex, initialPageSize }: AccountsTableProps
   }, [searchTerm, searchMode])
   
   const accountQuery = useMemo(() => {
+    const originalSortKey = (columnSortingData?.columns_sme_accounts?.[0] as any)?.id
+    const sortKey =
+      originalSortKey === 'status'
+        ? 'expiration_date'
+        : originalSortKey === 'age'
+        ? 'birthdate'
+        : originalSortKey
     return getAccounts(supabase, { 
       accountType: 'Business',
       range: { start: from, end: to },

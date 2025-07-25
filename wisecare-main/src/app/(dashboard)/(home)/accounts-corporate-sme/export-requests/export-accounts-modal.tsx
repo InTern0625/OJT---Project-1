@@ -45,7 +45,6 @@ const ExportAccountsModal: FC<ExportAccountsModalProps> = ({ exportData, exportT
           accountType: 'Business',
         }
       : {accountType: 'Business'}
-  console.log("FILT", filters, columnSortingID, customSortID)
   const { data: oldAccountsData } = useQuery(getAccounts(supabase, filters))
   const { mutateAsync, isPending } = useInsertMutation(
     //@ts-ignore
