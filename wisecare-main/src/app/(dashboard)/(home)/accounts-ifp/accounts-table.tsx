@@ -37,12 +37,13 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
   const to = from + pageSize - 1
   //const { data, count, isLoading } = useQuery(getAccounts(supabase))
   //Get ID of custom sort
+  
   useEffect(() => {
     const fetchSortID = async () => {
       const sortKey = (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id
       const storedRaw = columnSortingData?.custom__sort_ifp_accounts ?? null
       setCustomSortStatus(storedRaw)
-
+      
       if (!customSortStatus || !sortKey) return
 
       let tableName: TypeTabs | null = null
@@ -85,6 +86,7 @@ const AccountsTable = ({ initialPageIndex, initialPageSize}: AccountsTableProps)
   const accountQuery = useMemo(() => {
     return getAccounts(supabase, { 
       accountType: 'IFP',
+      range: {start: from, end: to },
       sortOrder: {
         col: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.id, 
         desc: (columnSortingData?.columns_ifp_accounts?.[0] as any)?.desc
